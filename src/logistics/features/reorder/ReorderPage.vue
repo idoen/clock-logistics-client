@@ -63,7 +63,7 @@ function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory', qty
   drawerTitle.value = `Product ${productId}`;
   defaultQty.value = qty;
   defaultArrival.value = arrival;
-   initialTab.value = tab;
+  initialTab.value = tab;
   drawerOpen.value = true;
 }
 </script>

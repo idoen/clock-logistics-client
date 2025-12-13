@@ -44,7 +44,6 @@
       :product-id="selectedProductId"
       :title="drawerTitle"
       :initial-tab="initialTab"
-      variant="modal"
       @close="drawerOpen = false"
     />
   </div>

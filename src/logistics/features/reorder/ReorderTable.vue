@@ -99,7 +99,7 @@ function dailyLeadTime(productId: number) {
 function suggestedArrival(productId: number, lead?: number | null, formatted = true) {
   const days = lead ?? 0;
   const date = addDays(new Date(), days);
-  return formatted ? formatDate(date) : formatDate(date);
+  return formatted ? formatDate(date) : date.toISOString().slice(0, 10);
 }
 
 const columns: ColumnDef[] = [
