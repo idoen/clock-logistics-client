@@ -1,10 +1,10 @@
 <template>
   <section class="section">
     <div class="section-head">
-      <h2>Reorder recommendations</h2>
+      <h2>המלצות הזמנה</h2>
       <label class="filter">
         <input v-model="onlyPositive" type="checkbox" />
-        הצג רק הצעות הזמנה (recommended_order_qty > 0)
+        הצג רק פריטים עם המלצת הזמנה חיובית
       </label>
     </div>
     <AsyncState :loading="loading" :error="error">
@@ -78,12 +78,13 @@ const filteredRows = computed(() =>
   props.rows.filter((row) => (onlyPositive.value ? row.recommended_order_qty > 0 : true)),
 );
 
-type ColumnDef = {
-  key: string;
-  label: string;
-  dir?: 'ltr' | 'rtl' | 'auto';
-  formatter?: (value: unknown, row?: ReorderRow) => unknown;
-};
+  type ColumnDef = {
+    key: string;
+    label: string;
+    info?: string;
+    dir?: 'ltr' | 'rtl' | 'auto';
+    formatter?: (value: unknown, row?: ReorderRow) => unknown;
+  };
 
 function packSize(productId: number) {
   const value = props.dailyMap[productId]?.pack_size;
@@ -103,17 +104,45 @@ function suggestedArrival(productId: number, lead?: number | null, formatted = t
 }
 
 const columns: ColumnDef[] = [
-  { key: 'sku', label: 'SKU', dir: 'ltr' },
-  { key: 'name', label: 'Name', dir: 'auto' },
-  { key: 'status', label: 'Status', dir: 'ltr' },
-  { key: 'days_until_rop', label: 'Days until ROP', dir: 'rtl' },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'target_units_30d', label: 'Target units (30d)', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'recommended_order_qty', label: 'Recommended qty', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'pack', label: 'Pack size / min order', dir: 'ltr' },
-  { key: 'arrival', label: 'Suggested arrival', dir: 'auto' },
-  { key: 'actions', label: 'Actions', dir: 'ltr' },
+  { key: 'sku', label: 'מק"ט', info: 'מזהה הפריט במערכת', dir: 'ltr' },
+  { key: 'name', label: 'שם פריט', info: 'השם כפי שמופיע בקטלוג', dir: 'auto' },
+  { key: 'status', label: 'סטטוס מלאי', info: 'מצב נוכחי לפי הדוח היומי והאם יש סיכון 60 יום', dir: 'ltr' },
+  {
+    key: 'days_until_rop',
+    label: 'ימים ל־ROP',
+    info: 'כמה ימים נשארו עד נקודת ההזמנה מחדש; מספר שלילי אומר שכבר עברנו אותה',
+    dir: 'rtl',
+  },
+  { key: 'available', label: 'זמין עכשיו', info: 'כמות זמינה במחסן כרגע', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  {
+    key: 'in_transit',
+    label: 'בדרך',
+    info: 'כמות שכבר נשלחה ועדיין לא התקבלה',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+  },
+  {
+    key: 'target_units_30d',
+    label: 'יעד ל־30 יום',
+    info: 'כמה יחידות צריך בחודש הקרוב כדי לעמוד בביקוש',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+  },
+  {
+    key: 'recommended_order_qty',
+    label: 'המלצת הזמנה',
+    info: 'כמה להזמין כעת כדי להגיע ליעד ולמנוע חוסר',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+  },
+  {
+    key: 'pack',
+    label: 'אריזות ומינימום',
+    info: 'גודל אריזה אחת והמינימום שספק מאפשר להזמין',
+    dir: 'ltr',
+  },
+  { key: 'arrival', label: 'תאריך הגעה מוצע', info: 'תאריך יעד להזמנה לפי זמן האספקה הצפוי', dir: 'auto' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr' },
 ];
 </script>
 

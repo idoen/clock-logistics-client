@@ -3,8 +3,8 @@
     <section class="intro">
       <div>
         <p class="eyebrow">Reorder</p>
-        <h2>המלצות הזמנה מותאמות Lead Time, Pack Size ו־Min Order</h2>
-        <p class="help">ברירת המחדל מציגה רק הצעות עם recommended_order_qty > 0. ניתן לפתוח פעולות PO/Override/Inventory מכל שורה.</p>
+        <h2>המלצות הזמנה ברורות לפי מלאי, הובלה ויעדים לחודש הקרוב</h2>
+        <p class="help">לצפייה ממוקדת ניתן לסמן "הצג רק פריטים עם המלצת הזמנה". מכל שורה אפשר לפתוח הזמנה, לעדכן חריגה או לבדוק מלאי.</p>
       </div>
     </section>
     <ReorderTable
