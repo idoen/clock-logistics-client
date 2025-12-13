@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body" :disabled="!isModal">
+  <Teleport to="body">
     <div
       v-if="open"
       :class="wrapperClass"
@@ -7,7 +7,7 @@
       aria-modal="true"
       @click.self="$emit('close')"
     >
-      <div :class="panelClass">
+      <div :class="panelClass" tabindex="-1" @keydown.esc.prevent="$emit('close')">
         <div class="flex items-center justify-between border-b px-4 py-3">
           <div>
             <h3 class="text-lg font-semibold">Actions – {{ title }}</h3>
@@ -32,7 +32,7 @@
             </button>
           </div>
         </div>
-        <div class="p-4 overflow-y-auto" :class="{ 'modal-body': variant === 'modal' }">
+        <div class="p-4 overflow-y-auto modal-body">
           <PurchaseOrderForm
             v-if="activeTab === 'po'"
             :product-id="productId"
@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { Teleport, computed, ref, watch } from 'vue';
+import { Teleport, computed, onBeforeUnmount, ref, watch } from 'vue';
 import InventoryForm from './InventoryForm.vue';
 import OverrideForm from './OverrideForm.vue';
 import PurchaseOrderForm from './PurchaseOrderForm.vue';
@@ -61,11 +61,11 @@ const props = defineProps<{
   defaultQty?: number;
   defaultArrival?: string;
   initialTab?: 'po' | 'override' | 'inventory';
-  variant?: 'drawer' | 'modal';
 }>();
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 const activeTab = ref<'po' | 'override' | 'inventory'>(props.initialTab ?? 'po');
+const scrollLock = ref<string | null>(null);
 
 watch(
   () => props.initialTab,
@@ -83,20 +83,32 @@ watch(
   },
 );
 
-const variant = computed(() => props.variant ?? 'modal');
-const isModal = computed(() => variant.value === 'modal');
-
-const wrapperClass = computed(() =>
-  isModal.value
-    ? 'fixed inset-0 z-40 flex items-center justify-center bg-black/60 px-4'
-    : 'fixed inset-0 z-40 flex justify-end bg-black/30',
+const wrapperClass = computed(
+  () => 'fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 px-4 backdrop-blur-[1px]',
 );
 
-const panelClass = computed(() =>
-  isModal.value
-    ? 'w-full max-w-3xl bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] flex flex-col'
-    : 'w-full max-w-lg bg-white shadow-xl overflow-y-auto',
+const panelClass = computed(
+  () => 'w-full max-w-3xl bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] flex flex-col outline-none',
 );
+
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (isOpen) {
+      scrollLock.value = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+    } else if (scrollLock.value !== null) {
+      document.body.style.overflow = scrollLock.value;
+      scrollLock.value = null;
+    }
+  },
+);
+
+onBeforeUnmount(() => {
+  if (scrollLock.value !== null) {
+    document.body.style.overflow = scrollLock.value;
+  }
+});
 </script>
 
 <style scoped>
