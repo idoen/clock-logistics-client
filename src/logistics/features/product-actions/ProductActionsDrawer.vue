@@ -1,52 +1,62 @@
 <template>
-  <div
-    v-if="open"
-    :class="wrapperClass"
-    role="dialog"
-    aria-modal="true"
-  >
-    <div :class="panelClass">
-      <div class="flex items-center justify-between border-b px-4 py-3">
-        <div>
-          <h3 class="text-lg font-semibold">Actions – {{ title }}</h3>
-          <p class="text-xs text-slate-500">Product ID: {{ productId }}</p>
-        </div>
-        <button class="text-slate-500" @click="$emit('close')">✕</button>
-      </div>
-      <div class="border-b px-4 pt-3">
-        <div class="flex gap-2">
-          <button
-            class="tab"
-            :class="{ active: activeTab === 'po' }"
-            @click="activeTab = 'po'"
-          >
-            Purchase Order
-          </button>
-          <button class="tab" :class="{ active: activeTab === 'override' }" @click="activeTab = 'override'">
-            Override
-          </button>
-          <button class="tab" :class="{ active: activeTab === 'inventory' }" @click="activeTab = 'inventory'">
-            Inventory
+  <Teleport to="body">
+    <div
+      v-if="open"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-[1px]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="actions-heading"
+      @click.self="emitClose"
+    >
+      <div
+        class="w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/10 flex flex-col"
+        @keydown.esc.prevent.stop="emitClose"
+      >
+        <div class="flex items-center justify-between border-b px-5 py-4">
+          <div>
+            <h3 id="actions-heading" class="text-lg font-semibold">Actions – {{ title }}</h3>
+            <p class="text-xs text-slate-500">Product ID: {{ productId }}</p>
+          </div>
+          <button class="rounded-full p-2 text-slate-500 transition hover:bg-slate-100" @click="emitClose" aria-label="Close actions modal">
+            ✕
           </button>
         </div>
-      </div>
-      <div class="p-4 overflow-y-auto" :class="{ 'modal-body': variant === 'modal' }">
-        <PurchaseOrderForm
-          v-if="activeTab === 'po'"
-          :product-id="productId"
-          :default-qty="defaultQty"
-          :default-arrival="defaultArrival"
-          @submitted="$emit('close')"
-        />
-        <OverrideForm v-else-if="activeTab === 'override'" :product-id="productId" @submitted="$emit('close')" />
-        <InventoryForm v-else :product-id="productId" @submitted="$emit('close')" />
+        <div class="border-b px-5 pt-4">
+          <div class="flex flex-wrap gap-2">
+            <button
+              class="tab"
+              :class="{ active: activeTab === 'po' }"
+              @click="activeTab = 'po'"
+              type="button"
+            >
+              Purchase Order
+            </button>
+            <button class="tab" :class="{ active: activeTab === 'override' }" @click="activeTab = 'override'" type="button">
+              Override
+            </button>
+            <button class="tab" :class="{ active: activeTab === 'inventory' }" @click="activeTab = 'inventory'" type="button">
+              Inventory
+            </button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <PurchaseOrderForm
+            v-if="activeTab === 'po'"
+            :product-id="productId"
+            :default-qty="defaultQty"
+            :default-arrival="defaultArrival"
+            @submitted="emitClose"
+          />
+          <OverrideForm v-else-if="activeTab === 'override'" :product-id="productId" @submitted="emitClose" />
+          <InventoryForm v-else :product-id="productId" @submitted="emitClose" />
+        </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { Teleport, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import InventoryForm from './InventoryForm.vue';
 import OverrideForm from './OverrideForm.vue';
 import PurchaseOrderForm from './PurchaseOrderForm.vue';
@@ -58,7 +68,6 @@ const props = defineProps<{
   defaultQty?: number;
   defaultArrival?: string;
   initialTab?: 'po' | 'override' | 'inventory';
-  variant?: 'drawer' | 'modal';
 }>();
 
 const emit = defineEmits<{ (e: 'close'): void }>();
@@ -77,22 +86,36 @@ watch(
     if (isOpen && props.initialTab) {
       activeTab.value = props.initialTab;
     }
+    toggleBodyScroll(isOpen);
   },
 );
+const emitClose = () => emit('close');
 
-const variant = computed(() => props.variant ?? 'drawer');
+function toggleBodyScroll(isOpen: boolean) {
+  const className = 'actions-modal-open';
+  const body = document.body;
+  if (isOpen) {
+    body.classList.add(className);
+  } else {
+    body.classList.remove(className);
+  }
+}
 
-const wrapperClass = computed(() =>
-  variant.value === 'modal'
-    ? 'fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4'
-    : 'fixed inset-0 z-40 flex justify-end bg-black/30',
-);
+const handleEsc = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && props.open) {
+    emitClose();
+  }
+};
 
-const panelClass = computed(() =>
-  variant.value === 'modal'
-    ? 'w-full max-w-3xl bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] flex flex-col'
-    : 'w-full max-w-lg bg-white shadow-xl overflow-y-auto',
-);
+onMounted(() => {
+  if (props.open) toggleBodyScroll(true);
+  window.addEventListener('keydown', handleEsc);
+});
+
+onBeforeUnmount(() => {
+  toggleBodyScroll(false);
+  window.removeEventListener('keydown', handleEsc);
+});
 </script>
 
 <style scoped>
@@ -110,6 +133,12 @@ const panelClass = computed(() =>
 }
 
 .modal-body {
-  max-height: calc(90vh - 120px);
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+  padding: 1.25rem;
+}
+
+:global(body.actions-modal-open) {
+  overflow: hidden;
 }
 </style>
