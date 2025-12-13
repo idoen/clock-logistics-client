@@ -8,6 +8,10 @@
           הדוח מרוכז לפי <strong>final_status</strong> מה־API ומציג גם חיזוי חכם (Forecast) מול ממוצע היסטורי, זיהוי סיכון 60 יום,
           והסבר מיידי מה המשימה הבאה: הזמנה, Override או עדכון מלאי.
         </p>
+        <p class="rop-note">
+          ROP (Reorder Point) הוא רף המלאי שממנו מתחילים תכנון הזמנה חדשה כדי לא להיכנס לחוסרים. ככל שמספר הימים נמוך יותר או
+          שלילי, כך יש לבצע פעולה מידית.
+        </p>
       </div>
       <div class="intro-cards">
         <div class="card">
@@ -149,6 +153,16 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
 .card p {
   margin: 0;
   color: #475569;
+}
+
+.rop-note {
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  color: #0f172a;
+  line-height: 1.5;
 }
 
 @media (min-width: 900px) {
