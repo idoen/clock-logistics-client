@@ -24,6 +24,7 @@
       :default-qty="defaultQty"
       :default-arrival="defaultArrival"
       :initial-tab="initialTab"
+      variant="modal"
       @close="drawerOpen = false"
     />
   </div>
