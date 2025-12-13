@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div class="space-y-4">
+    <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <h2 class="text-lg font-semibold mb-2">הזמנות שבוצעו</h2>
+      <p class="text-sm text-slate-700">ריכוז כל ההזמנות שנוצרו במערכת, כולל תאריך הזמנה ותאריך הגעה צפוי. ניתן לעקוב בקלות אחר הסטטוס גם מהמובייל.</p>
+    </section>
     <PurchaseOrdersTable
       :rows="rows"
       :loading="loading"

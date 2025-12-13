@@ -1,7 +1,10 @@
 <template>
   <section class="space-y-2">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold">Critical – מתחת/קרוב ROP</h2>
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <h2 class="text-lg font-semibold">Critical – מתחת/קרוב ROP</h2>
+        <p class="text-sm text-slate-600">מוצרים שנמצאים מתחת או קרוב ל-ROP (Reorder Point) ומשפיעים על זמינות. הדגש הוא על final_status כדי לשקף התאמות לוגיקה עתידיות.</p>
+      </div>
     </div>
     <AsyncState :loading="loading" :error="error">
       <DataTable :columns="columns" :rows="rows">
@@ -15,7 +18,7 @@
           </div>
         </template>
         <template #cell-actions="{ row }">
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             <button class="btn primary" @click="$emit('action', { productId: row.product_id, mode: 'po' })">
               Order
             </button>

@@ -1,9 +1,12 @@
 <template>
   <section class="space-y-3">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold">Reorder recommendations</h2>
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-lg font-semibold">Reorder recommendations</h2>
+        <p class="text-sm text-slate-600">ההמלצות כוללות עיגול ל-pack size וכיבוד min order qty, ומציעות תאריך הגעה לפי lead time היומי.</p>
+      </div>
       <label class="flex items-center gap-2 text-sm text-slate-700">
-        <input v-model="onlyPositive" type="checkbox" />
+        <input v-model="onlyPositive" type="checkbox" aria-label="Show only recommended orders above zero" />
         הצג רק הצעות הזמנה (recommended_order_qty > 0)
       </label>
     </div>
@@ -30,7 +33,7 @@
           {{ suggestedArrival(row.product_id, dailyLeadTime(row.product_id)) }}
         </template>
         <template #cell-actions="{ row }">
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             <button
               class="btn primary"
               @click="$emit('order', {
@@ -96,12 +99,12 @@ const columns = [
   { key: 'sku', label: 'SKU' },
   { key: 'name', label: 'Name' },
   { key: 'status', label: 'Status' },
-  { key: 'days_until_rop', label: 'days_until_rop' },
-  { key: 'available', label: 'available' },
-  { key: 'in_transit', label: 'in_transit' },
-  { key: 'target_units_30d', label: 'target_units_30d' },
-  { key: 'recommended_order_qty', label: 'recommended_order_qty' },
-  { key: 'pack', label: 'pack_size / min_order_qty' },
+  { key: 'days_until_rop', label: 'Days until ROP' },
+  { key: 'available', label: 'Available' },
+  { key: 'in_transit', label: 'In transit' },
+  { key: 'target_units_30d', label: 'Target units (30d)' },
+  { key: 'recommended_order_qty', label: 'Recommended order' },
+  { key: 'pack', label: 'Pack size / min order' },
   { key: 'arrival', label: 'Suggested arrival' },
   { key: 'actions', label: 'Actions' },
 ];

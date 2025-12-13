@@ -1,5 +1,10 @@
 <template>
   <div class="space-y-6">
+    <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <h2 class="text-lg font-semibold mb-2">סקירת מצב יומית</h2>
+      <p class="text-sm text-slate-700 mb-2">הדוחות מבוססים על Views בשרת וכוללים ROP, תחזית מכירות וחלון סיכון 60 יום. התצוגה מדגישה את final_status כדי לשקף התאמות לוגיקה עתידיות (לדוגמה DEAD_STOCK).</p>
+      <p class="text-sm text-slate-700">לכל מוצר ניתן לפתוח פעולות (Override / Purchase Order / Inventory) ישירות מתוך הווידג׳טים כדי לשמור על רצף עבודה מהיר.</p>
+    </section>
     <Risk60dWidget :rows="riskRows" :loading="riskLoading" :error="riskError" @action="openDrawer($event.productId)" />
     <CriticalTable
       :rows="criticalRows"

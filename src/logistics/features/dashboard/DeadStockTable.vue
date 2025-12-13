@@ -2,7 +2,10 @@
   <section class="space-y-2">
     <div>
       <h2 class="text-lg font-semibold">Dead Stock – ירידה חדה בקצב מכירה</h2>
-      <p class="text-sm text-slate-600">פריטים מסומנים כמלאי מת כאשר המכירות ירדו משמעותית (דמו כולל ~50% ירידה).</p>
+      <p class="text-sm text-slate-600">
+        פריטים מסומנים כמלאי מת כאשר המכירות ירדו משמעותית (דמו כולל ~50% ירידה). מומלץ לבצע פעולות שחרור מלאי או
+        התאמות מלאי לפני שווי ערך נשחק.
+      </p>
     </div>
     <AsyncState :loading="loading" :error="error">
       <DataTable :columns="columns" :rows="rows">
@@ -10,7 +13,9 @@
           <StatusPill :status="row.final_status" />
         </template>
         <template #cell-actions="{ row }">
-          <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
+          <div class="flex flex-wrap gap-2">
+            <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
+          </div>
         </template>
       </DataTable>
     </AsyncState>

@@ -1,5 +1,10 @@
 <template>
   <div class="space-y-4">
+    <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <h2 class="text-lg font-semibold mb-2">איך להשתמש בהמלצות</h2>
+      <p class="text-sm text-slate-700 mb-1">המערכת מחשבת המלצת הזמנה ל-30 יום קדימה + safety stock, כבר מעוגלת ל-pack size ומכבדת min order qty.</p>
+      <p class="text-sm text-slate-700">לחיצה על "Mark as ordered" תפתח טופס עם ברירת מחדל לפי ההמלצה והגעה לפי lead time, כדי לאפשר עבודה מהירה גם מהנייד.</p>
+    </section>
     <ReorderTable
       :rows="rows"
       :loading="loading"
