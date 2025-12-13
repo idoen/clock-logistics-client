@@ -9,7 +9,7 @@
     <AsyncState :loading="loading" :error="error">
       <DataTable :columns="columns" :rows="rows">
         <template #cell-days_until_rop="{ row }">
-          <span :class="row.days_until_rop < 0 ? 'danger' : ''">{{ row.days_until_rop }}</span>
+          <span :class="row.days_until_rop < 0 ? 'danger' : ''">{{ formatDaysWithHours(row.days_until_rop) }}</span>
         </template>
         <template #cell-actions="{ row }">
           <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import AsyncState from '../../../shared/ui/AsyncState.vue';
 import DataTable from '../../../shared/ui/DataTable.vue';
+import { formatDaysWithHours, formatNumber } from '../../../shared/utils/format';
 import type { RiskRow } from '../../domain/types';
 
 defineProps<{ rows: RiskRow[]; loading: boolean; error: string | null }>();
@@ -32,8 +33,8 @@ const columns = [
   { key: 'sku', label: 'SKU' },
   { key: 'days_until_rop', label: 'Days until ROP' },
   { key: 'at_risk_60d', label: 'At risk (60d)' },
-  { key: 'forecast_daily_sales', label: 'Forecast daily sales' },
-  { key: 'available', label: 'Available' },
+  { key: 'forecast_daily_sales', label: 'Forecast daily sales', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
   { key: 'actions', label: 'Actions' },
 ];
 </script>

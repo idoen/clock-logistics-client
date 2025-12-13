@@ -21,6 +21,7 @@
 import AsyncState from '../../../shared/ui/AsyncState.vue';
 import DataTable from '../../../shared/ui/DataTable.vue';
 import StatusPill from '../../../shared/ui/StatusPill.vue';
+import { formatNumber } from '../../../shared/utils/format';
 import type { DailyRow } from '../../domain/types';
 
 defineProps<{ rows: DailyRow[]; loading: boolean; error: string | null }>();
@@ -31,10 +32,10 @@ const columns = [
   { key: 'sku', label: 'SKU' },
   { key: 'name', label: 'Name' },
   { key: 'final_status', label: 'Final Status' },
-  { key: 'available', label: 'Available' },
-  { key: 'forecast_daily_sales', label: 'Forecast daily sales' },
-  { key: 'on_hand', label: 'On hand' },
-  { key: 'in_transit', label: 'In transit' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'forecast_daily_sales', label: 'Forecast daily sales', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'on_hand', label: 'On hand', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number) },
   { key: 'actions', label: 'Actions' },
 ];
 </script>

@@ -13,8 +13,8 @@
         </template>
         <template #cell-forecast="{ row }">
           <div class="forecast">
-            <div>{{ formatNumber(row.forecast_daily_sales, 1) }}</div>
-            <div class="forecast-hint">avg: {{ formatNumber(row.avg_daily_sales, 1) }}</div>
+            <div>{{ formatNumber(row.forecast_daily_sales) }}</div>
+            <div class="forecast-hint">avg: {{ formatNumber(row.avg_daily_sales) }}</div>
           </div>
         </template>
         <template #cell-actions="{ row }">
@@ -48,12 +48,12 @@ const columns = [
   { key: 'sku', label: 'SKU' },
   { key: 'name', label: 'Name' },
   { key: 'final_status', label: 'Final Status' },
-  { key: 'available', label: 'Available' },
-  { key: 'rop_units', label: 'ROP Units' },
-  { key: 'lead_time_days', label: 'Lead time (days)' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'rop_units', label: 'ROP Units', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'lead_time_days', label: 'Lead time (days)', formatter: (v: unknown) => formatNumber(v as number) },
   { key: 'forecast', label: 'Forecast / Avg' },
-  { key: 'pack_size', label: 'Pack size' },
-  { key: 'min_order_qty', label: 'Min order qty' },
+  { key: 'pack_size', label: 'Pack size', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'min_order_qty', label: 'Min order qty', formatter: (v: unknown) => formatNumber(v as number) },
   { key: 'actions', label: 'Actions' },
 ];
 </script>

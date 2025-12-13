@@ -16,7 +16,7 @@
           </div>
         </template>
         <template #cell-days_until_rop="{ row }">
-          <span :class="row.days_until_rop < 0 ? 'danger' : ''">{{ row.days_until_rop }}</span>
+          <span :class="row.days_until_rop < 0 ? 'danger' : ''">{{ formatDaysWithHours(row.days_until_rop) }}</span>
         </template>
         <template #cell-pack="{ row }">
           <div class="pack-block">
@@ -55,6 +55,7 @@ import DataTable from '../../../shared/ui/DataTable.vue';
 import StatusPill from '../../../shared/ui/StatusPill.vue';
 import type { DailyRow, ReorderRow } from '../../domain/types';
 import { addDays, formatDate } from '../../../shared/utils/date';
+import { formatDaysWithHours, formatNumber } from '../../../shared/utils/format';
 
 const props = defineProps<{
   rows: ReorderRow[];
@@ -76,10 +77,12 @@ const filteredRows = computed(() =>
 );
 
 function packSize(productId: number) {
-  return props.dailyMap[productId]?.pack_size ?? '—';
+  const value = props.dailyMap[productId]?.pack_size;
+  return value === undefined ? '—' : formatNumber(value);
 }
 function minOrder(productId: number) {
-  return props.dailyMap[productId]?.min_order_qty ?? '—';
+  const value = props.dailyMap[productId]?.min_order_qty;
+  return value === undefined ? '—' : formatNumber(value);
 }
 function dailyLeadTime(productId: number) {
   return props.dailyMap[productId]?.lead_time_days ?? null;
@@ -95,10 +98,10 @@ const columns = [
   { key: 'name', label: 'Name' },
   { key: 'status', label: 'Status' },
   { key: 'days_until_rop', label: 'Days until ROP' },
-  { key: 'available', label: 'Available' },
-  { key: 'in_transit', label: 'In transit' },
-  { key: 'target_units_30d', label: 'Target units (30d)' },
-  { key: 'recommended_order_qty', label: 'Recommended qty' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'target_units_30d', label: 'Target units (30d)', formatter: (v: unknown) => formatNumber(v as number) },
+  { key: 'recommended_order_qty', label: 'Recommended qty', formatter: (v: unknown) => formatNumber(v as number) },
   { key: 'pack', label: 'Pack size / min order' },
   { key: 'arrival', label: 'Suggested arrival' },
   { key: 'actions', label: 'Actions' },
