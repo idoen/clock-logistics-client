@@ -18,13 +18,7 @@
           </div>
         </template>
         <template #cell-actions="{ row }">
-          <div class="actions">
-            <button class="btn primary" @click="$emit('action', { productId: row.product_id, mode: 'po' })">
-              Order
-            </button>
-            <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'override' })">Override</button>
-            <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'inventory' })">Inventory</button>
-          </div>
+          <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'po' })">Actions</button>
         </template>
       </DataTable>
     </AsyncState>
@@ -87,22 +81,11 @@ const columns: ColumnDef[] = [
   color: #64748b;
 }
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
 .btn {
   padding: 0.35rem 0.6rem;
   border-radius: 0.5rem;
   border: 1px solid #cbd5e1;
   background: #f8fafc;
   font-size: 0.875rem;
-}
-.btn.primary {
-  background: #0ea5e9;
-  border-color: #0ea5e9;
-  color: #fff;
 }
 </style>
