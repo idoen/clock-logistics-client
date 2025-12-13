@@ -10,7 +10,12 @@
             :class="col.headerClass"
             :dir="col.dir ?? 'auto'"
           >
-            {{ col.label }}
+            <span class="th-content">
+              <span class="label">{{ col.label }}</span>
+              <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
+                i
+              </span>
+            </span>
           </th>
         </tr>
       </thead>
@@ -38,6 +43,7 @@
 type Column<T> = {
   key: keyof T | string;
   label: string;
+  info?: string;
   formatter?: (value: unknown, row: T) => unknown;
   headerClass?: string;
   cellClass?: string;
@@ -81,6 +87,27 @@ thead {
   border-bottom: 1px solid #e2e8f0;
   white-space: nowrap;
   unicode-bidi: plaintext;
+}
+
+.th-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #0f172a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: help;
+  line-height: 1;
 }
 
 .tr {

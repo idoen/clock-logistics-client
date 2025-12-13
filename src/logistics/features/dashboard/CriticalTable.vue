@@ -44,16 +44,16 @@ type ColumnDef = {
 };
 
 const columns: ColumnDef[] = [
-  { key: 'sku', label: 'SKU – מק"ט פריט', dir: 'ltr' },
-  { key: 'name', label: 'שם פריט – איך הוא מופיע במחסן', dir: 'auto' },
-  { key: 'final_status', label: 'סטטוס סופי – דחיפות פעולה', dir: 'ltr' },
-  { key: 'available', label: 'זמין במלאי – יחידות על המדף', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'rop_units', label: 'ROP ביחידות – רף הזמנה מחדש', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'lead_time_days', label: 'Lead time (ימים) – זמן אספקה', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'forecast', label: 'חיזוי מול ממוצע – קצב יומי', dir: 'ltr' },
-  { key: 'pack_size', label: 'גודל אריזה – יחידות בכל קרטון', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'min_order_qty', label: 'כמות הזמנה מינימלית – מגבלת ספק', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'actions', label: 'פעולות – פתיחת המלצות', dir: 'ltr' },
+  { key: 'sku', label: 'מק"ט', info: 'קוד הפריט (SKU)', dir: 'ltr' },
+  { key: 'name', label: 'שם פריט', info: 'איך הוא מופיע במחסן', dir: 'auto' },
+  { key: 'final_status', label: 'סטטוס סופי', info: 'דחיפות פעולה', dir: 'ltr' },
+  { key: 'available', label: 'זמין במלאי', info: 'יחידות על המדף', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'rop_units', label: 'ROP ביחידות', info: 'רף הזמנה מחדש', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'lead_time_days', label: 'זמן אספקה', info: 'Lead time (ימים)', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'forecast', label: 'חיזוי מול ממוצע', info: 'קצב יומי', dir: 'ltr' },
+  { key: 'pack_size', label: 'גודל אריזה', info: 'יחידות בכל קרטון', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'min_order_qty', label: 'כמות הזמנה מינימלית', info: 'מגבלת ספק', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת המלצות', dir: 'ltr' },
 ];
 </script>
 

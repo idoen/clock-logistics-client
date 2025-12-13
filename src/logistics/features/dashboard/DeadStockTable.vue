@@ -36,19 +36,26 @@ type ColumnDef = {
 };
 
 const columns: ColumnDef[] = [
-  { key: 'sku', label: 'SKU – מק"ט פריט', dir: 'ltr' },
-  { key: 'name', label: 'שם פריט – איך הוא מופיע במחסן', dir: 'auto' },
-  { key: 'final_status', label: 'סטטוס סופי – דחיפות פעולה', dir: 'ltr' },
-  { key: 'available', label: 'זמין במלאי – יחידות על המדף', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'sku', label: 'מק"ט', info: 'קוד הפריט (SKU)', dir: 'ltr' },
+  { key: 'name', label: 'שם פריט', info: 'איך הוא מופיע במחסן', dir: 'auto' },
+  { key: 'final_status', label: 'סטטוס סופי', info: 'דחיפות פעולה', dir: 'ltr' },
+  { key: 'available', label: 'זמין במלאי', info: 'יחידות על המדף', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
   {
     key: 'forecast_daily_sales',
-    label: 'חיזוי יומי – כמה ימכר כל יום',
+    label: 'חיזוי יומי',
+    info: 'כמה יחידות צפויות להימכר ביום',
     formatter: (v: unknown) => formatNumber(v as number),
     dir: 'ltr',
   },
-  { key: 'on_hand', label: 'במחסן עכשיו – כולל קרטונים פתוחים', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'in_transit', label: 'בדרך – משלוחים פתוחים', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'actions', label: 'פעולות – פתיחת המלצות', dir: 'ltr' },
+  {
+    key: 'on_hand',
+    label: 'במחסן עכשיו',
+    info: 'כולל קרטונים פתוחים',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+  },
+  { key: 'in_transit', label: 'בדרך', info: 'משלוחים פתוחים', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת המלצות', dir: 'ltr' },
 ];
 </script>
 
