@@ -1,13 +1,13 @@
 <template>
-  <Teleport to="body" :disabled="!isModal">
+  <Teleport to="body">
     <div
       v-if="open"
-      :class="wrapperClass"
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
       role="dialog"
       aria-modal="true"
       @click.self="$emit('close')"
     >
-      <div :class="panelClass">
+      <div class="w-full max-w-3xl bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] flex flex-col">
         <div class="flex items-center justify-between border-b px-4 py-3">
           <div>
             <h3 class="text-lg font-semibold">Actions – {{ title }}</h3>
@@ -17,13 +17,7 @@
         </div>
         <div class="border-b px-4 pt-3">
           <div class="flex gap-2">
-            <button
-              class="tab"
-              :class="{ active: activeTab === 'po' }"
-              @click="activeTab = 'po'"
-            >
-              Purchase Order
-            </button>
+            <button class="tab" :class="{ active: activeTab === 'po' }" @click="activeTab = 'po'">Purchase Order</button>
             <button class="tab" :class="{ active: activeTab === 'override' }" @click="activeTab = 'override'">
               Override
             </button>
@@ -32,7 +26,7 @@
             </button>
           </div>
         </div>
-        <div class="p-4 overflow-y-auto" :class="{ 'modal-body': variant === 'modal' }">
+        <div class="p-4 overflow-y-auto modal-body">
           <PurchaseOrderForm
             v-if="activeTab === 'po'"
             :product-id="productId"
@@ -49,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { Teleport, computed, onBeforeUnmount, ref, watch } from 'vue';
+import { Teleport, onBeforeUnmount, ref, watch } from 'vue';
 import InventoryForm from './InventoryForm.vue';
 import OverrideForm from './OverrideForm.vue';
 import PurchaseOrderForm from './PurchaseOrderForm.vue';
@@ -61,7 +55,6 @@ const props = defineProps<{
   defaultQty?: number;
   defaultArrival?: string;
   initialTab?: 'po' | 'override' | 'inventory';
-  variant?: 'drawer' | 'modal';
 }>();
 
 const emit = defineEmits<{ (e: 'close'): void }>();
@@ -72,21 +65,6 @@ watch(
   (val) => {
     if (val) activeTab.value = val;
   },
-);
-
-const variant = computed(() => props.variant ?? 'modal');
-const isModal = computed(() => variant.value === 'modal');
-
-const wrapperClass = computed(() =>
-  isModal.value
-    ? 'fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4'
-    : 'fixed inset-0 z-40 flex justify-end bg-black/30',
-);
-
-const panelClass = computed(() =>
-  isModal.value
-    ? 'w-full max-w-3xl bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] flex flex-col'
-    : 'w-full max-w-lg bg-white shadow-xl overflow-y-auto',
 );
 
 function lockScroll(shouldLock: boolean) {
@@ -103,21 +81,15 @@ function lockScroll(shouldLock: boolean) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    emit('close');
-  }
+  if (event.key === 'Escape') emit('close');
 }
 
 watch(
   () => props.open,
   (isOpen) => {
-    if (isOpen && props.initialTab) {
-      activeTab.value = props.initialTab;
-    }
+    if (isOpen && props.initialTab) activeTab.value = props.initialTab;
 
-    if (isModal.value) {
-      lockScroll(isOpen);
-    }
+    lockScroll(isOpen);
 
     if (isOpen) {
       window.addEventListener('keydown', onKeydown);
@@ -143,6 +115,7 @@ onBeforeUnmount(() => {
   border-bottom: none;
   color: #0f172a;
 }
+
 .tab.active {
   background: #ffffff;
   font-weight: 600;
