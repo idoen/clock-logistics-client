@@ -16,7 +16,9 @@
           </div>
         </template>
         <template #cell-days_until_rop="{ row }">
-          <span :class="row.days_until_rop < 0 ? 'danger' : ''">{{ formatDaysWithHours(row.days_until_rop) }}</span>
+          <span dir="rtl" class="rtl-days" :class="row.days_until_rop < 0 ? 'danger' : ''">
+            {{ formatDaysWithHours(row.days_until_rop) }}
+          </span>
         </template>
         <template #cell-pack="{ row }">
           <div class="pack-block">
@@ -174,6 +176,12 @@ const columns = [
 .danger {
   color: #dc2626;
   font-weight: 700;
+}
+
+.rtl-days {
+  direction: rtl;
+  display: inline-block;
+  text-align: right;
 }
 
 @media (min-width: 768px) {

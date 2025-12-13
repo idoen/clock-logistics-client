@@ -9,7 +9,9 @@
     <AsyncState :loading="loading" :error="error">
       <DataTable :columns="columns" :rows="rows">
         <template #cell-days_until_rop="{ row }">
-          <span :class="row.days_until_rop < 0 ? 'danger' : ''">{{ formatDaysWithHours(row.days_until_rop) }}</span>
+          <span dir="rtl" class="rtl-days" :class="row.days_until_rop < 0 ? 'danger' : ''">
+            {{ formatDaysWithHours(row.days_until_rop) }}
+          </span>
         </template>
         <template #cell-actions="{ row }">
           <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
@@ -66,5 +68,11 @@ const columns = [
 .danger {
   color: #dc2626;
   font-weight: 700;
+}
+
+.rtl-days {
+  direction: rtl;
+  display: inline-block;
+  text-align: right;
 }
 </style>
