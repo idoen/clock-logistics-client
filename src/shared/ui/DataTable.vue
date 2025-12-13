@@ -55,7 +55,8 @@ const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.st
 
 <style scoped>
 .table-shell {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   background: #ffffff;
@@ -146,6 +147,12 @@ thead {
     font-size: 0.75rem;
     direction: auto;
     unicode-bidi: plaintext;
+  }
+}
+
+@media (min-width: 769px) {
+  .table-root {
+    min-width: 960px;
   }
 }
 </style>

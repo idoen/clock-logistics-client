@@ -3,7 +3,7 @@
     <div class="section-head">
       <div>
         <h2>Critical – מתחת/קרוב ROP</h2>
-        <p class="help">מציג final_status מתוך הדוח היומי עם חיזוי חכם לצד avg. כפתורי פעולה זמינים בכל שורה.</p>
+        <p class="help">מציג final_status מתוך הדוח היומי עם חיזוי חכם לצד avg. כפתור Actions פותח חלון פעולות מודלי.</p>
       </div>
     </div>
     <AsyncState :loading="loading" :error="error">
@@ -18,13 +18,7 @@
           </div>
         </template>
         <template #cell-actions="{ row }">
-          <div class="actions">
-            <button class="btn primary" @click="$emit('action', { productId: row.product_id, mode: 'po' })">
-              Order
-            </button>
-            <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'override' })">Override</button>
-            <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'inventory' })">Inventory</button>
-          </div>
+          <button class="btn" @click="$emit('action', { productId: row.product_id, name: row.name })">Actions</button>
         </template>
       </DataTable>
     </AsyncState>
@@ -40,9 +34,7 @@ import type { DailyRow } from '../../domain/types';
 
 defineProps<{ rows: DailyRow[]; loading: boolean; error: string | null }>();
 
-defineEmits<{
-  (e: 'action', payload: { productId: number; mode: 'po' | 'override' | 'inventory' }): void;
-}>();
+defineEmits<{ (e: 'action', payload: { productId: number; name?: string }): void }>();
 
 type ColumnDef = {
   key: string;
@@ -87,22 +79,11 @@ const columns: ColumnDef[] = [
   color: #64748b;
 }
 
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
 .btn {
   padding: 0.35rem 0.6rem;
   border-radius: 0.5rem;
   border: 1px solid #cbd5e1;
   background: #f8fafc;
   font-size: 0.875rem;
-}
-.btn.primary {
-  background: #0ea5e9;
-  border-color: #0ea5e9;
-  color: #fff;
 }
 </style>
