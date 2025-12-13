@@ -1,0 +1,101 @@
+<template>
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <h2>Critical – מתחת/קרוב ROP</h2>
+        <p class="help">מציג final_status מתוך הדוח היומי עם חיזוי חכם לצד avg. כפתורי פעולה זמינים בכל שורה.</p>
+      </div>
+    </div>
+    <AsyncState :loading="loading" :error="error">
+      <DataTable :columns="columns" :rows="rows">
+        <template #cell-final_status="{ row }">
+          <StatusPill :status="row.final_status" />
+        </template>
+        <template #cell-forecast="{ row }">
+          <div class="forecast">
+            <div>{{ formatNumber(row.forecast_daily_sales, 1) }}</div>
+            <div class="forecast-hint">avg: {{ formatNumber(row.avg_daily_sales, 1) }}</div>
+          </div>
+        </template>
+        <template #cell-actions="{ row }">
+          <div class="actions">
+            <button class="btn primary" @click="$emit('action', { productId: row.product_id, mode: 'po' })">
+              Order
+            </button>
+            <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'override' })">Override</button>
+            <button class="btn" @click="$emit('action', { productId: row.product_id, mode: 'inventory' })">Inventory</button>
+          </div>
+        </template>
+      </DataTable>
+    </AsyncState>
+  </section>
+</template>
+
+<script setup lang="ts">
+import DataTable from '../../../shared/ui/DataTable.vue';
+import AsyncState from '../../../shared/ui/AsyncState.vue';
+import StatusPill from '../../../shared/ui/StatusPill.vue';
+import { formatNumber } from '../../../shared/utils/format';
+import type { DailyRow } from '../../domain/types';
+
+defineProps<{ rows: DailyRow[]; loading: boolean; error: string | null }>();
+
+defineEmits<{
+  (e: 'action', payload: { productId: number; mode: 'po' | 'override' | 'inventory' }): void;
+}>();
+
+const columns = [
+  { key: 'sku', label: 'SKU' },
+  { key: 'name', label: 'Name' },
+  { key: 'final_status', label: 'Final Status' },
+  { key: 'available', label: 'Available' },
+  { key: 'rop_units', label: 'ROP Units' },
+  { key: 'lead_time_days', label: 'Lead time (days)' },
+  { key: 'forecast', label: 'Forecast / Avg' },
+  { key: 'pack_size', label: 'Pack size' },
+  { key: 'min_order_qty', label: 'Min order qty' },
+  { key: 'actions', label: 'Actions' },
+];
+</script>
+
+<style scoped>
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.help {
+  margin: 0.3rem 0 0;
+  color: #475569;
+}
+
+.forecast-hint {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.btn {
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  font-size: 0.875rem;
+}
+.btn.primary {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #fff;
+}
+</style>
