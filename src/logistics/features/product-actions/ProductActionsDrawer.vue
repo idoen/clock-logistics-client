@@ -80,7 +80,7 @@ watch(
   },
 );
 
-const variant = computed(() => props.variant ?? 'drawer');
+const variant = computed(() => props.variant ?? 'modal');
 
 const wrapperClass = computed(() =>
   variant.value === 'modal'
