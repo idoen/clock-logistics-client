@@ -39,12 +39,17 @@ type ColumnDef = {
 };
 
 const columns: ColumnDef[] = [
-  { key: 'sku', label: 'SKU', dir: 'ltr' },
-  { key: 'days_until_rop', label: 'Days until ROP', dir: 'rtl' },
-  { key: 'at_risk_60d', label: 'At risk (60d)', dir: 'ltr' },
-  { key: 'forecast_daily_sales', label: 'Forecast daily sales', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'actions', label: 'Actions', dir: 'ltr' },
+  { key: 'sku', label: 'SKU – מק"ט פריט', dir: 'ltr' },
+  { key: 'days_until_rop', label: 'ימים עד ROP – כמה זמן נשאר להזמנה', dir: 'rtl' },
+  { key: 'at_risk_60d', label: 'בסיכון ל-60 יום – חסר צפוי', dir: 'ltr' },
+  {
+    key: 'forecast_daily_sales',
+    label: 'חיזוי יומי – כמה ימכר כל יום',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+  },
+  { key: 'available', label: 'זמין במלאי – יחידות על המדף', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'פעולות – פתיחת המלצות', dir: 'ltr' },
 ];
 </script>
 

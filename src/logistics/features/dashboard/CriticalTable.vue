@@ -44,16 +44,16 @@ type ColumnDef = {
 };
 
 const columns: ColumnDef[] = [
-  { key: 'sku', label: 'SKU', dir: 'ltr' },
-  { key: 'name', label: 'Name', dir: 'auto' },
-  { key: 'final_status', label: 'Final Status', dir: 'ltr' },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'rop_units', label: 'ROP Units', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'lead_time_days', label: 'Lead time (days)', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'forecast', label: 'Forecast / Avg', dir: 'ltr' },
-  { key: 'pack_size', label: 'Pack size', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'min_order_qty', label: 'Min order qty', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'actions', label: 'Actions', dir: 'ltr' },
+  { key: 'sku', label: 'SKU – מק"ט פריט', dir: 'ltr' },
+  { key: 'name', label: 'שם פריט – איך הוא מופיע במחסן', dir: 'auto' },
+  { key: 'final_status', label: 'סטטוס סופי – דחיפות פעולה', dir: 'ltr' },
+  { key: 'available', label: 'זמין במלאי – יחידות על המדף', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'rop_units', label: 'ROP ביחידות – רף הזמנה מחדש', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'lead_time_days', label: 'Lead time (ימים) – זמן אספקה', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'forecast', label: 'חיזוי מול ממוצע – קצב יומי', dir: 'ltr' },
+  { key: 'pack_size', label: 'גודל אריזה – יחידות בכל קרטון', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'min_order_qty', label: 'כמות הזמנה מינימלית – מגבלת ספק', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'פעולות – פתיחת המלצות', dir: 'ltr' },
 ];
 </script>
 
