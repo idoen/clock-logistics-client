@@ -18,7 +18,7 @@
           </div>
         </template>
         <template #cell-actions="{ row }">
-          <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
+          <button class="btn" @click="$emit('action', { productId: row.product_id, name: row.name })">Actions</button>
         </template>
       </DataTable>
     </AsyncState>
@@ -34,7 +34,7 @@ import type { DailyRow } from '../../domain/types';
 
 defineProps<{ rows: DailyRow[]; loading: boolean; error: string | null }>();
 
-defineEmits<{ (e: 'action', payload: { productId: number }): void }>();
+defineEmits<{ (e: 'action', payload: { productId: number; name?: string }): void }>();
 
 type ColumnDef = {
   key: string;

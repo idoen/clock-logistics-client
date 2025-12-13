@@ -86,8 +86,8 @@ function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory' = 'p
   drawerOpen.value = true;
 }
 
-function onCriticalAction(payload: { productId: number }) {
-  openDrawer(payload.productId);
+function onCriticalAction(payload: { productId: number; name?: string }) {
+  openDrawer(payload.productId, 'po', payload.name);
 }
 </script>
 
