@@ -1,5 +1,5 @@
 <template>
-  <div class="table-shell">
+  <div class="table-shell" dir="ltr">
     <table class="table-root">
       <thead>
         <tr>

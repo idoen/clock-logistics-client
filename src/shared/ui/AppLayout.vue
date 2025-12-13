@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" dir="rtl">
     <header class="header">
       <div class="header-inner">
         <div class="brand">
@@ -82,6 +82,7 @@ const navOpen = ref(false);
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  direction: ltr;
 }
 
 .nav-link {
