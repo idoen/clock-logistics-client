@@ -16,13 +16,20 @@ import type { PurchaseOrder } from '../../domain/types';
 
 defineProps<{ rows: PurchaseOrder[]; loading: boolean; error: string | null }>();
 
-const columns = [
-  { key: 'id', label: 'ID' },
-  { key: 'product_id', label: 'product_id' },
-  { key: 'qty_ordered', label: 'qty_ordered', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'order_date', label: 'order_date', formatter: (v: unknown) => formatDateTime(v as string) },
-  { key: 'expected_arrival', label: 'expected_arrival', formatter: (v: unknown) => formatDate(v as string) },
-  { key: 'status', label: 'status' },
-  { key: 'created_at', label: 'created_at', formatter: (v: unknown) => formatDateTime(v as string) },
+type ColumnDef = {
+  key: string;
+  label: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
+  formatter?: (value: unknown, row?: PurchaseOrder) => unknown;
+};
+
+const columns: ColumnDef[] = [
+  { key: 'id', label: 'ID', dir: 'ltr' },
+  { key: 'product_id', label: 'product_id', dir: 'ltr' },
+  { key: 'qty_ordered', label: 'qty_ordered', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'order_date', label: 'order_date', formatter: (v: unknown) => formatDateTime(v as string), dir: 'ltr' },
+  { key: 'expected_arrival', label: 'expected_arrival', formatter: (v: unknown) => formatDate(v as string), dir: 'ltr' },
+  { key: 'status', label: 'status', dir: 'ltr' },
+  { key: 'created_at', label: 'created_at', formatter: (v: unknown) => formatDateTime(v as string), dir: 'ltr' },
 ];
 </script>

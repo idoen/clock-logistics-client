@@ -78,6 +78,13 @@ const filteredRows = computed(() =>
   props.rows.filter((row) => (onlyPositive.value ? row.recommended_order_qty > 0 : true)),
 );
 
+type ColumnDef = {
+  key: string;
+  label: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
+  formatter?: (value: unknown, row?: ReorderRow) => unknown;
+};
+
 function packSize(productId: number) {
   const value = props.dailyMap[productId]?.pack_size;
   return value === undefined ? '—' : formatNumber(value);
@@ -95,18 +102,18 @@ function suggestedArrival(productId: number, lead?: number | null, formatted = t
   return formatted ? formatDate(date) : formatDate(date);
 }
 
-const columns = [
-  { key: 'sku', label: 'SKU' },
-  { key: 'name', label: 'Name' },
-  { key: 'status', label: 'Status' },
-  { key: 'days_until_rop', label: 'Days until ROP' },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'target_units_30d', label: 'Target units (30d)', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'recommended_order_qty', label: 'Recommended qty', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'pack', label: 'Pack size / min order' },
-  { key: 'arrival', label: 'Suggested arrival' },
-  { key: 'actions', label: 'Actions' },
+const columns: ColumnDef[] = [
+  { key: 'sku', label: 'SKU', dir: 'ltr' },
+  { key: 'name', label: 'Name', dir: 'auto' },
+  { key: 'status', label: 'Status', dir: 'ltr' },
+  { key: 'days_until_rop', label: 'Days until ROP', dir: 'rtl' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'target_units_30d', label: 'Target units (30d)', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'recommended_order_qty', label: 'Recommended qty', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'pack', label: 'Pack size / min order', dir: 'ltr' },
+  { key: 'arrival', label: 'Suggested arrival', dir: 'auto' },
+  { key: 'actions', label: 'Actions', dir: 'ltr' },
 ];
 </script>
 

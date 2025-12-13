@@ -31,13 +31,20 @@ defineProps<{ rows: RiskRow[]; loading: boolean; error: string | null }>();
 
 defineEmits<{ (e: 'action', payload: { productId: number }): void }>();
 
-const columns = [
-  { key: 'sku', label: 'SKU' },
-  { key: 'days_until_rop', label: 'Days until ROP' },
-  { key: 'at_risk_60d', label: 'At risk (60d)' },
-  { key: 'forecast_daily_sales', label: 'Forecast daily sales', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'actions', label: 'Actions' },
+type ColumnDef = {
+  key: string;
+  label: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
+  formatter?: (value: unknown, row?: RiskRow) => unknown;
+};
+
+const columns: ColumnDef[] = [
+  { key: 'sku', label: 'SKU', dir: 'ltr' },
+  { key: 'days_until_rop', label: 'Days until ROP', dir: 'rtl' },
+  { key: 'at_risk_60d', label: 'At risk (60d)', dir: 'ltr' },
+  { key: 'forecast_daily_sales', label: 'Forecast daily sales', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'Actions', dir: 'ltr' },
 ];
 </script>
 

@@ -44,17 +44,24 @@ defineEmits<{
   (e: 'action', payload: { productId: number; mode: 'po' | 'override' | 'inventory' }): void;
 }>();
 
-const columns = [
-  { key: 'sku', label: 'SKU' },
-  { key: 'name', label: 'Name' },
-  { key: 'final_status', label: 'Final Status' },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'rop_units', label: 'ROP Units', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'lead_time_days', label: 'Lead time (days)', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'forecast', label: 'Forecast / Avg' },
-  { key: 'pack_size', label: 'Pack size', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'min_order_qty', label: 'Min order qty', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'actions', label: 'Actions' },
+type ColumnDef = {
+  key: string;
+  label: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
+  formatter?: (value: unknown, row?: DailyRow) => unknown;
+};
+
+const columns: ColumnDef[] = [
+  { key: 'sku', label: 'SKU', dir: 'ltr' },
+  { key: 'name', label: 'Name', dir: 'auto' },
+  { key: 'final_status', label: 'Final Status', dir: 'ltr' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'rop_units', label: 'ROP Units', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'lead_time_days', label: 'Lead time (days)', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'forecast', label: 'Forecast / Avg', dir: 'ltr' },
+  { key: 'pack_size', label: 'Pack size', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'min_order_qty', label: 'Min order qty', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'Actions', dir: 'ltr' },
 ];
 </script>
 

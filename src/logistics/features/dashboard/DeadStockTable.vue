@@ -28,15 +28,27 @@ defineProps<{ rows: DailyRow[]; loading: boolean; error: string | null }>();
 
 defineEmits<{ (e: 'action', payload: { productId: number }): void }>();
 
-const columns = [
-  { key: 'sku', label: 'SKU' },
-  { key: 'name', label: 'Name' },
-  { key: 'final_status', label: 'Final Status' },
-  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'forecast_daily_sales', label: 'Forecast daily sales', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'on_hand', label: 'On hand', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number) },
-  { key: 'actions', label: 'Actions' },
+type ColumnDef = {
+  key: string;
+  label: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
+  formatter?: (value: unknown, row?: DailyRow) => unknown;
+};
+
+const columns: ColumnDef[] = [
+  { key: 'sku', label: 'SKU', dir: 'ltr' },
+  { key: 'name', label: 'Name', dir: 'auto' },
+  { key: 'final_status', label: 'Final Status', dir: 'ltr' },
+  { key: 'available', label: 'Available', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  {
+    key: 'forecast_daily_sales',
+    label: 'Forecast daily sales',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+  },
+  { key: 'on_hand', label: 'On hand', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'in_transit', label: 'In transit', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'actions', label: 'Actions', dir: 'ltr' },
 ];
 </script>
 

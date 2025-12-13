@@ -1,5 +1,5 @@
 <template>
-  <div class="table-shell" dir="ltr">
+  <div class="table-shell" dir="rtl">
     <table class="table-root">
       <thead>
         <tr>
@@ -8,6 +8,7 @@
             :key="col.key as string"
             class="th"
             :class="col.headerClass"
+            :dir="col.dir ?? 'auto'"
           >
             {{ col.label }}
           </th>
@@ -21,6 +22,7 @@
             class="td"
             :class="col.cellClass"
             :data-label="col.label"
+            :dir="col.dir ?? 'auto'"
           >
             <slot :name="`cell-${String(col.key)}`" :row="row">
               {{ col.formatter ? col.formatter(row[col.key as keyof typeof row], row) : row[col.key as keyof typeof row] }}
@@ -39,6 +41,7 @@ type Column<T> = {
   formatter?: (value: unknown, row: T) => unknown;
   headerClass?: string;
   cellClass?: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
 };
 
 const props = defineProps<{
@@ -71,11 +74,12 @@ thead {
 
 .th {
   padding: 0.75rem 1rem;
-  text-align: left;
+  text-align: right;
   font-weight: 600;
   color: #0f172a;
   border-bottom: 1px solid #e2e8f0;
   white-space: nowrap;
+  unicode-bidi: plaintext;
 }
 
 .tr {
@@ -92,6 +96,8 @@ thead {
   vertical-align: top;
   color: #0f172a;
   white-space: nowrap;
+  text-align: right;
+  unicode-bidi: plaintext;
 }
 
 @media (max-width: 768px) {
@@ -128,6 +134,7 @@ thead {
     align-items: center;
     padding: 0.85rem 1rem;
     white-space: normal;
+    text-align: right;
   }
 
   .td::before {
@@ -137,6 +144,8 @@ thead {
     text-transform: uppercase;
     letter-spacing: 0.01em;
     font-size: 0.75rem;
+    direction: auto;
+    unicode-bidi: plaintext;
   }
 }
 </style>
