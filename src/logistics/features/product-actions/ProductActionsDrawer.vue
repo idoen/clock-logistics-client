@@ -1,6 +1,11 @@
 <template>
-  <div v-if="open" class="fixed inset-0 z-40 flex justify-end bg-black/30">
-    <div class="w-full max-w-lg bg-white shadow-xl overflow-y-auto">
+  <div
+    v-if="open"
+    :class="wrapperClass"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div :class="panelClass">
       <div class="flex items-center justify-between border-b px-4 py-3">
         <div>
           <h3 class="text-lg font-semibold">Actions – {{ title }}</h3>
@@ -25,7 +30,7 @@
           </button>
         </div>
       </div>
-      <div class="p-4">
+      <div class="p-4 overflow-y-auto" :class="{ 'modal-body': variant === 'modal' }">
         <PurchaseOrderForm
           v-if="activeTab === 'po'"
           :product-id="productId"
@@ -41,12 +46,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import InventoryForm from './InventoryForm.vue';
 import OverrideForm from './OverrideForm.vue';
 import PurchaseOrderForm from './PurchaseOrderForm.vue';
 
-const props = defineProps<{ productId: number; title?: string; open: boolean; defaultQty?: number; defaultArrival?: string; initialTab?: 'po' | 'override' | 'inventory' }>();
+const props = defineProps<{
+  productId: number;
+  title?: string;
+  open: boolean;
+  defaultQty?: number;
+  defaultArrival?: string;
+  initialTab?: 'po' | 'override' | 'inventory';
+  variant?: 'drawer' | 'modal';
+}>();
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 const activeTab = ref<'po' | 'override' | 'inventory'>(props.initialTab ?? 'po');
@@ -56,6 +69,29 @@ watch(
   (val) => {
     if (val) activeTab.value = val;
   },
+);
+
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (isOpen && props.initialTab) {
+      activeTab.value = props.initialTab;
+    }
+  },
+);
+
+const variant = computed(() => props.variant ?? 'drawer');
+
+const wrapperClass = computed(() =>
+  variant.value === 'modal'
+    ? 'fixed inset-0 z-40 flex items-center justify-center bg-black/40 px-4'
+    : 'fixed inset-0 z-40 flex justify-end bg-black/30',
+);
+
+const panelClass = computed(() =>
+  variant.value === 'modal'
+    ? 'w-full max-w-3xl bg-white shadow-2xl rounded-2xl overflow-hidden max-h-[90vh] flex flex-col'
+    : 'w-full max-w-lg bg-white shadow-xl overflow-y-auto',
 );
 </script>
 
@@ -71,5 +107,9 @@ watch(
 .tab.active {
   background: #ffffff;
   font-weight: 600;
+}
+
+.modal-body {
+  max-height: calc(90vh - 120px);
 }
 </style>

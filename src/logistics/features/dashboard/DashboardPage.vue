@@ -43,6 +43,8 @@
       :open="drawerOpen"
       :product-id="selectedProductId"
       :title="drawerTitle"
+      :initial-tab="initialTab"
+      variant="modal"
       @close="drawerOpen = false"
     />
   </div>
@@ -75,15 +77,17 @@ const riskError = computed(() => riskQuery.error.value ? riskQuery.error.value.m
 const drawerOpen = ref(false);
 const selectedProductId = ref<number | null>(null);
 const drawerTitle = ref('');
+const initialTab = ref<'po' | 'override' | 'inventory'>('po');
 
-function openDrawer(productId: number, title?: string) {
+function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory' = 'po', title?: string) {
   selectedProductId.value = productId;
   drawerTitle.value = title ?? `Product ${productId}`;
+  initialTab.value = tab;
   drawerOpen.value = true;
 }
 
 function onCriticalAction(payload: { productId: number; mode: 'po' | 'override' | 'inventory' }) {
-  openDrawer(payload.productId);
+  openDrawer(payload.productId, payload.mode);
 }
 </script>
 
