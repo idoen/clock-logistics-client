@@ -1,42 +1,31 @@
-# clock-logistics-client
+<div dir="rtl" markdown="1">
 
-This template should help get you started developing with Vue 3 in Vite.
+# Clock Logistics Client
 
-## Recommended IDE Setup
+ממשק ניהול לוגיסטי שמציג דוחות מלאי, חיזוי ביקוש ופעולות מהירות להזמנות ורענון נתונים. המערכת מבוססת Vue 3 ו-TanStack Query ומדמה תרחישי רכש וניהול מלאי עבור מנהל לוגיסטיקה.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## מה המערכת עושה היום
+- **דשבורד יומי**: מציג מבט מרוכז על סיכוני מלאי ל-60 יום קדימה (Risk60d), פריטים קריטיים (Critical) וסחורה מתה (Dead Stock) עם תיאורי סטטוס, המלצות פעולה וכפתור פתיחת מגירת פעולות לכל פריט.
+- **המלצות הזמנה (Reorder)**: טבלה עם סינון "הצג רק פריטים עם המלצת הזמנה חיובית", הצגת ימים עד ROP, גודל אריזה ומינימום הזמנה, חיווי Risk60d, תאריך הגעה מוצע לפי lead time, וכפתורים להזמנה, Override או עדכון מלאי דרך מגירה.
+- **ניהול הזמנות רכש**: רשימת הזמנות רכש קיימות, קריאה ל-API לטעינת נתונים וסקירת סטטוס אספקה.
+- **מגירת פעולות פריט**: שלושה טפסים מובנים (Purchase Order, Override, Inventory) לפתיחת הזמנה עם ערכי ברירת מחדל מהמלצות, קביעת חריגה ל-ROP/כמות הזמנה, ועדכון מלאי ידני; כוללים נעילת גלילה, ניווט בטאבים וקיצורי מקלדת (Esc).
+- **אינטגרציית נתונים**: קריאות API ממורכזות (`fetchDaily`, `fetchRisk60d`, `fetchReorder`, `fetchPurchaseOrders`, `createPurchaseOrder`, `updateInventory`, `createOverride`, `disableOverride`) עם ולידציה ב-Zod ותמיכה ב-cache ו-loading/error באמצעות TanStack Query.
+- **ניווט והפרדת אחריות**: שלושה מסכי עבודה ראשיים (`/dashboard`, `/reorder`, `/purchase-orders`) שמוקמים עם Vue Router, חנות Pinia ל-state משותף ומרכיבי UI חוזרים (AsyncState, DataTable, ToastBus, StatusPill) לשימוש אחיד בדשבורד ובטבלאות.
 
-## Recommended Browser Setup
+## טכנולוגיה והפעלה
+- **סטאק**: Vue 3 + TypeScript, Vite, Pinia, TanStack Query, Zod.
+- **הרצה מקומית**:
+  - התקנת תלויות: `npm install`
+  - פיתוח עם hot reload: `npm run dev`
+  - בנייה לפרודקשן: `npm run build`
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## מה צפוי להתווסף בהמשך
 
-## Type Support for `.vue` Imports in TS
+מבוסס על סיפורי המשתמש המלאים שהוגדרו:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- **מנהל מכירות**: הצעות מלאי ממוקדות לבעלי חנויות עם מגבלת תקציב (עד 15% מתקציב החנות), טיפול בחנויות חדשות דרך רשימת "הנמכרים ביותר", וסינון כפילויות כדי לא להציע פריטים שנקנו ב-30 הימים האחרונים.
+- **מנהל שיווק**: דו"ח שבועי לזיהוי פער מותג (פער העולה על 30% ביחס לממוצע אזורי) עם נימוקים דמוגרפיים אוטומטיים ואפשרות לייצוא פרטי קשר לניהול קמפיינים.
+- **מנהל לוגיסטיקה**: חיזוי חוסרי מלאי חכם עם מקדם עונתיות והתחשבות ב-lead time, התרעות על מלאי מת (ירידה של 40–60% בקצב מכירה), ורשימת מוצרים בסיכון.
+- **בעל חנות**: אזור אישי להצגת הצעת מלאי, אישור או דחייה ועריכת כמויות; חישוב סל דינמי בזמן אמת, איסוף סיבת דחייה מחייבת, ובדיקת מסגרת אשראי שחוסמת אישור חריג.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+</div>
