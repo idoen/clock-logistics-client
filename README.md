@@ -2,22 +2,28 @@
 
 # Clock Logistics Client
 
-ממשק ניהול לוגיסטי שמציג דוחות מלאי, חיזוי ביקוש ופעולות מהירות להזמנות ורענון נתונים. המערכת מבוססת Vue 3 ו-TanStack Query ומדמה תרחישי רכש וניהול מלאי עבור מנהל לוגיסטיקה.
+ממשק ניהול לוגיסטי המבוסס על Vue 3 + Vite. המערכת מציגה דוחות מלאי, סיכונים קדימה ופעולות מהירות (Purchase Order / Override / Inventory) ומדמה תרחישי רכש וניהול מלאי.
 
 ## מה המערכת עושה היום
-- **דשבורד יומי**: מציג מבט מרוכז על סיכוני מלאי ל-60 יום קדימה (Risk60d), פריטים קריטיים (Critical) וסחורה מתה (Dead Stock) עם תיאורי סטטוס, המלצות פעולה וכפתור פתיחת מגירת פעולות לכל פריט.
-- **המלצות הזמנה (Reorder)**: טבלה עם סינון "הצג רק פריטים עם המלצת הזמנה חיובית", הצגת ימים עד ROP, גודל אריזה ומינימום הזמנה, חיווי Risk60d, תאריך הגעה מוצע לפי lead time, וכפתורים להזמנה, Override או עדכון מלאי דרך מגירה.
-- **ניהול הזמנות רכש**: רשימת הזמנות רכש קיימות, קריאה ל-API לטעינת נתונים וסקירת סטטוס אספקה.
-- **מגירת פעולות פריט**: שלושה טפסים מובנים (Purchase Order, Override, Inventory) לפתיחת הזמנה עם ערכי ברירת מחדל מהמלצות, קביעת חריגה ל-ROP/כמות הזמנה, ועדכון מלאי ידני; כוללים נעילת גלילה, ניווט בטאבים וקיצורי מקלדת (Esc).
-- **אינטגרציית נתונים**: קריאות API ממורכזות (`fetchDaily`, `fetchRisk60d`, `fetchReorder`, `fetchPurchaseOrders`, `createPurchaseOrder`, `updateInventory`, `createOverride`, `disableOverride`) עם ולידציה ב-Zod ותמיכה ב-cache ו-loading/error באמצעות TanStack Query.
-- **ניווט והפרדת אחריות**: שלושה מסכי עבודה ראשיים (`/dashboard`, `/reorder`, `/purchase-orders`) שמוקמים עם Vue Router, חנות Pinia ל-state משותף ומרכיבי UI חוזרים (AsyncState, DataTable, ToastBus, StatusPill) לשימוש אחיד בדשבורד ובטבלאות.
+- **דשבורד יומי**: Risk60d, פריטים קריטיים ו-Dead Stock, עם הסברים עסקיים ופתיחת מגירת פעולות לכל פריט.
+- **המלצות הזמנה (Reorder)**: טבלת המלצות עם סינון "הצג רק פריטים עם המלצת הזמנה חיובית", ימים עד ROP, Pack size / מינימום הזמנה, תאריך הגעה מוצע לפי lead time ופעולות מתוך השורה.
+- **ניהול הזמנות רכש**: צפייה ברשימת Purchase Orders קיימות וסטטוסים.
+- **מגירת פעולות פריט**: שלושה טפסים (Purchase Order, Override, Inventory) עם ערכי ברירת מחדל לפי ההקשר, ניווט בטאבים וקיצור Esc לסגירה.
+- **אינטגרציית נתונים**: API layer מרוכז + TanStack Query לניהול cache/loading/error, ולידציה של JSON באמצעות Zod.
+
+## ארכיטקטורה וניווט
+- **Router**: מסכי עבודה עיקריים: `/dashboard`, `/reorder`, `/purchase-orders` (קיים redirect מ-`/` למסך ברירת מחדל).
+- **מבנה תיקיות**: המודול הלוגיסטי תחת `src/logistics` מחולק ל-`features`, `queries`, `mutations`, `domain`, `api`. רכיבי UI כלליים תחת `src/shared`.
 
 ## טכנולוגיה והפעלה
-- **סטאק**: Vue 3 + TypeScript, Vite, Pinia, TanStack Query, Zod.
-- **הרצה מקומית**:
-  - התקנת תלויות: `npm install`
-  - פיתוח עם hot reload: `npm run dev`
-  - בנייה לפרודקשן: `npm run build`
+- **סטאק**: Vue 3 + TypeScript, Vite, Pinia, `@tanstack/vue-query`, Zod.
+
+### התקנה והרצה
+```sh
+npm install
+npm run dev    # פיתוח (hot reload)
+npm run build  # Build לפרודקשן (כולל type-check דרך vue-tsc)
+```
 
 ## מה צפוי להתווסף בהמשך
 
