@@ -12,7 +12,7 @@
 - **אינטגרציית נתונים**: שכבת <span dir="ltr">API</span> מרוכזת + <span dir="ltr">TanStack Query</span> לניהול <span dir="ltr">cache/loading/error</span>, ולידציית <span dir="ltr">JSON</span> באמצעות <span dir="ltr">Zod</span>.
 
 ## ארכיטקטורה וניווט
-- **Router**: מסכי עבודה עיקריים: <span dir="ltr">`/dashboard`</span>, <span dir="ltr">`/reorder`</span>, <span dir="ltr">`/purchase-orders`</span> (קיים <span dir="ltr">redirect</span> מ-<span dir="ltr">`/`</span> למסך ברירת מחדל).
+- <span dir="ltr"><strong>Router</strong></span>: מסכי עבודה עיקריים: <span dir="ltr">`/dashboard`</span>, <span dir="ltr">`/reorder`</span>, <span dir="ltr">`/purchase-orders`</span> (קיים <span dir="ltr">redirect</span> מ-<span dir="ltr">`/`</span> למסך ברירת מחדל).
 - **מבנה תיקיות**: המודול הלוגיסטי תחת <span dir="ltr">`src/logistics`</span> מחולק ל-<span dir="ltr">`features`</span>, <span dir="ltr">`queries`</span>, <span dir="ltr">`mutations`</span>, <span dir="ltr">`domain`</span>, <span dir="ltr">`api`</span>. רכיבי <span dir="ltr">UI</span> כלליים תחת <span dir="ltr">`src/shared`</span>.
 
 ## טכנולוגיה והפעלה
