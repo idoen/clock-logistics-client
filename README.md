@@ -1,42 +1,37 @@
-# clock-logistics-client
+<div dir="rtl" markdown="1">
 
-This template should help get you started developing with Vue 3 in Vite.
+# Clock Logistics Client
 
-## Recommended IDE Setup
+ממשק ניהול לוגיסטי המבוסס על Vue 3 + Vite. המערכת מציגה דוחות מלאי, סיכונים קדימה ופעולות מהירות (<span dir="ltr">Purchase Order / Override / Inventory</span>) ומדמה תרחישי רכש וניהול מלאי.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## מה המערכת עושה היום
+- **דשבורד יומי**: <span dir="ltr">Risk60d</span>, פריטים קריטיים ו-<span dir="ltr">Dead Stock</span>, עם הסברים עסקיים ופתיחת מגירת פעולות לכל פריט.
+- **המלצות הזמנה (Reorder)**: טבלת המלצות עם סינון "הצג רק פריטים עם המלצת הזמנה חיובית", ימים עד <span dir="ltr">ROP</span>, <span dir="ltr">Pack size</span> / מינימום הזמנה, תאריך הגעה מוצע לפי <span dir="ltr">lead time</span> ופעולות מתוך השורה.
+- **ניהול הזמנות רכש**: צפייה ברשימת <span dir="ltr">Purchase Orders</span> קיימות וסטטוסים.
+- **מגירת פעולות פריט**: שלושה טפסים (<span dir="ltr">Purchase Order</span>, <span dir="ltr">Override</span>, <span dir="ltr">Inventory</span>) עם ערכי ברירת מחדל לפי ההקשר, ניווט בטאבים וקיצור <span dir="ltr">Esc</span> לסגירה.
+- **אינטגרציית נתונים**: שכבת <span dir="ltr">API</span> מרוכזת + <span dir="ltr">TanStack Query</span> לניהול <span dir="ltr">cache/loading/error</span>, ולידציית <span dir="ltr">JSON</span> באמצעות <span dir="ltr">Zod</span>.
 
-## Recommended Browser Setup
+## ארכיטקטורה וניווט
+- **Router**: מסכי עבודה עיקריים: <span dir="ltr">`/dashboard`</span>, <span dir="ltr">`/reorder`</span>, <span dir="ltr">`/purchase-orders`</span> (קיים <span dir="ltr">redirect</span> מ-<span dir="ltr">`/`</span> למסך ברירת מחדל).
+- **מבנה תיקיות**: המודול הלוגיסטי תחת <span dir="ltr">`src/logistics`</span> מחולק ל-<span dir="ltr">`features`</span>, <span dir="ltr">`queries`</span>, <span dir="ltr">`mutations`</span>, <span dir="ltr">`domain`</span>, <span dir="ltr">`api`</span>. רכיבי <span dir="ltr">UI</span> כלליים תחת <span dir="ltr">`src/shared`</span>.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## טכנולוגיה והפעלה
+- **סטאק**: Vue 3 + TypeScript, Vite, Pinia, `@tanstack/vue-query`, Zod.
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
+### התקנה והרצה
 ```sh
 npm install
+npm run dev    # הרצה לפיתוח (hot reload)
+npm run build  # Build לפרודקשן (כולל type-check דרך vue-tsc)
 ```
 
-### Compile and Hot-Reload for Development
+## מה צפוי להתווסף בהמשך
 
-```sh
-npm run dev
-```
+מבוסס על סיפורי המשתמש המלאים שהוגדרו:
 
-### Type-Check, Compile and Minify for Production
+- **מנהל מכירות**: הצעות מלאי ממוקדות לבעלי חנויות עם מגבלת תקציב (עד 15% מתקציב החנות), טיפול בחנויות חדשות דרך רשימת "הנמכרים ביותר", וסינון כפילויות כדי לא להציע פריטים שנקנו ב-30 הימים האחרונים.
+- **מנהל שיווק**: דו"ח שבועי לזיהוי פער מותג (פער העולה על 30% ביחס לממוצע אזורי) עם נימוקים דמוגרפיים אוטומטיים ואפשרות לייצוא פרטי קשר לניהול קמפיינים.
+- **מנהל לוגיסטיקה**: חיזוי חוסרי מלאי חכם עם מקדם עונתיות והתחשבות ב-<span dir="ltr">lead time</span>, התרעות על מלאי מת (ירידה של 40–60% בקצב מכירה), ורשימת מוצרים בסיכון.
+- **בעל חנות**: אזור אישי להצגת הצעת מלאי, אישור או דחייה ועריכת כמויות; חישוב סל דינמי בזמן אמת, איסוף סיבת דחייה מחייבת, ובדיקת מסגרת אשראי שחוסמת אישור חריג.
 
-```sh
-npm run build
-```
+</div>
