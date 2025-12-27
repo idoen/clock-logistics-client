@@ -1,37 +1,37 @@
-<div dir="rtl" markdown="1">
-
 # Clock Logistics Client
 
-ממשק ניהול לוגיסטי המבוסס על Vue 3 + Vite. המערכת מציגה דוחות מלאי, סיכונים קדימה ופעולות מהירות (<span dir="ltr">Purchase Order / Override / Inventory</span>) ומדמה תרחישי רכש וניהול מלאי.
+A logistics management interface built with Vue 3 + Vite. The system displays inventory reports, forward-looking risks, and quick actions (Purchase Order / Override / Inventory), simulating procurement and inventory management scenarios.
 
-## מה המערכת עושה היום
-- **דשבורד יומי**: <span dir="ltr">Risk60d</span>, פריטים קריטיים ו-<span dir="ltr">Dead Stock</span>, עם הסברים עסקיים ופתיחת מגירת פעולות לכל פריט.
-- **המלצות הזמנה (Reorder)**: טבלת המלצות עם סינון "הצג רק פריטים עם המלצת הזמנה חיובית", ימים עד <span dir="ltr">ROP</span>, <span dir="ltr">Pack size</span> / מינימום הזמנה, תאריך הגעה מוצע לפי <span dir="ltr">lead time</span> ופעולות מתוך השורה.
-- **ניהול הזמנות רכש**: צפייה ברשימת <span dir="ltr">Purchase Orders</span> קיימות וסטטוסים.
-- **מגירת פעולות פריט**: שלושה טפסים (<span dir="ltr">Purchase Order</span>, <span dir="ltr">Override</span>, <span dir="ltr">Inventory</span>) עם ערכי ברירת מחדל לפי ההקשר, ניווט בטאבים וקיצור <span dir="ltr">Esc</span> לסגירה.
-- **אינטגרציית נתונים**: שכבת <span dir="ltr">API</span> מרוכזת + <span dir="ltr">TanStack Query</span> לניהול <span dir="ltr">cache/loading/error</span>, ולידציית <span dir="ltr">JSON</span> באמצעות <span dir="ltr">Zod</span>.
+## Current Features
 
-## ארכיטקטורה וניווט
-- <span dir="ltr"><strong>Router</strong></span>: מסכי עבודה עיקריים: <span dir="ltr">`/dashboard`</span>, <span dir="ltr">`/reorder`</span>, <span dir="ltr">`/purchase-orders`</span> (קיים <span dir="ltr">redirect</span> מ-<span dir="ltr">`/`</span> למסך ברירת מחדל).
-- **מבנה תיקיות**: המודול הלוגיסטי תחת <span dir="ltr">`src/logistics`</span> מחולק ל-<span dir="ltr">`features`</span>, <span dir="ltr">`queries`</span>, <span dir="ltr">`mutations`</span>, <span dir="ltr">`domain`</span>, <span dir="ltr">`api`</span>. רכיבי <span dir="ltr">UI</span> כלליים תחת <span dir="ltr">`src/shared`</span>.
+- **Daily Dashboard**: Risk60d, critical items and Dead Stock, with business explanations and an actions drawer for each item.
+- **Reorder Recommendations**: Recommendations table with "show only items with positive order recommendation" filter, days until ROP, Pack size / minimum order, suggested arrival date based on lead time, and inline actions.
+- **Purchase Order Management**: View existing Purchase Orders and their statuses.
+- **Item Actions Drawer**: Three forms (Purchase Order, Override, Inventory) with context-based default values, tab navigation, and Esc shortcut to close.
+- **Data Integration**: Centralized API layer + TanStack Query for cache/loading/error management, and JSON validation using Zod.
 
-## טכנולוגיה והפעלה
-- **סטאק**: Vue 3 + TypeScript, Vite, Pinia, `@tanstack/vue-query`, Zod.
+## Architecture and Navigation
 
-### התקנה והרצה
+- **Router**: Main work screens: `/dashboard`, `/reorder`, `/purchase-orders` (redirect from `/` to default screen).
+- **Folder Structure**: The logistics module under `src/logistics` is divided into `features`, `queries`, `mutations`, `domain`, `api`. General UI components under `src/shared`.
+
+## Technology and Setup
+
+- **Stack**: Vue 3 + TypeScript, Vite, Pinia, `@tanstack/vue-query`, Zod.
+
+### Installation and Running
+
 ```sh
 npm install
-npm run dev    # הרצה לפיתוח (hot reload)
-npm run build  # Build לפרודקשן (כולל type-check דרך vue-tsc)
+npm run dev    # Development server (hot reload)
+npm run build  # Production build (includes type-check via vue-tsc)
 ```
 
-## מה צפוי להתווסף בהמשך
+## Planned Features
 
-מבוסס על סיפורי המשתמש המלאים שהוגדרו:
+Based on the full user stories defined:
 
-- **מנהל מכירות**: הצעות מלאי ממוקדות לבעלי חנויות עם מגבלת תקציב (עד 15% מתקציב החנות), טיפול בחנויות חדשות דרך רשימת "הנמכרים ביותר", וסינון כפילויות כדי לא להציע פריטים שנקנו ב-30 הימים האחרונים.
-- **מנהל שיווק**: דו"ח שבועי לזיהוי פער מותג (פער העולה על 30% ביחס לממוצע אזורי) עם נימוקים דמוגרפיים אוטומטיים ואפשרות לייצוא פרטי קשר לניהול קמפיינים.
-- **מנהל לוגיסטיקה**: חיזוי חוסרי מלאי חכם עם מקדם עונתיות והתחשבות ב-<span dir="ltr">lead time</span>, התרעות על מלאי מת (ירידה של 40–60% בקצב מכירה), ורשימת מוצרים בסיכון.
-- **בעל חנות**: אזור אישי להצגת הצעת מלאי, אישור או דחייה ועריכת כמויות; חישוב סל דינמי בזמן אמת, איסוף סיבת דחייה מחייבת, ובדיקת מסגרת אשראי שחוסמת אישור חריג.
-
-</div>
+- **Sales Manager**: Focused inventory suggestions for store owners with budget limits (up to 15% of store budget), handling new stores via a "best sellers" list, and filtering duplicates to avoid suggesting items purchased in the last 30 days.
+- **Marketing Manager**: Weekly report to identify brand gaps (gaps exceeding 30% compared to regional average) with automatic demographic reasoning and contact export capability for campaign management.
+- **Logistics Manager**: Smart stockout prediction with seasonality factor and lead time consideration, dead stock alerts (40–60% decrease in sales rate), and at-risk product list.
+- **Store Owner**: Personal area to view inventory suggestions, approve or reject and edit quantities; real-time dynamic cart calculation, mandatory rejection reason collection, and credit limit check blocking exceptional approvals.
