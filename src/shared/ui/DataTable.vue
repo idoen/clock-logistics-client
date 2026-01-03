@@ -20,7 +20,6 @@
                 :aria-label="`${col.label}: ${sortAriaLabel(col.key)}`"
               >
                 <span aria-hidden="true">{{ sortIcon(col.key) }}</span>
-                <span class="sr-only">{{ sortAriaLabel(col.key) }}</span>
               </button>
               <span class="label-group">
                 <span class="label">{{ col.label }}</span>
@@ -242,18 +241,6 @@ thead {
   text-align: center;
   color: #64748b;
   font-size: 1rem;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
 }
 
 @media (max-width: 768px) {

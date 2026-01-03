@@ -9,7 +9,6 @@ export type SortValueResolver<T> = (row: T) => unknown;
  */
 export type SortableColumn<T> = {
   key: ColumnKey;
-  sortable?: boolean;
   sortValue?: SortValueResolver<T>;
 };
 
