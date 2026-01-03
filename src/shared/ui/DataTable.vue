@@ -16,6 +16,28 @@
                 i
               </span>
             </span>
+            <span v-if="col.sortable" class="sort-controls" role="group" aria-label="מיון עמודה">
+              <button
+                type="button"
+                class="sort-btn"
+                :class="{ active: sortKey === col.key && sortDir === 'asc' }"
+                @click="emitSort(col.key, 'asc')"
+                :aria-pressed="sortKey === col.key && sortDir === 'asc'"
+                aria-label="מיון עולה"
+              >
+                ▲
+              </button>
+              <button
+                type="button"
+                class="sort-btn"
+                :class="{ active: sortKey === col.key && sortDir === 'desc' }"
+                @click="emitSort(col.key, 'desc')"
+                :aria-pressed="sortKey === col.key && sortDir === 'desc'"
+                aria-label="מיון יורד"
+              >
+                ▼
+              </button>
+            </span>
           </th>
         </tr>
       </thead>
@@ -45,23 +67,36 @@
 </template>
 
 <script setup lang="ts">
+type ColumnKey = string | number | symbol;
+
 type Column<T> = {
-  key: keyof T | string;
+  key: keyof T | ColumnKey;
   label: string;
   info?: string;
   formatter?: (value: unknown, row: T) => unknown;
   headerClass?: string;
   cellClass?: string;
   dir?: 'ltr' | 'rtl' | 'auto';
+  sortable?: boolean;
 };
 
 const props = defineProps<{
   columns: Column<any>[];
   rows: any[];
   rowKey?: (row: any) => string | number;
+  sortKey?: ColumnKey | null;
+  sortDir?: 'asc' | 'desc';
+}>();
+
+const emit = defineEmits<{
+  (e: 'sort', payload: { key: ColumnKey; dir: 'asc' | 'desc' }): void;
 }>();
 
 const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.stringify(row);
+
+const emitSort = (key: ColumnKey, dir: 'asc' | 'desc') => {
+  emit('sort', { key, dir });
+};
 </script>
 
 <style scoped>
@@ -98,6 +133,7 @@ thead {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  margin-inline-end: 0.45rem;
 }
 
 .info-icon {
@@ -114,6 +150,38 @@ thead {
   font-weight: 700;
   cursor: help;
   line-height: 1;
+}
+
+.sort-controls {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  background: #e2e8f0;
+  border-radius: 999px;
+  padding: 0.1rem 0.2rem;
+}
+
+.sort-btn {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.75rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+  background: #cbd5f0;
+  color: #1e293b;
+}
+
+.sort-btn.active {
+  background: #0ea5e9;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
 }
 
 .tr {
