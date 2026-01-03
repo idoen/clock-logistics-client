@@ -88,12 +88,12 @@ const columnKey = (key: ColumnKey) => (typeof key === 'symbol' ? key.toString() 
 const isActive = (key: ColumnKey) => Object.is(props.sortKey, key);
 
 const nextDir = (key: ColumnKey): SortDirection => {
-  if (!isActive(key)) return 'desc';
+  if (!isActive(key)) return 'asc';
   return props.sortDir === 'desc' ? 'asc' : 'desc';
 };
 
 const sortIcon = (key: ColumnKey) => {
-  if (!isActive(key)) return '▼';
+  if (!isActive(key)) return '▲';
   return props.sortDir === 'desc' ? '▼' : '▲';
 };
 
