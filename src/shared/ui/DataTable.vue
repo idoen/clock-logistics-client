@@ -5,15 +5,28 @@
         <tr>
           <th
             v-for="col in columns"
-            :key="col.key as string"
+            :key="columnKey(col.key)"
             class="th"
             :class="col.headerClass"
             :dir="col.dir ?? 'auto'"
           >
             <span class="th-content">
               <span class="label">{{ col.label }}</span>
-              <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
-                i
+              <span class="th-controls">
+                <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
+                  i
+                </span>
+                <button
+                  v-if="col.sortable"
+                  type="button"
+                  class="sort-btn"
+                  :class="{ active: isActive(col.key) }"
+                  @click="emitSort(col.key)"
+                  :aria-pressed="isActive(col.key)"
+                  :aria-label="sortAriaLabel(col.key)"
+                >
+                  {{ sortIcon(col.key) }}
+                </button>
               </span>
             </span>
           </th>
@@ -24,7 +37,7 @@
           <tr v-for="row in rows" :key="rowKey(row)" class="tr">
             <td
               v-for="col in columns"
-              :key="col.key as string"
+              :key="columnKey(col.key)"
               class="td"
               :class="col.cellClass"
               :data-label="col.label"
@@ -45,23 +58,52 @@
 </template>
 
 <script setup lang="ts">
+import type { ColumnKey, SortDirection } from '../utils/tableSort';
+
 type Column<T> = {
-  key: keyof T | string;
+  key: keyof T | ColumnKey;
   label: string;
   info?: string;
   formatter?: (value: unknown, row: T) => unknown;
   headerClass?: string;
   cellClass?: string;
   dir?: 'ltr' | 'rtl' | 'auto';
+  sortable?: boolean;
 };
 
 const props = defineProps<{
   columns: Column<any>[];
   rows: any[];
   rowKey?: (row: any) => string | number;
+  sortKey?: ColumnKey | null;
+  sortDir?: SortDirection;
+}>();
+
+const emit = defineEmits<{
+  (e: 'sort', payload: { key: ColumnKey; dir: SortDirection }): void;
 }>();
 
 const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.stringify(row);
+
+const columnKey = (key: ColumnKey) => (typeof key === 'symbol' ? key.toString() : String(key));
+
+const isActive = (key: ColumnKey) => Object.is(props.sortKey, key);
+
+const nextDir = (key: ColumnKey): SortDirection => {
+  if (!isActive(key)) return 'desc';
+  return props.sortDir === 'desc' ? 'asc' : 'desc';
+};
+
+const sortIcon = (key: ColumnKey) => {
+  if (!isActive(key)) return '▼';
+  return props.sortDir === 'desc' ? '▼' : '▲';
+};
+
+const sortAriaLabel = (key: ColumnKey) => (nextDir(key) === 'desc' ? 'מיון יורד' : 'מיון עולה');
+
+const emitSort = (key: ColumnKey) => {
+  emit('sort', { key, dir: nextDir(key) });
+};
 </script>
 
 <style scoped>
@@ -95,9 +137,23 @@ thead {
 }
 
 .th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.label {
+  min-width: 0;
+  white-space: normal;
+}
+
+.th-controls {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
+  flex: 0 0 auto;
 }
 
 .info-icon {
@@ -114,6 +170,30 @@ thead {
   font-weight: 700;
   cursor: help;
   line-height: 1;
+}
+
+.sort-btn {
+  border: 1px solid transparent;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+  background: #cbd5f0;
+  color: #1e293b;
+}
+
+.sort-btn.active {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
 }
 
 .tr {
