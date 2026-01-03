@@ -6,7 +6,6 @@
       <p class="subtitle">מערכת לוגיסטיקה שתאפשר ניהול חכם של מלאים והזמנות.</p>
     </div>
     <div class="login-panel">
-      <p>כניסה מאובטחת תתווסף כאן בקרוב.</p>
       <button class="login-button" type="button" @click="handleLogin">כניסה</button>
     </div>
   </section>
