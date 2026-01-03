@@ -2,7 +2,6 @@
   <div class="page-stack">
     <section class="intro">
       <div>
-        <p class="eyebrow">הזמן מחדש</p>
         <h2>הזמן מחדש</h2>
         <p>דוח זה מציג המלצות להזמנה מחדש של פריטים, על בסיס רמות מלאי, זמני הובלה, ויעדי מכירות.</p>
       </div>
@@ -84,7 +83,7 @@ function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory', qty
 }
 
 .intro h2 {
-  margin: 0.25rem 0 0.75rem 0;
+  margin: 0 0 0.75rem 0;
   font-size: 1.8rem;
   font-weight: 700;
   color: #1e293b;
@@ -96,12 +95,4 @@ function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory', qty
   line-height: 1.6;
 }
 
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 800;
-  color: #0ea5e9;
-  margin: 0 0 0.5rem;
-  font-size: 0.875rem;
-}
 </style>
