@@ -39,7 +39,7 @@ export const useTableSort = <T>(
   columns: SortableColumn<T>[],
   initialKey: ColumnKey | null = null,
   initialDir: SortDirection = 'asc',
-  locale = 'he',
+  locale = Intl.DateTimeFormat().resolvedOptions().locale,
 ) => {
   const sortKey = ref<ColumnKey | null>(initialKey);
   const sortDir = ref<SortDirection>(initialDir);
