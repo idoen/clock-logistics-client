@@ -17,13 +17,14 @@
                 :class="{ active: isActive(col.key) }"
                 @click="emitSort(col.key)"
                 :aria-pressed="isActive(col.key)"
-                :aria-label="sortAriaLabel(col.key)"
+                :aria-label="`${col.label}: ${sortAriaLabel(col.key)}`"
               >
-                {{ sortIcon(col.key) }}
+                <span aria-hidden="true">{{ sortIcon(col.key) }}</span>
+                <span class="sr-only">{{ sortAriaLabel(col.key) }}</span>
               </button>
               <span class="label-group">
                 <span class="label">{{ col.label }}</span>
-                <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
+                <span v-if="col.info" class="info-icon" :title="col.info" role="img" :aria-label="props.infoLabel">
                   i
                 </span>
               </span>
@@ -56,7 +57,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Record<string, unknown>">
 import type { ColumnKey, SortDirection } from '../utils/tableSort';
 
 type Column<T> = {
@@ -70,19 +71,26 @@ type Column<T> = {
   sortable?: boolean;
 };
 
-const props = defineProps<{
-  columns: Column<any>[];
-  rows: any[];
-  rowKey?: (row: any) => string | number;
+const props = withDefaults(defineProps<{
+  columns: Column<T>[];
+  rows: T[];
+  rowKey?: (row: T) => string | number;
   sortKey?: ColumnKey | null;
   sortDir?: SortDirection;
-}>();
+  sortAscLabel?: string;
+  sortDescLabel?: string;
+  infoLabel?: string;
+}>(), {
+  sortAscLabel: 'מיון עולה',
+  sortDescLabel: 'מיון יורד',
+  infoLabel: 'מידע',
+});
 
 const emit = defineEmits<{
   (e: 'sort', payload: { key: ColumnKey; dir: SortDirection }): void;
 }>();
 
-const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.stringify(row);
+const rowKey = (row: T) => props.rowKey?.(row) ?? (row as any).id ?? (row as any).sku ?? JSON.stringify(row);
 
 const columnKey = (key: ColumnKey) => (typeof key === 'symbol' ? key.toString() : String(key));
 
@@ -98,7 +106,7 @@ const sortIcon = (key: ColumnKey) => {
   return props.sortDir === 'desc' ? '▼' : '▲';
 };
 
-const sortAriaLabel = (key: ColumnKey) => (nextDir(key) === 'desc' ? 'מיון יורד' : 'מיון עולה');
+const sortAriaLabel = (key: ColumnKey) => (nextDir(key) === 'desc' ? props.sortDescLabel : props.sortAscLabel);
 
 const emitSort = (key: ColumnKey) => {
   emit('sort', { key, dir: nextDir(key) });
@@ -234,6 +242,18 @@ thead {
   text-align: center;
   color: #64748b;
   font-size: 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 @media (max-width: 768px) {

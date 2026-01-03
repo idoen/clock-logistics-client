@@ -8,7 +8,7 @@
       @sort="setSort"
     >
       <template #cell-days_until_rop="{ row }">
-        <span dir="rtl" class="rtl-days" :class="row.days_until_rop < 0 ? 'danger' : ''">
+        <span dir="rtl" class="rtl-days" :class="(row.days_until_rop ?? 0) < 0 ? 'danger' : ''">
           {{ formatDaysWithHours(row.days_until_rop) }}
         </span>
       </template>
