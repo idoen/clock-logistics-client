@@ -11,9 +11,7 @@ export type SortableColumn<T> = {
   key: ColumnKey;
   sortable?: boolean;
   sortValue?: SortValueResolver<T>;
-  // Additional properties may be present but are ignored by the sorting logic
-  [key: string]: unknown;
-};
+} & Record<string, unknown>;
 
 const compareValues = (aValue: unknown, bValue: unknown, direction: number, locale: string) => {
   const aMissing = aValue === null || aValue === undefined;
@@ -43,7 +41,7 @@ const compareValues = (aValue: unknown, bValue: unknown, direction: number, loca
  * original data, which is important when `rows` is shared reactive state in Vue.
  * For very large datasets, this additional copy can have a non-trivial performance
  * cost. If you need to handle very large tables, consider using a specialized
- * sorting strategy (e.g. in-place sorting on a non-shared array or server-side
+ * sorting strategy (e.g., in-place sorting on a non-shared array or server-side
  * sorting) instead of this helper.
  */
 const sortRows = <T>(rows: T[], getValue: SortValueResolver<T>, dir: SortDirection, locale: string) => {
