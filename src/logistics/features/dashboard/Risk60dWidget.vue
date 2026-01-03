@@ -50,7 +50,7 @@ const columns: ColumnDef[] = [
     info: 'היקף חסר צפוי',
     dir: 'ltr',
     sortable: true,
-    sortValue: (row) => (row.at_risk_60d ? 1 : 0),
+    sortValue: (row) => (row.at_risk_60d ? 0 : 1),
   },
   {
     key: 'forecast_daily_sales',
@@ -68,7 +68,7 @@ const columns: ColumnDef[] = [
     dir: 'ltr',
     sortable: true,
   },
-  { key: 'actions', label: 'פעולות', info: 'פתיחת המלצות', dir: 'ltr' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת המלצות', dir: 'ltr', sortable: false },
 ];
 
 const rowsRef = computed(() => props.rows);

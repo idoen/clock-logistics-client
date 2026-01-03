@@ -71,6 +71,10 @@ type Column<T> = {
   sortable?: boolean;
 };
 
+// Note: Using `any` types here for flexibility with different row types.
+// A more type-safe approach would be to make this component generic (e.g., DataTable<T>),
+// but that requires more extensive changes to all consumers of this component.
+// Consider refactoring to a generic component in the future for better type safety.
 const props = defineProps<{
   columns: Column<any>[];
   rows: any[];
@@ -87,7 +91,7 @@ const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.st
 
 const columnKey = (key: ColumnKey) => (typeof key === 'symbol' ? key.toString() : String(key));
 
-const isActive = (key: ColumnKey) => Object.is(props.sortKey, key);
+const isActive = (key: ColumnKey) => props.sortKey === key;
 
 const nextDir = (key: ColumnKey): SortDirection => {
   if (!isActive(key)) return 'asc';
@@ -142,7 +146,6 @@ thead {
   justify-content: flex-start;
   gap: 0;
   width: 100%;
-  direction: rtl;
 }
 
 .label-group {

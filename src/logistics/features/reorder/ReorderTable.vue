@@ -172,7 +172,7 @@ const columns: ColumnDef[] = [
     sortable: true,
     sortValue: (row) => suggestedArrival(row.product_id, dailyLeadTime(row.product_id), false),
   },
-  { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr', sortable: false },
 ];
 
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
