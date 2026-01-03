@@ -70,5 +70,6 @@ const rowsRef = computed(() => props.rows);
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   rowsRef,
   columns as SortableColumn<PurchaseOrder>[],
+  'order_date',
 );
 </script>

@@ -106,6 +106,7 @@ const rowsRef = computed(() => props.rows);
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   rowsRef,
   columns as SortableColumn<DailyRow>[],
+  'sku',
 );
 </script>
 

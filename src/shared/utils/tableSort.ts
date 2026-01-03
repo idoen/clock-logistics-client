@@ -38,7 +38,7 @@ export const useTableSort = <T>(
   rows: Ref<T[]>,
   columns: SortableColumn<T>[],
   initialKey: ColumnKey | null = null,
-  initialDir: SortDirection = 'desc',
+  initialDir: SortDirection = 'asc',
   locale = 'he',
 ) => {
   const sortKey = ref<ColumnKey | null>(initialKey);

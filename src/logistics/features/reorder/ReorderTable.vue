@@ -179,6 +179,7 @@ const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   filteredRows,
   columns as SortableColumn<ReorderRow>[],
   'recommended_order_qty',
+  'asc',
 );
 </script>
 

@@ -12,20 +12,22 @@
           >
             <span class="th-content">
               <span class="label">{{ col.label }}</span>
-              <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
-                i
+              <span class="th-controls">
+                <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
+                  i
+                </span>
+                <button
+                  v-if="col.sortable"
+                  type="button"
+                  class="sort-btn"
+                  :class="{ active: isActive(col.key) }"
+                  @click="emitSort(col.key)"
+                  :aria-pressed="isActive(col.key)"
+                  :aria-label="sortAriaLabel(col.key)"
+                >
+                  {{ sortIcon(col.key) }}
+                </button>
               </span>
-              <button
-                v-if="col.sortable"
-                type="button"
-                class="sort-btn"
-                :class="{ active: isActive(col.key) }"
-                @click="emitSort(col.key)"
-                :aria-pressed="isActive(col.key)"
-                :aria-label="sortAriaLabel(col.key)"
-              >
-                {{ sortIcon(col.key) }}
-              </button>
             </span>
           </th>
         </tr>
@@ -135,10 +137,23 @@ thead {
 }
 
 .th-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.label {
+  min-width: 0;
+  white-space: normal;
+}
+
+.th-controls {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-inline-end: 0.45rem;
+  gap: 0.35rem;
+  flex: 0 0 auto;
 }
 
 .info-icon {

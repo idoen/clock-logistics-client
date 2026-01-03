@@ -76,6 +76,7 @@ const rowsRef = computed(() => props.rows);
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   rowsRef,
   columns as SortableColumn<RiskRow>[],
+  'days_until_rop',
 );
 </script>
 
