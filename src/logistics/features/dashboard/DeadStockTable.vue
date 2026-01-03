@@ -23,7 +23,7 @@ import AsyncState from '../../../shared/ui/AsyncState.vue';
 import DataTable from '../../../shared/ui/DataTable.vue';
 import StatusPill from '../../../shared/ui/StatusPill.vue';
 import { formatNumber } from '../../../shared/utils/format';
-import { useTableSort, type SortableColumn } from '../../../shared/utils/tableSort';
+import { useTableSort } from '../../../shared/utils/tableSort';
 import type { DailyRow } from '../../domain/types';
 
 const props = defineProps<{ rows: DailyRow[]; loading: boolean; error: string | null }>();
@@ -83,7 +83,7 @@ const rowsRef = computed(() => props.rows);
 
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   rowsRef,
-  columns as SortableColumn<DailyRow>[],
+  columns,
   'sku',
 );
 </script>

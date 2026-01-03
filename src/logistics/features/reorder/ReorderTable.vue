@@ -61,7 +61,7 @@ import StatusPill from '../../../shared/ui/StatusPill.vue';
 import type { DailyRow, ReorderRow } from '../../domain/types';
 import { addDays, formatDate } from '../../../shared/utils/date';
 import { formatDaysWithHours, formatNumber } from '../../../shared/utils/format';
-import { useTableSort, type SortableColumn } from '../../../shared/utils/tableSort';
+import { useTableSort } from '../../../shared/utils/tableSort';
 
 const props = defineProps<{
   rows: ReorderRow[];
@@ -179,7 +179,7 @@ const columns: ColumnDef[] = [
 
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   filteredRows,
-  columns as SortableColumn<ReorderRow>[],
+  columns,
   'sku',
   'asc',
 );

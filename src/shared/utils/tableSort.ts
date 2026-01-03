@@ -3,8 +3,13 @@ import { computed, ref, type Ref } from 'vue';
 export type SortDirection = 'asc' | 'desc';
 export type ColumnKey = string | number | symbol;
 export type SortValueResolver<T> = (row: T) => unknown;
+
+/**
+ * Base interface for sortable columns. Can be extended with additional properties.
+ */
 export type SortableColumn<T> = {
   key: ColumnKey;
+  sortable?: boolean;
   sortValue?: SortValueResolver<T>;
 };
 
@@ -44,9 +49,9 @@ const sortRows = <T>(rows: T[], getValue: SortValueResolver<T>, dir: SortDirecti
   return [...rows].sort((a, b) => compareValues(getValue(a), getValue(b), direction, locale));
 };
 
-export const useTableSort = <T>(
+export const useTableSort = <T, C extends SortableColumn<T> = SortableColumn<T>>(
   rows: Ref<T[]>,
-  columns: SortableColumn<T>[],
+  columns: C[],
   initialKey: ColumnKey | null = null,
   initialDir: SortDirection = 'asc',
   locale = Intl.DateTimeFormat().resolvedOptions().locale,

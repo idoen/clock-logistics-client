@@ -24,7 +24,7 @@ import { computed } from 'vue';
 import AsyncState from '../../../shared/ui/AsyncState.vue';
 import DataTable from '../../../shared/ui/DataTable.vue';
 import { formatDaysWithHours, formatNumber } from '../../../shared/utils/format';
-import { useTableSort, type SortableColumn } from '../../../shared/utils/tableSort';
+import { useTableSort } from '../../../shared/utils/tableSort';
 import type { RiskRow } from '../../domain/types';
 
 const props = defineProps<{ rows: RiskRow[]; loading: boolean; error: string | null }>();
@@ -75,7 +75,7 @@ const rowsRef = computed(() => props.rows);
 
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
   rowsRef,
-  columns as SortableColumn<RiskRow>[],
+  columns,
   'days_until_rop',
 );
 </script>
