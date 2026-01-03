@@ -3,7 +3,7 @@
     <div class="login-header">
       <p class="app-label">Clock Logistics</p>
       <h1>ברוכים הבאים</h1>
-      <p class="subtitle">מערכת לוגיסטיקה שתאפשר ניהול חכם של מלאים והזמנות.</p>
+      <p class="subtitle">מערכת ניהול לוגיסטיקה שמאפשרת ניהול חכם של מלאים והזמנות</p>
     </div>
     <div class="login-panel">
       <button class="login-button" type="button" @click="handleLogin">כניסה</button>
