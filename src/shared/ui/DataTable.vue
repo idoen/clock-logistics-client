@@ -64,9 +64,9 @@ const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.st
   overflow-x: auto;
   overflow-y: hidden;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 16px;
   background: #ffffff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.04);
 }
 
 .table-root {
@@ -76,14 +76,14 @@ const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.st
 }
 
 thead {
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 
 .th {
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.25rem;
   text-align: right;
   font-weight: 600;
-  color: #0f172a;
+  color: #334155;
   border-bottom: 1px solid #e2e8f0;
   white-space: nowrap;
   unicode-bidi: plaintext;
@@ -92,27 +92,32 @@ thead {
 .th-content {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .info-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
-  background: #e2e8f0;
-  color: #0f172a;
-  font-size: 0.75rem;
+  background: #cbd5e1;
+  color: #f1f5f9;
+  font-size: 0.7rem;
+  font-style: italic;
   font-weight: 700;
   cursor: help;
   line-height: 1;
 }
 
 .tr {
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #f1f5f9;
   transition: background-color 0.2s ease;
+}
+
+.tr:last-child {
+  border-bottom: none;
 }
 
 .tr:hover {
@@ -120,9 +125,9 @@ thead {
 }
 
 .td {
-  padding: 0.75rem 1rem;
-  vertical-align: top;
-  color: #0f172a;
+  padding: 0.85rem 1.25rem;
+  vertical-align: middle;
+  color: #1e293b;
   white-space: nowrap;
   text-align: right;
   unicode-bidi: plaintext;
@@ -130,7 +135,9 @@ thead {
 
 @media (max-width: 768px) {
   .table-shell {
-    border-radius: 12px;
+    border: none;
+    background: transparent;
+    box-shadow: none;
   }
 
   .table-root,
@@ -149,10 +156,13 @@ thead {
 
   .tr {
     border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    margin: 0.5rem 0;
+    border-radius: 16px;
+    margin: 0.75rem 0;
     background: #ffffff;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+  }
+  .tr:last-child {
+    border: 1px solid #e2e8f0;
   }
 
   .td {
@@ -160,18 +170,21 @@ thead {
     justify-content: space-between;
     gap: 1rem;
     align-items: center;
-    padding: 0.85rem 1rem;
+    padding: 0.9rem 1.1rem;
     white-space: normal;
     text-align: right;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .td:last-child {
+    border-bottom: none;
   }
 
   .td::before {
     content: attr(data-label);
-    font-weight: 600;
+    font-weight: 700;
     color: #475569;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     direction: auto;
     unicode-bidi: plaintext;
   }

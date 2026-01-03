@@ -1,20 +1,14 @@
 <template>
-  <section class="section">
-    <div>
-      <h2>Dead Stock – ירידה חדה בקצב מכירה</h2>
-      <p class="help">פריטים מסומנים כמלאי מת כאשר המכירות ירדו משמעותית (דמו כולל ~50% ירידה) – קפיצה לפעולה זמינה.</p>
-    </div>
-    <AsyncState :loading="loading" :error="error">
-      <DataTable :columns="columns" :rows="rows">
-        <template #cell-final_status="{ row }">
-          <StatusPill :status="row.final_status" />
-        </template>
-        <template #cell-actions="{ row }">
-          <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
-        </template>
-      </DataTable>
-    </AsyncState>
-  </section>
+  <AsyncState :loading="loading" :error="error">
+    <DataTable :columns="columns" :rows="rows">
+      <template #cell-final_status="{ row }">
+        <StatusPill :status="row.final_status" />
+      </template>
+      <template #cell-actions="{ row }">
+        <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
+      </template>
+    </DataTable>
+  </AsyncState>
 </template>
 
 <script setup lang="ts">
@@ -60,26 +54,19 @@ const columns: ColumnDef[] = [
 </script>
 
 <style scoped>
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.section h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.help {
-  margin: 0.25rem 0 0;
-  color: #475569;
-}
-
 .btn {
-  padding: 0.35rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
   background: #f8fafc;
+  border-color: #94a3b8;
 }
 </style>

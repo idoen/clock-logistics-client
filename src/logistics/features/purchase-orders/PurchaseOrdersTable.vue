@@ -1,10 +1,7 @@
 <template>
-  <section class="space-y-2">
-    <h2 class="text-lg font-semibold">Purchase Orders</h2>
-    <AsyncState :loading="loading" :error="error">
-      <DataTable :columns="columns" :rows="rows" />
-    </AsyncState>
-  </section>
+  <AsyncState :loading="loading" :error="error">
+    <DataTable :columns="columns" :rows="rows" />
+  </AsyncState>
 </template>
 
 <script setup lang="ts">

@@ -1,28 +1,20 @@
 <template>
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <h2>Critical – מתחת/קרוב ROP</h2>
-        <p class="help">מציג final_status מתוך הדוח היומי עם חיזוי חכם לצד avg. כפתור Actions פותח חלון פעולות מודלי.</p>
-      </div>
-    </div>
-    <AsyncState :loading="loading" :error="error">
-      <DataTable :columns="columns" :rows="rows">
-        <template #cell-final_status="{ row }">
-          <StatusPill :status="row.final_status" />
-        </template>
-        <template #cell-forecast="{ row }">
-          <div class="forecast">
-            <div>{{ formatNumber(row.forecast_daily_sales) }}</div>
-            <div class="forecast-hint">avg: {{ formatNumber(row.avg_daily_sales) }}</div>
-          </div>
-        </template>
-        <template #cell-actions="{ row }">
-          <button class="btn" @click="$emit('action', { productId: row.product_id, name: row.name })">Actions</button>
-        </template>
-      </DataTable>
-    </AsyncState>
-  </section>
+  <AsyncState :loading="loading" :error="error">
+    <DataTable :columns="columns" :rows="rows">
+      <template #cell-final_status="{ row }">
+        <StatusPill :status="row.final_status" />
+      </template>
+      <template #cell-forecast="{ row }">
+        <div class="forecast">
+          <div>{{ formatNumber(row.forecast_daily_sales) }}</div>
+          <div class="forecast-hint">avg: {{ formatNumber(row.avg_daily_sales) }}</div>
+        </div>
+      </template>
+      <template #cell-actions="{ row }">
+        <button class="btn" @click="$emit('action', { productId: row.product_id, name: row.name })">Actions</button>
+      </template>
+    </DataTable>
+  </AsyncState>
 </template>
 
 <script setup lang="ts">
@@ -58,32 +50,24 @@ const columns: ColumnDef[] = [
 </script>
 
 <style scoped>
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.section-head h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.help {
-  margin: 0.3rem 0 0;
-  color: #475569;
-}
-
 .forecast-hint {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #64748b;
 }
 
 .btn {
-  padding: 0.35rem 0.6rem;
-  border-radius: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
   background: #f8fafc;
-  font-size: 0.875rem;
+  border-color: #94a3b8;
 }
 </style>

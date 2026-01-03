@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="section-head">
-      <h2>המלצות הזמנה</h2>
+      <h2 class="section-title">המלצות הזמנה</h2>
       <label class="filter">
         <input v-model="onlyPositive" type="checkbox" />
         הצג רק פריטים עם המלצת הזמנה חיובית
@@ -150,67 +150,90 @@ const columns: ColumnDef[] = [
 .section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .section-head {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .section-head h2 {
   margin: 0;
-  font-size: 1.1rem;
+  padding: 0;
+  border: none;
 }
 
 .filter {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  color: #334155;
+  background: #f1f5f9;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  color: #1e293b;
+  font-weight: 500;
 }
 
 .status-pill {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
 .risk-chip {
   border-radius: 999px;
-  background: #fef3c7;
-  color: #92400e;
-  padding: 0.1rem 0.6rem;
-  font-size: 0.75rem;
+  background: #fffbeb;
+  color: #b45309;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #fde68a;
 }
 
 .pack-block {
-  line-height: 1.25;
+  line-height: 1.4;
+  font-size: 0.9rem;
 }
 
 .btn {
-  padding: 0.35rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
-  background: #f8fafc;
+  background: #ffffff;
   font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
+
+.btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
 .btn.primary {
   background: #0ea5e9;
   border-color: #0ea5e9;
   color: #fff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.15);
+}
+
+.btn.primary:hover {
+  background: #0284c7;
+  border-color: #0284c7;
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.5rem;
 }
 
 .danger {
-  color: #dc2626;
+  color: #ef4444;
   font-weight: 700;
 }
 

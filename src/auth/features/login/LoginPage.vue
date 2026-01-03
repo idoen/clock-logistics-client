@@ -26,26 +26,28 @@ const handleLogin = async () => {
 
 <style scoped>
 .login-card {
-  width: min(420px, 100%);
+  width: min(450px, 100%);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  gap: 2rem;
+  background: linear-gradient(145deg, #ffffff, #f9fcff);
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid #e0eafc;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
 }
 
 .login-header {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  text-align: center;
 }
 
 .app-label {
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #0ea5e9;
   margin: 0;
@@ -53,44 +55,40 @@ const handleLogin = async () => {
 
 .login-header h1 {
   margin: 0;
-  font-size: 1.75rem;
-  color: #0f172a;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
 }
 
 .subtitle {
   margin: 0;
   color: #475569;
   line-height: 1.6;
+  font-size: 1.05rem;
 }
 
 .login-panel {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background: #f8fafc;
-  padding: 1.25rem;
-  border-radius: 1rem;
-  border: 1px solid #e2e8f0;
-}
-
-.login-panel p {
-  margin: 0;
-  color: #64748b;
 }
 
 .login-button {
-  align-self: stretch;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.85rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
   border: none;
   background: #0ea5e9;
   color: #ffffff;
   font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 12px 24px rgba(14, 165, 233, 0.25);
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.2);
+  transition: all 0.3s ease;
 }
 
 .login-button:hover {
   background: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(14, 165, 233, 0.25);
 }
 </style>

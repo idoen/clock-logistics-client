@@ -5,6 +5,7 @@ import App from './App.vue';
 import router from './app/router';
 import queryClient from './app/queryClient';
 import './style.css';
+import './shared/ui/main.css';
 
 const app = createApp(App);
 

@@ -4,7 +4,7 @@
       <div>
         <p class="eyebrow">Reorder</p>
         <h2>המלצות הזמנה ברורות לפי מלאי, הובלה ויעדים לחודש הקרוב</h2>
-        <p class="help">לצפייה ממוקדת ניתן לסמן "הצג רק פריטים עם המלצת הזמנה". מכל שורה אפשר לפתוח הזמנה, לעדכן חריגה או לבדוק מלאי.</p>
+        <p>לצפייה ממוקדת ניתן לסמן "הצג רק פריטים עם המלצת הזמנה". מכל שורה אפשר לפתוח הזמנה, לעדכן חריגה או לבדוק מלאי.</p>
       </div>
     </section>
     <ReorderTable
@@ -72,32 +72,36 @@ function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory', qty
 .page-stack {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .intro {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 0.9rem 1rem;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  background: linear-gradient(145deg, #f0f8ff, #e6f7ff);
+  border: 1px solid #d0e0f0;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
 }
 
 .intro h2 {
-  margin: 0.1rem 0 0.3rem;
+  margin: 0.25rem 0 0.75rem 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.intro p {
+  margin: 0.5rem 0;
+  color: #475569;
+  line-height: 1.6;
 }
 
 .eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
+  font-weight: 800;
   color: #0ea5e9;
-  font-weight: 700;
-  margin: 0;
-  font-size: 0.8rem;
-}
-
-.help {
-  margin: 0;
-  color: #475569;
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
 }
 </style>
