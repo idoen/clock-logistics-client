@@ -2,8 +2,7 @@
   <div class="page-stack">
     <section class="intro">
       <div class="intro-text">
-        <p class="eyebrow">דוח יומי – מבט מהיר</p>
-        <h2>כל מה שמנהל לוגיסטיקה צריך במסך אחד</h2>
+        <h2>דוח יומי עדכני – מבט מהיר</h2>
         <p>
           הדוח מסכם עבורך את מצב הפריטים לפי סטטוס לוגיסטי, מוסיף חיזוי ביקוש מול ממוצע היסטורי ומסמן איפה יש סיכון ב־60 הימים
           הקרובים. בכל שורה תראה את ההמלצה הבאה: להזמין, לבצע Override או לעדכן מלאי.
@@ -125,7 +124,7 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
 }
 
 .intro-text h2 {
-  margin: 0.25rem 0 0.75rem 0;
+  margin: 0 0 0.75rem 0;
   font-size: 1.8rem;
   font-weight: 700;
   color: #1e293b;
@@ -137,14 +136,6 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
   line-height: 1.6;
 }
 
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 800;
-  color: #0ea5e9;
-  margin: 0 0 0.5rem;
-  font-size: 0.875rem;
-}
 
 .intro-cards {
   display: grid;
