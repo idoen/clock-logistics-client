@@ -163,6 +163,8 @@ const columns: ColumnDef[] = [
     label: 'אריזה/מינימום',
     info: 'גודל אריזה אחת והמינימום שספק מאפשר להזמין',
     dir: 'ltr',
+    sortable: true,
+    sortValue: (row) => props.dailyMap[row.product_id]?.pack_size ?? 0,
   },
   {
     key: 'arrival',

@@ -5,7 +5,10 @@ export type ColumnKey = string | number | symbol;
 export type SortValueResolver<T> = (row: T) => unknown;
 export type SortableColumn<T> = {
   key: ColumnKey;
+  sortable?: boolean;
   sortValue?: SortValueResolver<T>;
+  // Additional properties may be present but are ignored by the sorting logic
+  [key: string]: unknown;
 };
 
 const compareValues = (aValue: unknown, bValue: unknown, direction: number, locale: string) => {
