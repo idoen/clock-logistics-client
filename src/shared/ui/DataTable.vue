@@ -22,9 +22,11 @@
               >
                 {{ sortIcon(col.key) }}
               </button>
-              <span class="label">{{ col.label }}</span>
-              <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
-                i
+              <span class="label-group">
+                <span class="label">{{ col.label }}</span>
+                <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
+                  i
+                </span>
               </span>
             </span>
           </th>
@@ -143,12 +145,18 @@ thead {
   direction: rtl;
 }
 
+.label-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  text-align: right;
+}
+
 .label {
   min-width: 0;
   white-space: normal;
-  flex: 1 1 auto;
-  text-align: right;
-  margin-inline-end: 0.25rem;
 }
 
 .sort-btn,
