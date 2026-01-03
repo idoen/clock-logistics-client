@@ -8,7 +8,13 @@
       </label>
     </div>
     <AsyncState :loading="loading" :error="error">
-      <DataTable :columns="columns" :rows="filteredRows">
+      <DataTable
+        :columns="columns"
+        :rows="sortedRows"
+        :sort-key="sortKey"
+        :sort-dir="sortDir"
+        @sort="setSort"
+      >
         <template #cell-status="{ row }">
           <StatusPill :status="row.status" />
         </template>
@@ -55,6 +61,7 @@ import StatusPill from '../../../shared/ui/StatusPill.vue';
 import type { DailyRow, ReorderRow } from '../../domain/types';
 import { addDays, formatDate } from '../../../shared/utils/date';
 import { formatDaysWithHours, formatNumber } from '../../../shared/utils/format';
+import { useTableSort, type SortableColumn } from '../../../shared/utils/tableSort';
 
 const props = defineProps<{
   rows: ReorderRow[];
@@ -75,13 +82,15 @@ const filteredRows = computed(() =>
   props.rows.filter((row) => (onlyPositive.value ? row.recommended_order_qty > 0 : true)),
 );
 
-  type ColumnDef = {
-    key: string;
-    label: string;
-    info?: string;
-    dir?: 'ltr' | 'rtl' | 'auto';
-    formatter?: (value: unknown, row?: ReorderRow) => unknown;
-  };
+type ColumnDef = {
+  key: string;
+  label: string;
+  info?: string;
+  dir?: 'ltr' | 'rtl' | 'auto';
+  formatter?: (value: unknown, row?: ReorderRow) => unknown;
+  sortable?: boolean;
+  sortValue?: (row: ReorderRow) => string | number | null | undefined;
+};
 
 function packSize(productId: number) {
   const value = props.dailyMap[productId]?.pack_size;
@@ -101,22 +110,37 @@ function suggestedArrival(productId: number, lead?: number | null, formatted = t
 }
 
 const columns: ColumnDef[] = [
-  { key: 'sku', label: 'מק"ט', info: 'מזהה הפריט במערכת', dir: 'ltr' },
-  { key: 'name', label: 'שם פריט', info: 'השם כפי שמופיע בקטלוג', dir: 'auto' },
-  { key: 'status', label: 'סטטוס מלאי', info: 'מצב נוכחי לפי הדוח היומי והאם יש סיכון 60 יום', dir: 'ltr' },
+  { key: 'sku', label: 'מק"ט', info: 'מזהה הפריט במערכת', dir: 'ltr', sortable: true },
+  { key: 'name', label: 'שם פריט', info: 'השם כפי שמופיע בקטלוג', dir: 'auto', sortable: true },
+  {
+    key: 'status',
+    label: 'סטטוס מלאי',
+    info: 'מצב נוכחי לפי הדוח היומי והאם יש סיכון 60 יום',
+    dir: 'ltr',
+    sortable: true,
+  },
   {
     key: 'days_until_rop',
     label: 'ימים לROP',
     info: 'כמה ימים נשארו עד נקודת ההזמנה מחדש; מספר שלילי אומר שכבר עברנו אותה',
     dir: 'rtl',
+    sortable: true,
   },
-  { key: 'available', label: 'זמין', info: 'כמות זמינה במחסן כרגע', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  {
+    key: 'available',
+    label: 'זמין',
+    info: 'כמות זמינה במחסן כרגע',
+    formatter: (v: unknown) => formatNumber(v as number),
+    dir: 'ltr',
+    sortable: true,
+  },
   {
     key: 'in_transit',
     label: 'בדרך',
     info: 'כמות שכבר נשלחה ועדיין לא התקבלה',
     formatter: (v: unknown) => formatNumber(v as number),
     dir: 'ltr',
+    sortable: true,
   },
   {
     key: 'target_units_30d',
@@ -124,6 +148,7 @@ const columns: ColumnDef[] = [
     info: 'כמה יחידות צריך בחודש הקרוב כדי לעמוד בביקוש',
     formatter: (v: unknown) => formatNumber(v as number),
     dir: 'ltr',
+    sortable: true,
   },
   {
     key: 'recommended_order_qty',
@@ -131,6 +156,7 @@ const columns: ColumnDef[] = [
     info: 'כמה להזמין כעת כדי להגיע ליעד ולמנוע חוסר',
     formatter: (v: unknown) => formatNumber(v as number),
     dir: 'ltr',
+    sortable: true,
   },
   {
     key: 'pack',
@@ -138,9 +164,23 @@ const columns: ColumnDef[] = [
     info: 'גודל אריזה אחת והמינימום שספק מאפשר להזמין',
     dir: 'ltr',
   },
-  { key: 'arrival', label: 'הגעה מוצעת', info: 'תאריך יעד להזמנה לפי זמן האספקה הצפוי', dir: 'auto' },
+  {
+    key: 'arrival',
+    label: 'הגעה מוצעת',
+    info: 'תאריך יעד להזמנה לפי זמן האספקה הצפוי',
+    dir: 'auto',
+    sortable: true,
+    sortValue: (row) => suggestedArrival(row.product_id, dailyLeadTime(row.product_id), false),
+  },
   { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr' },
 ];
+
+const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
+  filteredRows,
+  columns as SortableColumn<ReorderRow>[],
+  'sku',
+  'asc',
+);
 </script>
 
 <style scoped>
