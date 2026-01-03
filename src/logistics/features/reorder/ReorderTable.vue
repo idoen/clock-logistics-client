@@ -61,6 +61,7 @@ import StatusPill from '../../../shared/ui/StatusPill.vue';
 import type { DailyRow, ReorderRow } from '../../domain/types';
 import { addDays, formatDate } from '../../../shared/utils/date';
 import { formatDaysWithHours, formatNumber } from '../../../shared/utils/format';
+import { useTableSort, type SortableColumn } from '../../../shared/utils/tableSort';
 
 const props = defineProps<{
   rows: ReorderRow[];
@@ -76,8 +77,6 @@ defineEmits<{
 }>();
 
 const onlyPositive = ref(true);
-const sortKey = ref<string | null>('recommended_order_qty');
-const sortDir = ref<'asc' | 'desc'>('desc');
 
 const filteredRows = computed(() =>
   props.rows.filter((row) => (onlyPositive.value ? row.recommended_order_qty > 0 : true)),
@@ -176,37 +175,11 @@ const columns: ColumnDef[] = [
   { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr' },
 ];
 
-const sortedRows = computed(() => {
-  const key = sortKey.value;
-  if (!key) {
-    return filteredRows.value;
-  }
-  const column = columns.find((col) => col.key === key);
-  const direction = sortDir.value === 'desc' ? -1 : 1;
-  return [...filteredRows.value].sort((a, b) => {
-    const aValue = column?.sortValue ? column.sortValue(a) : (a as Record<string, unknown>)[key];
-    const bValue = column?.sortValue ? column.sortValue(b) : (b as Record<string, unknown>)[key];
-    const aMissing = aValue === null || aValue === undefined;
-    const bMissing = bValue === null || bValue === undefined;
-
-    if (aMissing && !bMissing) return 1;
-    if (!aMissing && bMissing) return -1;
-    if (aMissing && bMissing) return 0;
-
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return (aValue - bValue) * direction;
-    }
-
-    const aText = String(aValue);
-    const bText = String(bValue);
-    return aText.localeCompare(bText, 'he') * direction;
-  });
-});
-
-const setSort = ({ key, dir }: { key: string | number | symbol; dir: 'asc' | 'desc' }) => {
-  sortKey.value = String(key);
-  sortDir.value = dir;
-};
+const { sortKey, sortDir, sortedRows, setSort } = useTableSort(
+  filteredRows,
+  columns as SortableColumn<ReorderRow>[],
+  'recommended_order_qty',
+);
 </script>
 
 <style scoped>

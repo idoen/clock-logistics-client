@@ -5,7 +5,7 @@
         <tr>
           <th
             v-for="col in columns"
-            :key="col.key as string"
+            :key="columnKey(col.key)"
             class="th"
             :class="col.headerClass"
             :dir="col.dir ?? 'auto'"
@@ -15,27 +15,16 @@
               <span v-if="col.info" class="info-icon" :title="col.info" role="img" aria-label="מידע">
                 i
               </span>
-            </span>
-            <span v-if="col.sortable" class="sort-controls" role="group" aria-label="מיון עמודה">
               <button
+                v-if="col.sortable"
                 type="button"
                 class="sort-btn"
-                :class="{ active: sortKey === col.key && sortDir === 'asc' }"
-                @click="emitSort(col.key, 'asc')"
-                :aria-pressed="sortKey === col.key && sortDir === 'asc'"
-                aria-label="מיון עולה"
+                :class="{ active: isActive(col.key) }"
+                @click="emitSort(col.key)"
+                :aria-pressed="isActive(col.key)"
+                :aria-label="sortAriaLabel(col.key)"
               >
-                ▲
-              </button>
-              <button
-                type="button"
-                class="sort-btn"
-                :class="{ active: sortKey === col.key && sortDir === 'desc' }"
-                @click="emitSort(col.key, 'desc')"
-                :aria-pressed="sortKey === col.key && sortDir === 'desc'"
-                aria-label="מיון יורד"
-              >
-                ▼
+                {{ sortIcon(col.key) }}
               </button>
             </span>
           </th>
@@ -46,7 +35,7 @@
           <tr v-for="row in rows" :key="rowKey(row)" class="tr">
             <td
               v-for="col in columns"
-              :key="col.key as string"
+              :key="columnKey(col.key)"
               class="td"
               :class="col.cellClass"
               :data-label="col.label"
@@ -67,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-type ColumnKey = string | number | symbol;
+import type { ColumnKey, SortDirection } from '../utils/tableSort';
 
 type Column<T> = {
   key: keyof T | ColumnKey;
@@ -85,17 +74,33 @@ const props = defineProps<{
   rows: any[];
   rowKey?: (row: any) => string | number;
   sortKey?: ColumnKey | null;
-  sortDir?: 'asc' | 'desc';
+  sortDir?: SortDirection;
 }>();
 
 const emit = defineEmits<{
-  (e: 'sort', payload: { key: ColumnKey; dir: 'asc' | 'desc' }): void;
+  (e: 'sort', payload: { key: ColumnKey; dir: SortDirection }): void;
 }>();
 
 const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.stringify(row);
 
-const emitSort = (key: ColumnKey, dir: 'asc' | 'desc') => {
-  emit('sort', { key, dir });
+const columnKey = (key: ColumnKey) => (typeof key === 'symbol' ? key.toString() : String(key));
+
+const isActive = (key: ColumnKey) => Object.is(props.sortKey, key);
+
+const nextDir = (key: ColumnKey): SortDirection => {
+  if (!isActive(key)) return 'desc';
+  return props.sortDir === 'desc' ? 'asc' : 'desc';
+};
+
+const sortIcon = (key: ColumnKey) => {
+  if (!isActive(key)) return '▼';
+  return props.sortDir === 'desc' ? '▼' : '▲';
+};
+
+const sortAriaLabel = (key: ColumnKey) => (nextDir(key) === 'desc' ? 'מיון יורד' : 'מיון עולה');
+
+const emitSort = (key: ColumnKey) => {
+  emit('sort', { key, dir: nextDir(key) });
 };
 </script>
 
@@ -152,23 +157,14 @@ thead {
   line-height: 1;
 }
 
-.sort-controls {
-  display: inline-flex;
-  gap: 0.25rem;
-  align-items: center;
-  background: #e2e8f0;
-  border-radius: 999px;
-  padding: 0.1rem 0.2rem;
-}
-
 .sort-btn {
-  border: none;
-  background: transparent;
-  color: #64748b;
+  border: 1px solid transparent;
+  background: #e2e8f0;
+  color: #475569;
   font-size: 0.75rem;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 999px;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -180,6 +176,7 @@ thead {
 
 .sort-btn.active {
   background: #0ea5e9;
+  border-color: #0ea5e9;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
 }
