@@ -2,7 +2,6 @@
   <div class="page-stack">
     <section class="intro">
       <div>
-        <p class="eyebrow">הזמנות רכש</p>
         <h2>הזמנות רכש</h2>
         <p>דוח זה מציג את כל הזמנות הרכש שנוצרו. ניתן לעקוב אחר הסטטוס ותאריכי ההגעה הצפויים שלהן.</p>
       </div>
@@ -38,7 +37,7 @@ const error = computed(() => (query.error.value ? query.error.value.message : nu
 }
 
 .intro h2 {
-  margin: 0.25rem 0 0.75rem 0;
+  margin: 0 0 0.75rem 0;
   font-size: 1.8rem;
   font-weight: 700;
   color: #1e293b;
@@ -50,12 +49,4 @@ const error = computed(() => (query.error.value ? query.error.value.message : nu
   line-height: 1.6;
 }
 
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 800;
-  color: #0ea5e9;
-  margin: 0 0 0.5rem;
-  font-size: 0.875rem;
-}
 </style>
