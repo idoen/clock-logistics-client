@@ -10,10 +10,7 @@
     <AsyncState :loading="loading" :error="error">
       <DataTable :columns="columns" :rows="filteredRows">
         <template #cell-status="{ row }">
-          <div class="status-pill">
-            <StatusPill :status="row.status" />
-            <span v-if="row.at_risk_60d" class="risk-chip">Risk60d</span>
-          </div>
+          <StatusPill :status="row.status" />
         </template>
         <template #cell-days_until_rop="{ row }">
           <span dir="rtl" class="rtl-days" :class="row.days_until_rop < 0 ? 'danger' : ''">
@@ -22,8 +19,8 @@
         </template>
         <template #cell-pack="{ row }">
           <div class="pack-block">
-            <div>Pack: {{ packSize(row.product_id) }}</div>
-            <div>Min: {{ minOrder(row.product_id) }}</div>
+            <div>כמות אריזות: {{ packSize(row.product_id) }}</div>
+            <div>מינימום: {{ minOrder(row.product_id) }}</div>
           </div>
         </template>
         <template #cell-arrival="{ row }">
@@ -39,10 +36,10 @@
                 arrival: suggestedArrival(row.product_id, dailyLeadTime(row.product_id), false),
               })"
             >
-              Mark as ordered
+              סמן שהוזמן
             </button>
-            <button class="btn" @click="$emit('override', row.product_id)">Override…</button>
-            <button class="btn" @click="$emit('inventory', row.product_id)">Inventory…</button>
+            <button class="btn" @click="$emit('override', row.product_id)">חריגה…</button>
+            <button class="btn" @click="$emit('inventory', row.product_id)">מלאי…</button>
           </div>
         </template>
       </DataTable>
@@ -109,11 +106,11 @@ const columns: ColumnDef[] = [
   { key: 'status', label: 'סטטוס מלאי', info: 'מצב נוכחי לפי הדוח היומי והאם יש סיכון 60 יום', dir: 'ltr' },
   {
     key: 'days_until_rop',
-    label: 'ימים ל־ROP',
+    label: 'ימים לROP',
     info: 'כמה ימים נשארו עד נקודת ההזמנה מחדש; מספר שלילי אומר שכבר עברנו אותה',
     dir: 'rtl',
   },
-  { key: 'available', label: 'זמין עכשיו', info: 'כמות זמינה במחסן כרגע', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'available', label: 'זמין', info: 'כמות זמינה במחסן כרגע', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
   {
     key: 'in_transit',
     label: 'בדרך',
@@ -123,25 +120,25 @@ const columns: ColumnDef[] = [
   },
   {
     key: 'target_units_30d',
-    label: 'יעד ל־30 יום',
+    label: 'יעד 30 יום',
     info: 'כמה יחידות צריך בחודש הקרוב כדי לעמוד בביקוש',
     formatter: (v: unknown) => formatNumber(v as number),
     dir: 'ltr',
   },
   {
     key: 'recommended_order_qty',
-    label: 'המלצת הזמנה',
+    label: 'המלצה',
     info: 'כמה להזמין כעת כדי להגיע ליעד ולמנוע חוסר',
     formatter: (v: unknown) => formatNumber(v as number),
     dir: 'ltr',
   },
   {
     key: 'pack',
-    label: 'אריזות ומינימום',
+    label: 'אריזה/מינימום',
     info: 'גודל אריזה אחת והמינימום שספק מאפשר להזמין',
     dir: 'ltr',
   },
-  { key: 'arrival', label: 'תאריך הגעה מוצע', info: 'תאריך יעד להזמנה לפי זמן האספקה הצפוי', dir: 'auto' },
+  { key: 'arrival', label: 'הגעה מוצעת', info: 'תאריך יעד להזמנה לפי זמן האספקה הצפוי', dir: 'auto' },
   { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr' },
 ];
 </script>

@@ -1,15 +1,15 @@
 <template>
-  <form class="space-y-3" @submit.prevent="onSubmit">
-    <label class="flex flex-col text-sm font-medium text-slate-700">
-      Quantity ordered
+  <form class="form-stack" @submit.prevent="onSubmit">
+    <label class="form-label">
+      כמות להזמנה
       <input v-model.number="qtyOrdered" type="number" min="1" required class="input" />
     </label>
-    <label class="flex flex-col text-sm font-medium text-slate-700">
-      Expected arrival
+    <label class="form-label">
+      תאריך הגעה צפוי
       <input v-model="expectedArrival" type="date" required class="input" />
     </label>
-    <p class="text-xs text-slate-500">המלצה כבר מעוגלת ל־pack_size ומכבדת min order qty.</p>
-    <button type="submit" class="btn primary" :disabled="mutation.isPending.value">Create purchase order</button>
+    <p class="form-hint">המלצה כבר מעוגלת ל־pack_size ומכבדת min order qty.</p>
+    <button type="submit" class="btn primary" :disabled="mutation.isPending.value">צור הזמנת רכש</button>
   </form>
 </template>
 
@@ -31,21 +31,66 @@ function onSubmit() {
 </script>
 
 <style scoped>
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334155;
+  gap: 0.25rem;
+}
+
 .input {
   border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
+  border-radius: 8px;
+  padding: 0.6rem;
   background: #fff;
+  font-size: 1rem;
 }
+
+.form-hint {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
 .btn {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
-  background: #f8fafc;
+  background: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
 }
+
+.btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
 .btn.primary {
   background: #0ea5e9;
   border-color: #0ea5e9;
   color: #fff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.15);
+}
+
+.btn.primary:hover {
+  background: #0284c7;
+  border-color: #0284c7;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 </style>

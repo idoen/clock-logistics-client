@@ -1,22 +1,22 @@
 <template>
-  <form class="space-y-3" @submit.prevent="onSubmit">
-    <div class="grid grid-cols-2 gap-3">
-      <label class="flex flex-col text-sm font-medium text-slate-700">
-        Override ROP Units
+  <form class="form-stack" @submit.prevent="onSubmit">
+    <div class="grid">
+      <label class="form-label">
+        חריגת ROP (יחידות)
         <input v-model.number="overrideRopUnits" type="number" min="0" class="input" />
       </label>
-      <label class="flex flex-col text-sm font-medium text-slate-700">
-        Override Order Qty
+      <label class="form-label">
+        חריגת כמות להזמנה
         <input v-model.number="overrideOrderQty" type="number" min="0" class="input" />
       </label>
     </div>
-    <label class="flex flex-col text-sm font-medium text-slate-700">
-      Reason
+    <label class="form-label">
+      סיבה
       <textarea v-model="reason" maxlength="200" class="input" rows="3" />
     </label>
-    <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-    <div class="flex items-center gap-3">
-      <button type="submit" class="btn primary" :disabled="createMutation.isPending.value">Save override</button>
+    <p v-if="error" class="error-text">{{ error }}</p>
+    <div class="actions">
+      <button type="submit" class="btn primary" :disabled="createMutation.isPending.value">שמור חריגה</button>
       <button
         v-if="overrideId"
         type="button"
@@ -24,7 +24,7 @@
         :disabled="disableMutation.isPending.value"
         @click="disableOverride"
       >
-        Disable override (id: {{ overrideId }})
+        בטל חריגה (מזהה: {{ overrideId }})
       </button>
     </div>
   </form>
@@ -81,21 +81,77 @@ function disableOverride() {
 </script>
 
 <style scoped>
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334155;
+  gap: 0.25rem;
+}
+
 .input {
   border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
+  border-radius: 8px;
+  padding: 0.6rem;
   background: #fff;
+  font-size: 1rem;
 }
+
+.error-text {
+  font-size: 0.9rem;
+  color: #be123c;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .btn {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
-  background: #f8fafc;
+  background: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
 }
+
+.btn:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
 .btn.primary {
   background: #0ea5e9;
   border-color: #0ea5e9;
   color: #fff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.15);
+}
+
+.btn.primary:hover {
+  background: #0284c7;
+  border-color: #0284c7;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 </style>

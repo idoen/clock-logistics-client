@@ -11,7 +11,7 @@
         </div>
       </template>
       <template #cell-actions="{ row }">
-        <button class="btn" @click="$emit('action', { productId: row.product_id, name: row.name })">Actions</button>
+        <button class="btn" @click="$emit('action', { productId: row.product_id, name: row.name })">פעולות</button>
       </template>
     </DataTable>
   </AsyncState>

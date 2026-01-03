@@ -20,19 +20,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in rows" :key="rowKey(row)" class="tr">
-          <td
-            v-for="col in columns"
-            :key="col.key as string"
-            class="td"
-            :class="col.cellClass"
-            :data-label="col.label"
-            :dir="col.dir ?? 'auto'"
-          >
-            <slot :name="`cell-${String(col.key)}`" :row="row">
-              {{ col.formatter ? col.formatter(row[col.key as keyof typeof row], row) : row[col.key as keyof typeof row] }}
-            </slot>
-          </td>
+        <template v-if="rows.length > 0">
+          <tr v-for="row in rows" :key="rowKey(row)" class="tr">
+            <td
+              v-for="col in columns"
+              :key="col.key as string"
+              class="td"
+              :class="col.cellClass"
+              :data-label="col.label"
+              :dir="col.dir ?? 'auto'"
+            >
+              <slot :name="`cell-${String(col.key)}`" :row="row">
+                {{ col.formatter ? col.formatter(row[col.key as keyof typeof row], row) : row[col.key as keyof typeof row] }}
+              </slot>
+            </td>
+          </tr>
+        </template>
+        <tr v-else>
+          <td :colspan="columns.length" class="empty-state">אין נתונים להצגה</td>
         </tr>
       </tbody>
     </table>
@@ -72,7 +77,7 @@ const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.st
 .table-root {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 thead {
@@ -80,7 +85,7 @@ thead {
 }
 
 .th {
-  padding: 0.85rem 1.25rem;
+  padding: 0.7rem 0.9rem;
   text-align: right;
   font-weight: 600;
   color: #334155;
@@ -125,12 +130,19 @@ thead {
 }
 
 .td {
-  padding: 0.85rem 1.25rem;
+  padding: 0.7rem 0.9rem;
   vertical-align: middle;
   color: #1e293b;
-  white-space: nowrap;
+  white-space: normal;
   text-align: right;
   unicode-bidi: plaintext;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -188,11 +200,13 @@ thead {
     direction: auto;
     unicode-bidi: plaintext;
   }
-}
-
-@media (min-width: 769px) {
-  .table-root {
-    min-width: 960px;
+  
+  .empty-state {
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    margin: 0.75rem 0;
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
   }
 }
 </style>

@@ -10,18 +10,18 @@
       <div class="modal-panel">
         <div class="modal-head">
           <div>
-            <h3>Actions – {{ title }}</h3>
-            <p class="sub">Product ID: {{ productId }}</p>
+            <h3>פעולות – {{ title }}</h3>
+            <p class="sub">מזהה מוצר: {{ productId }}</p>
           </div>
           <button class="close" aria-label="Close" @click="$emit('close')">✕</button>
         </div>
         <div class="tabs">
-          <button class="tab" :class="{ active: activeTab === 'po' }" @click="activeTab = 'po'">Purchase Order</button>
+          <button class="tab" :class="{ active: activeTab === 'po' }" @click="activeTab = 'po'">הזמנת רכש</button>
           <button class="tab" :class="{ active: activeTab === 'override' }" @click="activeTab = 'override'">
-            Override
+            חריגה
           </button>
           <button class="tab" :class="{ active: activeTab === 'inventory' }" @click="activeTab = 'inventory'">
-            Inventory
+            מלאי
           </button>
         </div>
         <div class="modal-body">

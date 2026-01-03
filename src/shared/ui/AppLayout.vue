@@ -5,7 +5,7 @@
         <div class="brand">
           <RouterLink to="/" class="brand-link">
             <span class="brand-icon">📊</span>
-            <h1>Clock Logistics</h1>
+            <h1>Simhoclock</h1>
           </RouterLink>
         </div>
         <button class="mobile-toggle" aria-label="Toggle navigation" @click="navOpen = !navOpen">
@@ -14,9 +14,9 @@
           <span class="line"></span>
         </button>
         <nav :class="['nav', navOpen ? 'nav-open' : '']">
-          <RouterLink class="nav-link" to="/dashboard" @click="navOpen = false">Dashboard</RouterLink>
-          <RouterLink class="nav-link" to="/reorder" @click="navOpen = false">Reorder</RouterLink>
-          <RouterLink class="nav-link" to="/purchase-orders" @click="navOpen = false">Purchase Orders</RouterLink>
+          <RouterLink class="nav-link" to="/dashboard" @click="navOpen = false">דשבורד</RouterLink>
+          <RouterLink class="nav-link" to="/reorder" @click="navOpen = false">הזמן מחדש</RouterLink>
+          <RouterLink class="nav-link" to="/purchase-orders" @click="navOpen = false">הזמנות רכש</RouterLink>
         </nav>
       </div>
     </header>
@@ -50,9 +50,9 @@ const navOpen = ref(false);
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -102,9 +102,9 @@ const navOpen = ref(false);
 }
 
 .content {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 2rem 2rem 4rem;
 }
 
 .mobile-toggle {
@@ -130,6 +130,11 @@ const navOpen = ref(false);
 @media (max-width: 768px) {
   .header-inner {
     position: relative;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .content {
+    padding: 2rem 1.5rem 4rem;
   }
   
   .mobile-toggle {

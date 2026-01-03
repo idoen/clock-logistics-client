@@ -21,12 +21,12 @@ type ColumnDef = {
 };
 
 const columns: ColumnDef[] = [
-  { key: 'id', label: 'ID', dir: 'ltr' },
-  { key: 'product_id', label: 'product_id', dir: 'ltr' },
-  { key: 'qty_ordered', label: 'qty_ordered', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
-  { key: 'order_date', label: 'order_date', formatter: (v: unknown) => formatDateTime(v as string), dir: 'ltr' },
-  { key: 'expected_arrival', label: 'expected_arrival', formatter: (v: unknown) => formatDate(v as string), dir: 'ltr' },
-  { key: 'status', label: 'status', dir: 'ltr' },
-  { key: 'created_at', label: 'created_at', formatter: (v: unknown) => formatDateTime(v as string), dir: 'ltr' },
+  { key: 'id', label: 'מזהה', dir: 'ltr' },
+  { key: 'product_id', label: 'מזהה מוצר', dir: 'ltr' },
+  { key: 'qty_ordered', label: 'כמות מוזמנת', formatter: (v: unknown) => formatNumber(v as number), dir: 'ltr' },
+  { key: 'order_date', label: 'תאריך הזמנה', formatter: (v: unknown) => formatDateTime(v as string), dir: 'auto' },
+  { key: 'expected_arrival', label: 'הגעה צפויה', formatter: (v: unknown) => formatDate(v as string), dir: 'auto' },
+  { key: 'status', label: 'סטטוס', dir: 'auto' },
+  { key: 'created_at', label: 'נוצר ב', formatter: (v: unknown) => formatDateTime(v as string), dir: 'auto' },
 ];
 </script>

@@ -5,7 +5,7 @@
         <StatusPill :status="row.final_status" />
       </template>
       <template #cell-actions="{ row }">
-        <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
+        <button class="btn" @click="$emit('action', { productId: row.product_id })">פעולות</button>
       </template>
     </DataTable>
   </AsyncState>

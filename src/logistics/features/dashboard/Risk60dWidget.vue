@@ -1,24 +1,16 @@
 <template>
-  <section class="widget">
-    <div class="widget-header">
-      <div>
-        <h2>Risk 60D</h2>
-        <p class="hint">מיון עולה לפי days_until_rop. ערכים שליליים = URGENT (כבר מתחת/על ROP).</p>
-      </div>
-    </div>
-    <AsyncState :loading="loading" :error="error">
-      <DataTable :columns="columns" :rows="rows">
-        <template #cell-days_until_rop="{ row }">
-          <span dir="rtl" class="rtl-days" :class="row.days_until_rop < 0 ? 'danger' : ''">
-            {{ formatDaysWithHours(row.days_until_rop) }}
-          </span>
-        </template>
-        <template #cell-actions="{ row }">
-          <button class="btn" @click="$emit('action', { productId: row.product_id })">Actions</button>
-        </template>
-      </DataTable>
-    </AsyncState>
-  </section>
+  <AsyncState :loading="loading" :error="error">
+    <DataTable :columns="columns" :rows="rows">
+      <template #cell-days_until_rop="{ row }">
+        <span dir="rtl" class="rtl-days" :class="row.days_until_rop < 0 ? 'danger' : ''">
+          {{ formatDaysWithHours(row.days_until_rop) }}
+        </span>
+      </template>
+      <template #cell-actions="{ row }">
+        <button class="btn" @click="$emit('action', { productId: row.product_id })">פעולות</button>
+      </template>
+    </DataTable>
+  </AsyncState>
 </template>
 
 <script setup lang="ts">
@@ -55,27 +47,20 @@ const columns: ColumnDef[] = [
 </script>
 
 <style scoped>
-.widget {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.widget-header h2 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.hint {
-  margin: 0.2rem 0 0;
-  color: #475569;
-}
-
 .btn {
-  padding: 0.35rem 0.75rem;
-  border-radius: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
+  background: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
   background: #f8fafc;
+  border-color: #94a3b8;
 }
 
 .danger {
