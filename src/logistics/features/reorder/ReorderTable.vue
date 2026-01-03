@@ -163,6 +163,8 @@ const columns: ColumnDef[] = [
     label: 'אריזה/מינימום',
     info: 'גודל אריזה אחת והמינימום שספק מאפשר להזמין',
     dir: 'ltr',
+    sortable: true,
+    sortValue: (row) => props.dailyMap[row.product_id]?.pack_size ?? 0,
   },
   {
     key: 'arrival',
@@ -172,7 +174,7 @@ const columns: ColumnDef[] = [
     sortable: true,
     sortValue: (row) => suggestedArrival(row.product_id, dailyLeadTime(row.product_id), false),
   },
-  { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת הזמנה, חריגה או בדיקת מלאי', dir: 'ltr', sortable: false },
 ];
 
 const { sortKey, sortDir, sortedRows, setSort } = useTableSort(

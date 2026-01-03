@@ -8,7 +8,6 @@
             :key="columnKey(col.key)"
             class="th"
             :class="col.headerClass"
-            :dir="col.dir ?? 'auto'"
           >
             <span class="th-content">
               <button
@@ -87,7 +86,7 @@ const rowKey = (row: any) => props.rowKey?.(row) ?? row.id ?? row.sku ?? JSON.st
 
 const columnKey = (key: ColumnKey) => (typeof key === 'symbol' ? key.toString() : String(key));
 
-const isActive = (key: ColumnKey) => Object.is(props.sortKey, key);
+const isActive = (key: ColumnKey) => props.sortKey === key;
 
 const nextDir = (key: ColumnKey): SortDirection => {
   if (!isActive(key)) return 'asc';

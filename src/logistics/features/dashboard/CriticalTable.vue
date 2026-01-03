@@ -98,7 +98,7 @@ const columns: ColumnDef[] = [
     dir: 'ltr',
     sortable: true,
   },
-  { key: 'actions', label: 'פעולות', info: 'פתיחת המלצות', dir: 'ltr' },
+  { key: 'actions', label: 'פעולות', info: 'פתיחת המלצות', dir: 'ltr', sortable: false },
 ];
 
 const rowsRef = computed(() => props.rows);
