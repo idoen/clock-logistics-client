@@ -1,12 +1,14 @@
 <template>
   <AsyncState :loading="loading" :error="error">
-    <DataTable
-      :columns="columns"
-      :rows="sortedRows"
-      :sort-key="sortKey"
-      :sort-dir="sortDir"
-      @sort="setSort"
-    />
+    <div data-testid="po-table">
+      <DataTable
+        :columns="columns"
+        :rows="sortedRows"
+        :sort-key="sortKey"
+        :sort-dir="sortDir"
+        @sort="setSort"
+      />
+    </div>
   </AsyncState>
 </template>
 

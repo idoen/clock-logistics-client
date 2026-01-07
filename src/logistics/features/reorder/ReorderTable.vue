@@ -36,6 +36,7 @@
           <div class="actions">
             <button
               class="btn primary"
+              data-testid="po-open"
               @click="$emit('order', {
                 productId: row.product_id,
                 qty: row.recommended_order_qty,

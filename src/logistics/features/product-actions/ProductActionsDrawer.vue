@@ -11,7 +11,7 @@
         <div class="modal-head">
           <div>
             <h3>פעולות – {{ title }}</h3>
-            <p class="sub">מזהה מוצר: {{ productId }}</p>
+            <p class="sub" data-testid="po-product">מזהה מוצר: {{ productId }}</p>
           </div>
           <button class="close" aria-label="Close" @click="$emit('close')">✕</button>
         </div>

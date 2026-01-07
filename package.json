@@ -12,7 +12,13 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "e2e:db": "docker compose -f ../clock-logistics-server/docker-compose.test.yml up -d",
+    "e2e:api": "cross-env NODE_ENV=test PORT=3000 DATABASE_URL=postgres://postgres:postgres@localhost:5432/clock_logistics_test npm --prefix ../clock-logistics-server run dev",
+    "e2e:web": "cross-env VITE_API_BASE_URL=http://localhost:3000 npm run dev -- --port 5173",
+    "e2e:run": "wait-on http://localhost:3000/health http://localhost:5173 && playwright test",
+    "test:e2e": "npm run e2e:db && concurrently -k -s first \"npm run e2e:api\" \"npm run e2e:web\" \"npm run e2e:run\"",
+    "e2e:down": "docker compose -f ../clock-logistics-server/docker-compose.test.yml down -v"
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.92.1",
@@ -26,14 +32,19 @@
     "@tsconfig/node24": "^24.0.3",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.2",
+    "@playwright/test": "^1.55.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^7.0.3",
     "jsdom": "^26.0.0",
     "npm-run-all2": "^8.0.4",
+    "playwright": "^1.55.0",
     "typescript": "~5.9.0",
     "vite": "^7.2.4",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vitest": "^3.2.4",
+    "wait-on": "^8.0.4",
     "vue-tsc": "^3.1.5"
   }
 }

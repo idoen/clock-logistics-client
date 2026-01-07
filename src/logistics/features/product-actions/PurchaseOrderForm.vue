@@ -1,15 +1,17 @@
 <template>
-  <form class="form-stack" @submit.prevent="onSubmit">
+  <form class="form-stack" data-testid="po-form" @submit.prevent="onSubmit">
     <label class="form-label">
       כמות להזמנה
-      <input v-model.number="qtyOrdered" type="number" min="1" required class="input" />
+      <input v-model.number="qtyOrdered" data-testid="po-qty" type="number" min="1" required class="input" />
     </label>
     <label class="form-label">
       תאריך הגעה צפוי
-      <input v-model="expectedArrival" type="date" required class="input" />
+      <input v-model="expectedArrival" data-testid="po-expected-arrival" type="date" required class="input" />
     </label>
     <p class="form-hint">המלצה כבר מעוגלת ל־pack_size ומכבדת min order qty.</p>
-    <button type="submit" class="btn primary" :disabled="mutation.isPending.value">צור הזמנת רכש</button>
+    <button type="submit" data-testid="po-submit" class="btn primary" :disabled="mutation.isPending.value">
+      צור הזמנת רכש
+    </button>
   </form>
 </template>
 
