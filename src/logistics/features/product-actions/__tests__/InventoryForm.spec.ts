@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { ref, type Ref } from 'vue';
-import InventoryForm from '@/logistics/features/product-actions/InventoryForm.vue';
+import InventoryForm from '../InventoryForm.vue';
 
 let mutateSpy: ReturnType<typeof vi.fn>;
 let pendingRef: Ref<boolean> | null = null;
