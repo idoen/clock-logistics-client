@@ -2,33 +2,37 @@
   <div class="page-stack">
     <section class="intro">
       <div class="intro-text">
-        <h2>דוח יומי עדכני – מבט מהיר</h2>
+        <h2>דו״ח יומי עדכני- מבט מהיר</h2>
         <p>
-          הדוח מסכם עבורך את מצב הפריטים לפי סטטוס לוגיסטי, מוסיף חיזוי ביקוש מול ממוצע היסטורי ומסמן איפה יש סיכון ב־60 הימים
-          הקרובים. בכל שורה תראה את ההמלצה הבאה: להזמין, לבצע Override או לעדכן מלאי.
-        </p>
-        <p class="rop-note">
-          ROP (Reorder Point) הוא נקודת ההזמנה מחדש: כשמגיעים אליה צריך לתכנן משלוח כדי לא להיתקע בלי מלאי. אם מספר הימים קטן או
-          שלילי, זה סימן לפעול עכשיו.
+          הדו״ח מסכם עבורך את מצב הפריטים לפי סטטוס לוגיסטי, מוסיף חיזוי ביקוש מול ממוצע היסטורי ומסמן איפה יש סיכון ב-60 הימים הקרובים. בכל שורה תראה את ההמלצה הבאה: להזמין, לבצע Override או לעדכן מלאי.
         </p>
       </div>
-      <div class="intro-cards">
-        <div class="card">
-          <h3>Risk 60D</h3>
+      <div class="pie-chart-wrapper">
+        <StatusPieChart :risk="riskCount" :critical="criticalCount" :dead-stock="deadStockCount" />
+      </div>
+      <div class="definitions">
+        <div class="def-item rop-note">
+          <h4>Reorder Point (ROP)</h4>
+          <p>
+            (Reorder Point) ROP הוא נקודת ההזמנה מחדש: כשמגיעים אליה צריך לתכנן משלוח כדי לא להיתקע בלי מלאי. אם מספר הימים קטן או שלילי, זה סימן לפעול עכשיו.
+          </p>
+        </div>
+        <div class="def-item">
+          <h4>Risk 60D</h4>
           <p>מיון לפי כמה ימים נשארו עד נקודת ההזמנה. ערך שלילי אומר שכבר עברנו את הרף וצריך להזמין מיד.</p>
         </div>
-        <div class="card">
-          <h3>Critical</h3>
-          <p>פריטים שהגיעו או קרובים ל־ROP, עם זמני אספקה, גודל אריזה והזמנה מינימלית כדי לקבל החלטה מהירה.</p>
+        <div class="def-item">
+          <h4>Critical</h4>
+          <p>פריטים שהגיעו או קרובים ל-ROP, עם זמני אספקה, גודל אריזה והזמנה מינימלית כדי לקבל החלטה מהירה.</p>
         </div>
-        <div class="card">
-          <h3>Dead Stock</h3>
+        <div class="def-item">
+          <h4>Dead Stock</h4>
           <p>ירידה חדה בקצב מכירה (כולל סימון demo של ~50%). מאפשר קפיצה לפעולות ידניות.</p>
         </div>
       </div>
     </section>
 
-    <ClosableSection title="Risk 60 Days">
+    <ClosableSection title="Risk (60 days)">
       <Risk60dWidget :rows="riskRows" :loading="riskLoading" :error="riskError" @action="openDrawer($event.productId)" />
     </ClosableSection>
 
@@ -62,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+// script content is the same
 import { computed, ref } from 'vue';
 import { useDailyReport } from '../../queries/useDailyReport';
 import { useRisk60d } from '../../queries/useRisk60d';
@@ -70,6 +75,7 @@ import DeadStockTable from './DeadStockTable.vue';
 import Risk60dWidget from './Risk60dWidget.vue';
 import ProductActionsDrawer from '../product-actions/ProductActionsDrawer.vue';
 import ClosableSection from '../../../shared/ui/ClosableSection.vue';
+import StatusPieChart from './StatusPieChart.vue';
 
 const criticalQuery = useDailyReport('CRITICAL');
 const deadQuery = useDailyReport('DEAD_STOCK');
@@ -85,6 +91,10 @@ const deadLoading = computed(() => deadQuery.isLoading.value);
 const deadError = computed(() => deadQuery.error.value ? deadQuery.error.value.message : null);
 const riskLoading = computed(() => riskQuery.isLoading.value);
 const riskError = computed(() => riskQuery.error.value ? riskQuery.error.value.message : null);
+
+const criticalCount = computed(() => criticalRows.value.length);
+const deadStockCount = computed(() => deadRows.value.length);
+const riskCount = computed(() => riskRows.value.length);
 
 const drawerOpen = ref(false);
 const selectedProductId = ref<number | null>(null);
@@ -111,83 +121,96 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
 }
 
 .intro {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
-  background: linear-gradient(145deg, #f0f8ff, #e6f7ff);
-  border: 1px solid #d0e0f0;
+  background: linear-gradient(145deg, #e6f7ff, #d0e7ff);
+  border: 1px solid #cce7ff;
   border-radius: 24px;
   padding: 1.5rem;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.intro-text {
+  text-align: right;
 }
 
 .intro-text h2 {
   margin: 0 0 0.75rem 0;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #1a2b47;
 }
 
 .intro-text p {
-  margin: 0.5rem 0;
   color: #475569;
   line-height: 1.6;
+  max-width: 60ch;
 }
 
+.pie-chart-wrapper {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  margin: 0 auto;
+}
 
-.intro-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.definitions {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
+  flex: 1;
+  min-width: 280px;
 }
 
-.card {
-  padding: 1.25rem;
-  border: 1px solid transparent;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+.def-item {
+  background: #e6f7ff;
+  border: 1px solid #cce7ff;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #1e293b;
+  text-align: right;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.07);
-  border-color: #cce7ff;
-}
-
-.card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.125rem;
+.def-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
   color: #0f172a;
 }
 
-.card p {
+.def-item p {
   margin: 0;
-  color: #64748b;
-  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #475569;
 }
 
-.rop-note {
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
-  background: #e0f2fe;
-  border: 1px solid #bae6fd;
-  border-radius: 12px;
-  color: #0c4a6e;
-  line-height: 1.6;
-  font-size: 0.9rem;
-}
-
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .intro {
-    grid-template-columns: 1.5fr 1fr;
+    flex-direction: row;
     align-items: center;
+    gap: 2.5rem;
     padding: 2rem 2.5rem;
   }
 
-  .intro-text h2 {
-    font-size: 2.25rem;
+  .intro-text {
+    flex: 1 1 30%;
+    text-align: right;
+  }
+  
+  .intro-text p {
+    max-width: none;
+    margin: 0;
+  }
+
+  .pie-chart-wrapper {
+    flex: 1 1 40%;
+    margin: 0;
+    max-width: none;
+  }
+
+  .definitions {
+    flex: 1 1 30%;
   }
 }
 </style>

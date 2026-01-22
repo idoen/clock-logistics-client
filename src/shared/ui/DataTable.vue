@@ -145,7 +145,7 @@ thead {
 .th-content {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: 0;
   width: 100%;
   direction: rtl;
