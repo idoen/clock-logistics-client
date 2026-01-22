@@ -53,12 +53,13 @@ const columns: ColumnDef[] = [
     sortValue: (row) => (row.at_risk_60d ? 0 : 1),
   },
   {
-    key: 'forecast_daily_sales',
-    label: 'חיזוי יומי',
-    info: 'כמה יחידות צפויות להימכר ביום',
-    formatter: (v: unknown) => formatNumber(v as number),
+    key: 'forecast_weekly_sales',
+    label: 'חיזוי שבועי',
+    info: 'כמה יחידות צפויות להימכר בשבוע',
+    formatter: (_, row) => formatNumber(Math.ceil((row?.forecast_daily_sales ?? 0) * 7)),
     dir: 'ltr',
     sortable: true,
+    sortValue: (row) => (row.forecast_daily_sales ?? 0) * 7,
   },
   {
     key: 'available',
