@@ -28,30 +28,27 @@
       </div>
     </section>
 
-    <div>
-      <h2 class="section-title">Risk 60 Days</h2>
+    <ClosableSection title="Risk 60 Days">
       <Risk60dWidget :rows="riskRows" :loading="riskLoading" :error="riskError" @action="openDrawer($event.productId)" />
-    </div>
+    </ClosableSection>
 
-    <div>
-      <h2 class="section-title">Critical</h2>
+    <ClosableSection title="Critical">
       <CriticalTable
         :rows="criticalRows"
         :loading="criticalLoading"
         :error="criticalError"
         @action="onCriticalAction"
       />
-    </div>
+    </ClosableSection>
 
-    <div>
-      <h2 class="section-title">Dead Stock</h2>
+    <ClosableSection title="Dead Stock">
       <DeadStockTable
         :rows="deadRows"
         :loading="deadLoading"
         :error="deadError"
         @action="(payload) => openDrawer(payload.productId)"
       />
-    </div>
+    </ClosableSection>
 
     <ProductActionsDrawer
       v-if="drawerOpen && selectedProductId !== null"
@@ -72,6 +69,7 @@ import CriticalTable from './CriticalTable.vue';
 import DeadStockTable from './DeadStockTable.vue';
 import Risk60dWidget from './Risk60dWidget.vue';
 import ProductActionsDrawer from '../product-actions/ProductActionsDrawer.vue';
+import ClosableSection from '../../../shared/ui/ClosableSection.vue';
 
 const criticalQuery = useDailyReport('CRITICAL');
 const deadQuery = useDailyReport('DEAD_STOCK');

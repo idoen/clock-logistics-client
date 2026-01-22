@@ -6,15 +6,17 @@
         <p>דוח זה מציג המלצות להזמנה מחדש של פריטים, על בסיס רמות מלאי, זמני הובלה, ויעדי מכירות.</p>
       </div>
     </section>
-    <ReorderTable
-      :rows="rows"
-      :loading="loading"
-      :error="error"
-      :daily-map="dailyMap"
-      @order="openDrawer($event.productId, 'po', $event.qty, $event.arrival ?? undefined)"
-      @override="(id) => openDrawer(id, 'override')"
-      @inventory="(id) => openDrawer(id, 'inventory')"
-    />
+    <ClosableSection title="Reorder">
+      <ReorderTable
+        :rows="rows"
+        :loading="loading"
+        :error="error"
+        :daily-map="dailyMap"
+        @order="openDrawer($event.productId, 'po', $event.qty, $event.arrival ?? undefined)"
+        @override="(id) => openDrawer(id, 'override')"
+        @inventory="(id) => openDrawer(id, 'inventory')"
+      />
+    </ClosableSection>
     <ProductActionsDrawer
       v-if="drawerOpen && selectedProductId !== null"
       :open="drawerOpen"
@@ -34,6 +36,7 @@ import { useDailyReport } from '../../queries/useDailyReport';
 import { useReorder } from '../../queries/useReorder';
 import ReorderTable from './ReorderTable.vue';
 import ProductActionsDrawer from '../product-actions/ProductActionsDrawer.vue';
+import ClosableSection from '../../../shared/ui/ClosableSection.vue';
 
 const reorderQuery = useReorder();
 const dailyAllQuery = useDailyReport();
@@ -66,33 +69,3 @@ function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory', qty
   drawerOpen.value = true;
 }
 </script>
-
-<style scoped>
-.page-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.intro {
-  background: linear-gradient(145deg, #f0f8ff, #e6f7ff);
-  border: 1px solid #d0e0f0;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
-}
-
-.intro h2 {
-  margin: 0 0 0.75rem 0;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.intro p {
-  margin: 0.5rem 0;
-  color: #475569;
-  line-height: 1.6;
-}
-
-</style>
