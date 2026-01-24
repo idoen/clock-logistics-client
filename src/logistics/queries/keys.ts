@@ -4,4 +4,5 @@ export const qk = {
   reorder: () => ['logistics', 'reorder'] as const,
   purchaseOrders: () => ['logistics', 'purchaseOrders'] as const,
   overridesLocal: () => ['logistics', 'overridesLocal'] as const,
+  logisticsConfig: () => ['logistics', 'config'] as const,
 };

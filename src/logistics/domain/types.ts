@@ -3,6 +3,7 @@ import {
   createPurchaseOrderResponseSchema,
   dailyRowSchema,
   inventoryResponseSchema,
+  logisticsConfigSchema,
   overrideResponseSchema,
   purchaseOrderSchema,
   reorderRowSchema,
@@ -16,3 +17,4 @@ export type PurchaseOrder = z.infer<typeof purchaseOrderSchema>;
 export type CreatePurchaseOrderResponse = z.infer<typeof createPurchaseOrderResponseSchema>;
 export type InventoryResponse = z.infer<typeof inventoryResponseSchema>;
 export type OverrideResponse = z.infer<typeof overrideResponseSchema>;
+export type LogisticsConfig = z.infer<typeof logisticsConfigSchema>;

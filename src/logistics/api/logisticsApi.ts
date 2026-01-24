@@ -3,11 +3,13 @@ import {
   createPurchaseOrderResponseSchema,
   dailyResponseSchema,
   inventoryResponseSchema,
+  logisticsConfigSchema,
   overrideResponseSchema,
   purchaseOrdersResponseSchema,
   reorderResponseSchema,
   riskResponseSchema,
 } from '../domain/schemas';
+import type { LogisticsConfig } from '../domain/types';
 
 export async function fetchDaily(status?: string) {
   const params = status ? { status } : undefined;
@@ -48,4 +50,14 @@ export async function createOverride(payload: { productId: number; overrideRopUn
 export async function disableOverride(id: number) {
   const { data } = await httpClient.patch(`/api/overrides/${id}/disable`, {});
   return overrideResponseSchema.parse(data);
+}
+
+export async function fetchLogisticsConfig() {
+  const { data } = await httpClient.get('/api/logistics-config');
+  return logisticsConfigSchema.parse(data);
+}
+
+export async function updateLogisticsConfig(payload: Partial<LogisticsConfig>) {
+  const { data } = await httpClient.patch('/api/logistics-config', payload);
+  return logisticsConfigSchema.parse(data);
 }

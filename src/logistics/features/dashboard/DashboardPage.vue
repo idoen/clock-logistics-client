@@ -2,7 +2,10 @@
   <div class="page-stack">
     <section class="intro">
       <div class="intro-text">
-        <h2>דו״ח יומי עדכני- מבט מהיר</h2>
+        <div class="intro-header">
+          <h2>דו״ח יומי עדכני- מבט מהיר</h2>
+          <button type="button" class="settings-button" @click="settingsOpen = true">הגדרות דוח</button>
+        </div>
         <p>
           הדו״ח מסכם עבורך את מצב הפריטים לפי סטטוס לוגיסטי, מוסיף חיזוי ביקוש מול ממוצע היסטורי ומסמן איפה יש סיכון ב-60 הימים הקרובים. בכל שורה תראה את ההמלצה הבאה: להזמין, לבצע Override או לעדכן מלאי.
         </p>
@@ -62,6 +65,8 @@
       :initial-tab="initialTab"
       @close="drawerOpen = false"
     />
+
+    <LogisticsConfigPanel :open="settingsOpen" @close="settingsOpen = false" />
   </div>
 </template>
 
@@ -72,6 +77,7 @@ import { useDailyReport } from '../../queries/useDailyReport';
 import { useRisk60d } from '../../queries/useRisk60d';
 import CriticalTable from './CriticalTable.vue';
 import DeadStockTable from './DeadStockTable.vue';
+import LogisticsConfigPanel from './LogisticsConfigPanel.vue';
 import Risk60dWidget from './Risk60dWidget.vue';
 import ProductActionsDrawer from '../product-actions/ProductActionsDrawer.vue';
 import ClosableSection from '../../../shared/ui/ClosableSection.vue';
@@ -100,6 +106,7 @@ const drawerOpen = ref(false);
 const selectedProductId = ref<number | null>(null);
 const drawerTitle = ref('');
 const initialTab = ref<'po' | 'override' | 'inventory'>('po');
+const settingsOpen = ref(false);
 
 function openDrawer(productId: number, tab: 'po' | 'override' | 'inventory' = 'po', title?: string) {
   selectedProductId.value = productId;
@@ -135,6 +142,14 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
   text-align: right;
 }
 
+.intro-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .intro-text h2 {
   margin: 0 0 0.75rem 0;
   font-size: 2rem;
@@ -146,6 +161,21 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
   color: #475569;
   line-height: 1.6;
   max-width: 60ch;
+}
+
+.settings-button {
+  border: 1px solid #0ea5e9;
+  background: #ffffff;
+  color: #0ea5e9;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-button:hover {
+  background: #e0f2fe;
 }
 
 .pie-chart-wrapper {

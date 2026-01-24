@@ -84,6 +84,20 @@ export const overrideResponseSchema = z.object({
   active: z.boolean().optional(),
 });
 
+export const logisticsConfigSchema = z.object({
+  windowDaysShort: numberish,
+  windowDaysLong: numberish,
+  forecastWeightShort: numberish,
+  forecastWeightLong: numberish,
+  safetyStockStatsDays: numberish,
+  serviceLevelZ: numberish,
+  reorderCoverageDays: numberish,
+  riskHorizonDays: numberish,
+  deadStockWindowDays: numberish,
+  deadStockDropMin: numberish,
+  deadStockDropMax: numberish,
+});
+
 export const dailyResponseSchema = z.array(dailyRowSchema);
 export const riskResponseSchema = z.array(riskRowSchema);
 export const reorderResponseSchema = z.array(reorderRowSchema);
