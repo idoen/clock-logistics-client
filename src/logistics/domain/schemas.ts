@@ -85,18 +85,30 @@ export const overrideResponseSchema = z.object({
 });
 
 export const logisticsConfigSchema = z.object({
-  windowDaysShort: numberish,
-  windowDaysLong: numberish,
-  forecastWeightShort: numberish,
-  forecastWeightLong: numberish,
-  safetyStockStatsDays: numberish,
-  serviceLevelZ: numberish,
-  reorderCoverageDays: numberish,
-  riskHorizonDays: numberish,
-  deadStockWindowDays: numberish,
-  deadStockDropMin: numberish,
-  deadStockDropMax: numberish,
-});
+  window_days_short: numberish,
+  window_days_long: numberish,
+  forecast_weight_short: numberish,
+  forecast_weight_long: numberish,
+  safety_stock_stats_days: numberish,
+  service_level_z: numberish,
+  reorder_coverage_days: numberish,
+  risk_horizon_days: numberish,
+  dead_stock_window_days: numberish,
+  dead_stock_drop_min: numberish,
+  dead_stock_drop_max: numberish,
+}).transform((value) => ({
+  windowDaysShort: value.window_days_short,
+  windowDaysLong: value.window_days_long,
+  forecastWeightShort: value.forecast_weight_short,
+  forecastWeightLong: value.forecast_weight_long,
+  safetyStockStatsDays: value.safety_stock_stats_days,
+  serviceLevelZ: value.service_level_z,
+  reorderCoverageDays: value.reorder_coverage_days,
+  riskHorizonDays: value.risk_horizon_days,
+  deadStockWindowDays: value.dead_stock_window_days,
+  deadStockDropMin: value.dead_stock_drop_min,
+  deadStockDropMax: value.dead_stock_drop_max,
+}));
 
 export const dailyResponseSchema = z.array(dailyRowSchema);
 export const riskResponseSchema = z.array(riskRowSchema);

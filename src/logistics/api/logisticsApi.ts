@@ -58,6 +58,23 @@ export async function fetchLogisticsConfig() {
 }
 
 export async function updateLogisticsConfig(payload: Partial<LogisticsConfig>) {
-  const { data } = await httpClient.patch('/api/logistics-config', payload);
+  const mappedPayload = mapLogisticsConfigPayload(payload);
+  const { data } = await httpClient.patch('/api/logistics-config', mappedPayload);
   return logisticsConfigSchema.parse(data);
+}
+
+function mapLogisticsConfigPayload(payload: Partial<LogisticsConfig>) {
+  return {
+    window_days_short: payload.windowDaysShort,
+    window_days_long: payload.windowDaysLong,
+    forecast_weight_short: payload.forecastWeightShort,
+    forecast_weight_long: payload.forecastWeightLong,
+    safety_stock_stats_days: payload.safetyStockStatsDays,
+    service_level_z: payload.serviceLevelZ,
+    reorder_coverage_days: payload.reorderCoverageDays,
+    risk_horizon_days: payload.riskHorizonDays,
+    dead_stock_window_days: payload.deadStockWindowDays,
+    dead_stock_drop_min: payload.deadStockDropMin,
+    dead_stock_drop_max: payload.deadStockDropMax,
+  };
 }
