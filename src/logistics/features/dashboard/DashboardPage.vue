@@ -1,11 +1,17 @@
 <template>
   <div class="page-stack">
+    <div class="page-actions">
+      <button type="button" class="settings-icon-button" aria-label="הגדרות טכניות" @click="settingsOpen = true">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M19.14 12.94a7.73 7.73 0 0 0 .05-.94 7.73 7.73 0 0 0-.05-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.62 7.62 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54a7.62 7.62 0 0 0-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.73 7.73 0 0 0-.05.94 7.73 7.73 0 0 0 .05.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .6.22l2.39-.96c.5.4 1.04.73 1.63.94l.36 2.54a.5.5 0 0 0 .5.42h3.84a.5.5 0 0 0 .5-.42l.36-2.54c.59-.21 1.13-.54 1.63-.94l2.39.96a.5.5 0 0 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"
+          />
+        </svg>
+      </button>
+    </div>
     <section class="intro">
       <div class="intro-text">
-        <div class="intro-header">
-          <h2>דו״ח יומי עדכני- מבט מהיר</h2>
-          <button type="button" class="settings-button" @click="settingsOpen = true">הגדרות דוח</button>
-        </div>
+        <h2>דו״ח יומי עדכני- מבט מהיר</h2>
         <p>
           הדו״ח מסכם עבורך את מצב הפריטים לפי סטטוס לוגיסטי, מוסיף חיזוי ביקוש מול ממוצע היסטורי ומסמן איפה יש סיכון ב-60 הימים הקרובים. בכל שורה תראה את ההמלצה הבאה: להזמין, לבצע Override או לעדכן מלאי.
         </p>
@@ -127,6 +133,37 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
   gap: 2.5rem;
 }
 
+.page-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.settings-icon-button {
+  border: none;
+  background: #ffffff;
+  color: #0ea5e9;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-icon-button svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.settings-icon-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(14, 165, 233, 0.2);
+}
+
 .intro {
   display: flex;
   flex-direction: column;
@@ -142,14 +179,6 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
   text-align: right;
 }
 
-.intro-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
 .intro-text h2 {
   margin: 0 0 0.75rem 0;
   font-size: 2rem;
@@ -161,21 +190,6 @@ function onCriticalAction(payload: { productId: number; name?: string }) {
   color: #475569;
   line-height: 1.6;
   max-width: 60ch;
-}
-
-.settings-button {
-  border: 1px solid #0ea5e9;
-  background: #ffffff;
-  color: #0ea5e9;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.settings-button:hover {
-  background: #e0f2fe;
 }
 
 .pie-chart-wrapper {
