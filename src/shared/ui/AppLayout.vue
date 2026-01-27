@@ -17,6 +17,7 @@
           <RouterLink class="nav-link" to="/dashboard" @click="navOpen = false">דשבורד</RouterLink>
           <RouterLink class="nav-link" to="/reorder" @click="navOpen = false">הזמן מחדש</RouterLink>
           <RouterLink class="nav-link" to="/purchase-orders" @click="navOpen = false">הזמנות רכש</RouterLink>
+          <RouterLink class="nav-link" to="/sales-report" @click="navOpen = false">דוח מכירות</RouterLink>
         </nav>
       </div>
     </header>

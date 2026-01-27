@@ -6,7 +6,20 @@
       <p class="subtitle">מערכת ניהול לוגיסטיקה שמאפשרת ניהול חכם של מלאים והזמנות</p>
     </div>
     <div class="login-panel">
-      <button class="login-button" type="button" @click="handleLogin">כניסה</button>
+      <RoleTileGrid>
+        <RoleTile
+          title="כניסה לוגיסטיקה"
+          description="גישה למלאי, הזמנות ורמות סיכון"
+          icon="📦"
+          @select="handleLogin('logistics')"
+        />
+        <RoleTile
+          title="מנהל מכירות"
+          description="גישה לדוח מכירות, פילטרים ותצורות"
+          icon="💼"
+          @select="handleLogin('sales')"
+        />
+      </RoleTileGrid>
     </div>
   </section>
 </template>
@@ -14,13 +27,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../model/authStore';
+import RoleTileGrid from '../../../shared/ui/RoleTileGrid.vue';
+import RoleTile from '../../../shared/ui/RoleTile.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
 
-const handleLogin = async () => {
+const handleLogin = async (role: 'logistics' | 'sales') => {
   await authStore.login();
-  await router.push('/dashboard');
+  await router.push(role === 'sales' ? '/sales-report' : '/dashboard');
 };
 </script>
 
@@ -71,24 +86,5 @@ const handleLogin = async () => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.login-button {
-  padding: 0.85rem 1.5rem;
-  border-radius: 12px;
-  border: none;
-  background: #0ea5e9;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.2);
-  transition: all 0.3s ease;
-}
-
-.login-button:hover {
-  background: #0284c7;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(14, 165, 233, 0.25);
 }
 </style>

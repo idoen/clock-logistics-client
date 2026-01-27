@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import DashboardPage from '../../logistics/features/dashboard/DashboardPage.vue';
 import ReorderPage from '../../logistics/features/reorder/ReorderPage.vue';
 import PurchaseOrdersPage from '../../logistics/features/purchase-orders/PurchaseOrdersPage.vue';
+import SalesReportPage from '../../sales/features/SalesReportPage.vue';
 import LoginPage from '../../auth/features/login/LoginPage.vue';
 import { useAuthStore } from '../../auth/model/authStore';
 
@@ -11,6 +12,7 @@ const routes = [
   { path: '/dashboard', component: DashboardPage, meta: { requiresAuth: true } },
   { path: '/reorder', component: ReorderPage, meta: { requiresAuth: true } },
   { path: '/purchase-orders', component: PurchaseOrdersPage, meta: { requiresAuth: true } },
+  { path: '/sales-report', component: SalesReportPage, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
@@ -26,7 +28,15 @@ router.beforeEach((to) => {
   }
 
   if (to.path === '/login' && authStore.isAuthenticated) {
-    return { path: '/dashboard' };
+    const lastRoute = localStorage.getItem('lastRoute');
+    if (lastRoute && lastRoute !== '/login') {
+      return { path: lastRoute };
+    }
+    return true;
+  }
+
+  if (authStore.isAuthenticated && to.path !== '/login') {
+    localStorage.setItem('lastRoute', to.fullPath);
   }
 
   return true;
