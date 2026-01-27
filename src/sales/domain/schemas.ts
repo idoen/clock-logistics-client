@@ -7,13 +7,14 @@ const toNumber = (value: unknown) => {
 };
 
 const numberish = z.preprocess(toNumber, z.number());
+const numberishNullable = z.preprocess(toNumber, z.number().nullable());
 
 export const salesReportRowSchema = z.object({
   product_id: numberish,
   sku: z.string(),
   name: z.string(),
-  category: z.string(),
-  list_price: numberish,
+  category: z.string().nullable(),
+  list_price: numberishNullable,
   currency: z.string(),
   image_url: z.string().nullable().optional(),
   available: numberish,

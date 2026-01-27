@@ -32,7 +32,7 @@ router.beforeEach((to) => {
     if (lastRoute && lastRoute !== '/login') {
       return { path: lastRoute };
     }
-    return true;
+    return { path: '/dashboard' };
   }
 
   if (authStore.isAuthenticated && to.path !== '/login') {

@@ -170,7 +170,7 @@
               </div>
             </template>
             <template #cell-list_price="{ row }">
-              {{ formatNumber(row.list_price) }}
+              {{ row.list_price == null ? '—' : formatNumber(row.list_price) }}
             </template>
             <template #cell-available="{ row }">
               {{ formatNumber(row.available, 0) }}

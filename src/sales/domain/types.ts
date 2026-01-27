@@ -2,8 +2,8 @@ export type SalesReportRow = {
   product_id: number;
   sku: string;
   name: string;
-  category: string;
-  list_price: number;
+  category: string | null;
+  list_price: number | null;
   currency: string;
   image_url: string | null;
   available: number;
