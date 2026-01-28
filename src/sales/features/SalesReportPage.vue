@@ -50,16 +50,9 @@
           </select>
         </label>
         <label class="field">
-          <span>Is Gold</span>
-          <select v-model="filters.is_gold">
-            <option value="">הכל</option>
-            <option v-for="option in filterOptions.is_gold" :key="option" :value="option">{{ option }}</option>
-          </select>
-        </label>
-        <label class="field">
           <span>מיון לפי</span>
           <select v-model="sortField">
-            <option value="score">Score</option>
+            <option value="score">חיזוי שבועי</option>
             <option value="available">זמינות</option>
             <option value="price">מחיר</option>
             <option value="name">שם</option>
@@ -80,28 +73,35 @@
     </section>
 
     <section class="card presets-card">
-      <div class="card-header">
-        <h3>תצורות שמורות</h3>
-      </div>
-      <div class="preset-grid">
-        <label class="field">
-          <span>בחר תצורה</span>
-          <select v-model="selectedPresetId">
-            <option value="">בחר...</option>
-            <option v-for="preset in presets" :key="preset.id" :value="preset.id">{{ preset.name }}</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>שם תצורה חדשה</span>
-          <input v-model.trim="newPresetName" type="text" placeholder="לדוגמה: נשים זהב" />
-        </label>
-        <div class="preset-actions">
-          <button class="primary-button" type="button" :disabled="!canSavePreset" @click="savePreset">
-            שמור תצורה
-          </button>
-          <button class="ghost-button" type="button" :disabled="!selectedPresetId" @click="deletePreset">
-            מחק תצורה
-          </button>
+      <div class="preset-layout">
+        <div class="preset-section">
+          <div class="section-header">
+            <h3>בחירת תצורה קיימת</h3>
+            <button class="ghost-button" type="button" :disabled="!selectedPresetId" @click="deletePreset">
+              מחק תצורה
+            </button>
+          </div>
+          <label class="field">
+            <span>בחר תצורה</span>
+            <select v-model="selectedPresetId">
+              <option value="">בחר...</option>
+              <option v-for="preset in presets" :key="preset.id" :value="preset.id">{{ preset.name }}</option>
+            </select>
+          </label>
+          <p class="helper muted">בחירה בתצורה תעדכן את הפילטרים באופן אוטומטי.</p>
+        </div>
+        <div class="preset-section">
+          <div class="section-header">
+            <h3>שמירת תצורה חדשה</h3>
+            <button class="primary-button" type="button" :disabled="!canSavePreset" @click="savePreset">
+              שמור תצורה
+            </button>
+          </div>
+          <label class="field">
+            <span>שם תצורה חדשה</span>
+            <input v-model.trim="newPresetName" type="text" placeholder="לדוגמה: נשים זהב" />
+          </label>
+          <p class="helper muted">שומרים את מצב הפילטרים הנוכחי כתצורה.</p>
         </div>
       </div>
       <p v-if="presetError" class="helper error">{{ presetError }}</p>
@@ -111,9 +111,6 @@
       <div class="actions">
         <button class="primary-button" type="button" @click="generateReport" :disabled="loading">
           הפק דוח
-        </button>
-        <button class="ghost-button" type="button" @click="exportCsv" :disabled="exporting">
-          Export CSV
         </button>
         <div class="pagination">
           <button type="button" class="ghost-button" @click="prevPage" :disabled="page <= 1 || !hasReport">
@@ -145,6 +142,15 @@
     </section>
 
     <section class="card table-card">
+      <div class="table-header">
+        <div>
+          <h3>תוצאות הדוח</h3>
+          <p class="helper muted">חיזוי שבועי מוצג ביחידות לשבוע.</p>
+        </div>
+        <button class="ghost-button" type="button" @click="exportCsv" :disabled="exporting || !hasReport">
+          ייצוא CSV
+        </button>
+      </div>
       <div v-if="error" class="error-banner">{{ error }}</div>
 
       <div v-if="!hasReport && !loading" class="empty-state">
@@ -176,7 +182,7 @@
               {{ formatNumber(row.available, 0) }}
             </template>
             <template #cell-score="{ row }">
-              {{ formatNumber(row.score) }}
+              {{ formatNumber(Math.ceil((row.score ?? 0) * 7), 0) }}
             </template>
           </DataTable>
         </div>
@@ -231,7 +237,6 @@ const filterOptions = computed(() =>
     brands: [],
     genders: [],
     materials: [],
-    is_gold: [],
   },
 );
 
@@ -240,6 +245,7 @@ const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize.v
 const activeFilters = computed(() => {
   const cleaned: SalesReportFilters = {};
   Object.entries(filters).forEach(([key, value]) => {
+    if (key === 'is_gold') return;
     if (value) {
       cleaned[key as keyof SalesReportFilters] = value;
     }
@@ -257,7 +263,6 @@ const activeFilterChips = computed(() => {
       brand: 'מותג',
       gender: 'מגדר',
       material: 'חומר',
-      is_gold: 'זהב',
     };
     chips.push(`${labelMap[key] ?? key}: ${value}`);
   });
@@ -269,7 +274,7 @@ const activeFilterChips = computed(() => {
 
 const sortLabel = computed(() => {
   const fieldMap: Record<string, string> = {
-    score: 'Score',
+    score: 'חיזוי שבועי',
     available: 'זמינות',
     price: 'מחיר',
     name: 'שם',
@@ -296,7 +301,7 @@ const columns = [
   { key: 'list_price', label: 'מחיר', dir: 'ltr' },
   { key: 'currency', label: 'מטבע', dir: 'ltr' },
   { key: 'available', label: 'זמינות', dir: 'ltr' },
-  { key: 'score', label: 'Score', dir: 'ltr' },
+  { key: 'score', label: 'חיזוי שבועי', dir: 'ltr' },
 ];
 
 const exporting = ref(false);
@@ -326,7 +331,10 @@ const loadPresetMeta = () => {
 
 const buildParams = (): SalesReportParams => ({
   budget: budget.value,
-  filters: activeFilters.value,
+  filters: {
+    ...activeFilters.value,
+    is_gold: '',
+  },
   inStockOnly: inStockOnly.value,
   sort: {
     field: sortField.value,
@@ -405,6 +413,7 @@ const applySelectedPreset = () => {
   Object.keys(filters).forEach((key) => {
     filters[key as keyof SalesReportFilters] = presetFilters[key as keyof SalesReportFilters] ?? '';
   });
+  filters.is_gold = '';
   savePresetMeta({ id: preset.id, name: preset.name });
 };
 
@@ -544,17 +553,27 @@ onMounted(() => {
   font-weight: 600;
 }
 
-.preset-grid {
+.preset-layout {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  align-items: end;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-.preset-actions {
+.preset-section {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  background: #f8fafc;
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  justify-content: flex-start;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .actions {
@@ -616,6 +635,17 @@ onMounted(() => {
   margin-top: 1rem;
   font-weight: 600;
   color: #475569;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.table-header h3 {
+  margin: 0;
 }
 
 .table-card {
@@ -683,6 +713,10 @@ onMounted(() => {
   font-size: 0.9rem;
 }
 
+.helper.muted {
+  color: #64748b;
+}
+
 .helper.error {
   color: #be123c;
 }
@@ -697,6 +731,12 @@ onMounted(() => {
   .actions-card .actions {
     flex-direction: row;
     align-items: center;
+  }
+
+  .table-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 </style>
