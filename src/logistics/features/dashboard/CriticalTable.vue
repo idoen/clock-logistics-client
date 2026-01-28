@@ -15,7 +15,7 @@
           <div>
             {{
               (row.forecast_daily_sales ?? 0) * 7 < 1
-                ? '>1'
+                ? '<1'
                 : formatNumber(Math.ceil((row.forecast_daily_sales ?? 0) * 7), 0)
             }}
           </div>
@@ -23,7 +23,7 @@
             ממוצע שבועי:
             {{
               (row.avg_daily_sales ?? 0) * 7 < 1
-                ? '>1'
+                ? '<1'
                 : formatNumber(Math.ceil((row.avg_daily_sales ?? 0) * 7), 0)
             }}
           </div>

@@ -58,7 +58,7 @@ const columns: ColumnDef[] = [
     info: 'כמה יחידות צפויות להימכר בשבוע',
     formatter: (_, row) => {
       const rawWeekly = (row?.forecast_daily_sales ?? 0) * 7;
-      if (rawWeekly < 1) return '>1';
+      if (rawWeekly < 1) return '<1';
       return formatNumber(Math.ceil(rawWeekly), 0);
     },
     dir: 'ltr',

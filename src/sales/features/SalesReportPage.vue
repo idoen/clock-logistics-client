@@ -173,7 +173,7 @@
             <template #cell-score="{ row }">
               {{
                 (row.score ?? 0) * 7 < 1
-                  ? '>1'
+                  ? '<1'
                   : formatNumber(Math.ceil((row.score ?? 0) * 7), 0)
               }}
             </template>
