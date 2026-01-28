@@ -15,62 +15,77 @@
         <AsyncState :loading="loading" :error="loadError">
           <form class="config-form" @submit.prevent="onSubmit">
             <section class="config-section">
-              <div class="section-title">חלונות חיזוי</div>
-              <div class="section-description">שני חלונות הזמן להשוואת מכירות קצרות וארוכות לטובת תחזית מדויקת.</div>
-              <div class="field-grid">
-                <label class="field">
-                  <span>חלון קצר (ימים)</span>
-                  <input v-model.number="formState.windowDaysShort" type="number" min="1" step="1" class="input" required />
-                  <small>ממוצע קצר שמתאים לשינויים מהירים.</small>
-                </label>
-                <label class="field">
-                  <span>חלון ארוך (ימים)</span>
-                  <input v-model.number="formState.windowDaysLong" type="number" min="1" step="1" class="input" required />
-                  <small>תמונה יציבה יותר לטווח בינוני.</small>
-                </label>
+              <div class="section-title">חלונות חיזוי ומשקל</div>
+              <div class="section-description">
+                כל נוסחה מורכבת מזוג ערכים: חלון זמן ומשקל. כך משווים בין מגמה קצרה למגמה ארוכה.
+              </div>
+              <div class="pair-grid">
+                <div class="pair-card">
+                  <div class="pair-title">חלון קצר</div>
+                  <label class="field">
+                    <span>חלון זמן (ימים)</span>
+                    <input v-model.number="formState.windowDaysShort" type="number" min="1" step="1" class="input" required />
+                    <small>ממוצע קצר שמתאים לשינויים מהירים.</small>
+                  </label>
+                  <label class="field">
+                    <span>משקל חלון קצר</span>
+                    <input v-model.number="formState.forecastWeightShort" type="number" min="0" max="1" step="0.01" class="input" required />
+                    <small>גבוה יותר כשיש עונתיות חזקה.</small>
+                  </label>
+                </div>
+                <div class="pair-card">
+                  <div class="pair-title">חלון ארוך</div>
+                  <label class="field">
+                    <span>חלון זמן (ימים)</span>
+                    <input v-model.number="formState.windowDaysLong" type="number" min="1" step="1" class="input" required />
+                    <small>תמונה יציבה יותר לטווח בינוני.</small>
+                  </label>
+                  <label class="field">
+                    <span>משקל חלון ארוך</span>
+                    <input v-model.number="formState.forecastWeightLong" type="number" min="0" max="1" step="0.01" class="input" required />
+                    <small>גבוה יותר כשצריך יציבות.</small>
+                  </label>
+                </div>
               </div>
             </section>
 
-            <section class="config-section">
-              <div class="section-title">משקלי תחזית</div>
-              <div class="section-description">איך משקללים בין החלון הקצר לארוך. ביחד צריכים להסתכם בערך ל-1.</div>
-              <div class="field-grid">
-                <label class="field">
-                  <span>משקל חלון קצר</span>
-                  <input v-model.number="formState.forecastWeightShort" type="number" min="0" max="1" step="0.01" class="input" required />
-                  <small>גבוה יותר כשיש עונתיות חזקה.</small>
-                </label>
-                <label class="field">
-                  <span>משקל חלון ארוך</span>
-                  <input v-model.number="formState.forecastWeightLong" type="number" min="0" max="1" step="0.01" class="input" required />
-                  <small>גבוה יותר כשצריך יציבות.</small>
-                </label>
-              </div>
+            <section class="config-section advanced-toggle">
+              <button type="button" class="link-button" @click="showAdvanced = !showAdvanced">
+                הגדרות מתקדמות
+              </button>
             </section>
 
-            <section class="config-section">
+            <section v-if="showAdvanced" class="config-section advanced-section">
               <div class="section-title">רמות שירות וסיכון</div>
-              <div class="section-description">מגדיר איך מחשבים מלאי ביטחון והתראות סיכון.</div>
+              <div class="section-description">פרמטרים מתקדמים לחישוב מלאי ביטחון והתראות סיכון.</div>
               <div class="field-grid">
                 <label class="field">
-                  <span>ימי סטטיסטיקה למלאי ביטחון</span>
+                  <span class="label-with-info">
+                    ימי סטטיסטיקה למלאי ביטחון
+                    <span class="info-icon" title="כמה ימים אחורה משמשים לחישוב שונות בביקוש כדי לחשב מלאי ביטחון.">i</span>
+                  </span>
                   <input v-model.number="formState.safetyStockStatsDays" type="number" min="1" step="1" class="input" required />
-                  <small>כמה ימים לאחור לקחת לחישוב שונות.</small>
                 </label>
                 <label class="field">
-                  <span>Z רמת שירות</span>
+                  <span class="label-with-info">
+                    Z רמת שירות
+                    <span class="info-icon" title="פקטור שמתרגם את רמת השירות הרצויה לסף ביטחון. ערך גבוה = זמינות גבוהה יותר.">i</span>
+                  </span>
                   <input v-model.number="formState.serviceLevelZ" type="number" min="0.1" step="0.01" class="input" required />
-                  <small>משפיע על רמת זמינות רצויה.</small>
                 </label>
                 <label class="field">
-                  <span>כיסוי להזמנה מחדש (ימים)</span>
+                  <span class="label-with-info">
+                    כיסוי להזמנה מחדש (ימים)
+                    <span class="info-icon" title="כמה ימים קדימה ההמלצה להזמנה צריכה לכסות כדי למנוע חוסרים.">i</span>
+                  </span>
                   <input v-model.number="formState.reorderCoverageDays" type="number" min="1" step="1" class="input" required />
-                  <small>כמה ימים קדימה לכסות בהמלצה להזמנה.</small>
                 </label>
                 <label class="field">
-                  <span>אופק סיכון (ימים)</span>
+                  <span class="label-with-info">
+                    אופק סיכון (ימים)
+                    <span class="info-icon" title="כמה ימים קדימה המערכת בודקת סיכון למחסור במלאי.">i</span>
+                  </span>
                   <input v-model.number="formState.riskHorizonDays" type="number" min="1" step="1" class="input" required />
-                  <small>כמה ימים קדימה לזהות סיכון מחסור.</small>
                 </label>
               </div>
             </section>
@@ -121,11 +136,12 @@ import { useLogisticsConfig } from '../../queries/useLogisticsConfig';
 import { useUpdateLogisticsConfig } from '../../mutations/useUpdateLogisticsConfig';
 import type { LogisticsConfig } from '../../domain/types';
 
-defineProps<{ open: boolean }>();
+const props = defineProps<{ open: boolean }>();
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 const configQuery = useLogisticsConfig();
 const successMessage = ref('');
+const showAdvanced = ref(false);
 
 const formState = reactive<LogisticsConfig>({
   windowDaysShort: 7,
@@ -149,6 +165,15 @@ watch(
     }
   },
   { immediate: true },
+);
+
+watch(
+  () => props.open,
+  (value) => {
+    if (!value) {
+      showAdvanced.value = false;
+    }
+  },
 );
 
 const mutation = useUpdateLogisticsConfig({
@@ -258,12 +283,54 @@ function onSubmit() {
   gap: 1rem;
 }
 
+.pair-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.pair-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pair-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
 .field {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   font-size: 0.95rem;
   color: #1e293b;
+}
+
+.label-with-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  color: #f1f5f9;
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: help;
+  line-height: 1;
 }
 
 .field small {
@@ -277,6 +344,26 @@ function onSubmit() {
   padding: 0.6rem 0.75rem;
   font-size: 1rem;
   background: #ffffff;
+}
+
+.advanced-toggle {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.link-button {
+  border: none;
+  background: none;
+  color: #0284c7;
+  font-weight: 700;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.advanced-section {
+  border-style: dashed;
 }
 
 .form-actions {
