@@ -255,7 +255,8 @@ const isGoldAllValue = computed(() => {
   if (allIndex >= 0) return options[allIndex];
   const hebrewIndex = options.findIndex((option) => option.includes('הכל'));
   if (hebrewIndex >= 0) return options[hebrewIndex];
-  return undefined;
+  if (options.length > 0) return options[0];
+  return 'ALL';
 });
 
 const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)));
@@ -348,10 +349,10 @@ const loadPresetMeta = () => {
 };
 
 const buildParams = (): SalesReportParams => {
-  const filtersPayload: SalesReportFilters = { ...activeFilters.value };
-  if (isGoldAllValue.value) {
-    filtersPayload.is_gold = isGoldAllValue.value;
-  }
+  const filtersPayload: SalesReportFilters = {
+    ...activeFilters.value,
+    is_gold: isGoldAllValue.value,
+  };
   return {
     budget: budget.value,
     filters: filtersPayload,
