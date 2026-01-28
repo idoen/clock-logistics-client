@@ -12,8 +12,8 @@
       </template>
       <template #cell-forecast="{ row }">
         <div class="forecast">
-          <div>{{ formatNumber(row.forecast_daily_sales) }}</div>
-          <div class="forecast-hint">avg: {{ formatNumber(row.avg_daily_sales) }}</div>
+          <div>{{ formatNumber(Math.ceil((row.forecast_daily_sales ?? 0) * 7), 0) }}</div>
+          <div class="forecast-hint">ממוצע שבועי: {{ formatNumber(Math.ceil((row.avg_daily_sales ?? 0) * 7), 0) }}</div>
         </div>
       </template>
       <template #cell-actions="{ row }">
@@ -76,11 +76,11 @@ const columns: ColumnDef[] = [
   },
   {
     key: 'forecast',
-    label: 'חיזוי מול ממוצע',
-    info: 'קצב יומי',
+    label: 'חיזוי שבועי מול ממוצע',
+    info: 'קצב שבועי',
     dir: 'ltr',
     sortable: true,
-    sortValue: (row) => row.forecast_daily_sales,
+    sortValue: (row) => (row.forecast_daily_sales ?? 0) * 7,
   },
   {
     key: 'pack_size',

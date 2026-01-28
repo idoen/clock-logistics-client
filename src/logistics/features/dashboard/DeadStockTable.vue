@@ -54,11 +54,12 @@ const columns: ColumnDef[] = [
   },
   {
     key: 'forecast_daily_sales',
-    label: 'חיזוי יומי',
-    info: 'כמה יחידות צפויות להימכר ביום',
-    formatter: (v: unknown) => formatNumber(v as number),
+    label: 'חיזוי שבועי',
+    info: 'כמה יחידות צפויות להימכר בשבוע',
+    formatter: (v: unknown) => formatNumber(Math.ceil(((v as number | null | undefined) ?? 0) * 7), 0),
     dir: 'ltr',
     sortable: true,
+    sortValue: (row) => (row.forecast_daily_sales ?? 0) * 7,
   },
   {
     key: 'on_hand',
