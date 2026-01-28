@@ -15,62 +15,117 @@
         <AsyncState :loading="loading" :error="loadError">
           <form class="config-form" @submit.prevent="onSubmit">
             <section class="config-section">
-              <div class="section-title">חלונות חיזוי</div>
-              <div class="section-description">שני חלונות הזמן להשוואת מכירות קצרות וארוכות לטובת תחזית מדויקת.</div>
-              <div class="field-grid">
-                <label class="field">
-                  <span>חלון קצר (ימים)</span>
-                  <input v-model.number="formState.windowDaysShort" type="number" min="1" step="1" class="input" required />
-                  <small>ממוצע קצר שמתאים לשינויים מהירים.</small>
-                </label>
-                <label class="field">
-                  <span>חלון ארוך (ימים)</span>
-                  <input v-model.number="formState.windowDaysLong" type="number" min="1" step="1" class="input" required />
-                  <small>תמונה יציבה יותר לטווח בינוני.</small>
-                </label>
+              <div class="section-title">הגדרות חיזוי ומשקלים</div>
+              <div class="section-description">
+                כל ריבוע מתאר את אותה נוסחת חיזוי: חלון זמן ומשקל התאמה. ביחד הם מגדירים את קצב המכירה הצפוי.
+              </div>
+              <div class="forecast-grid">
+                <div class="forecast-card">
+                  <h4>חלון קצר</h4>
+                  <label class="field">
+                    <span>חלון קצר (ימים)</span>
+                    <input v-model.number="formState.windowDaysShort" type="number" min="1" step="1" class="input" required />
+                    <small>ממוצע קצר שמתאים לשינויים מהירים.</small>
+                  </label>
+                  <label class="field">
+                    <span>משקל חלון קצר</span>
+                    <input
+                      v-model.number="formState.forecastWeightShort"
+                      type="number"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      class="input"
+                      required
+                    />
+                    <small>גבוה יותר כשיש עונתיות חזקה.</small>
+                  </label>
+                </div>
+                <div class="forecast-card">
+                  <h4>חלון ארוך</h4>
+                  <label class="field">
+                    <span>חלון ארוך (ימים)</span>
+                    <input v-model.number="formState.windowDaysLong" type="number" min="1" step="1" class="input" required />
+                    <small>תמונה יציבה יותר לטווח בינוני.</small>
+                  </label>
+                  <label class="field">
+                    <span>משקל חלון ארוך</span>
+                    <input
+                      v-model.number="formState.forecastWeightLong"
+                      type="number"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      class="input"
+                      required
+                    />
+                    <small>גבוה יותר כשצריך יציבות.</small>
+                  </label>
+                </div>
               </div>
             </section>
 
             <section class="config-section">
-              <div class="section-title">משקלי תחזית</div>
-              <div class="section-description">איך משקללים בין החלון הקצר לארוך. ביחד צריכים להסתכם בערך ל-1.</div>
-              <div class="field-grid">
+              <button type="button" class="link-button" @click="showAdvanced = !showAdvanced">
+                הגדרות מתקדמות
+              </button>
+              <p class="section-description">נתונים מתקדמים לקביעת רמות שירות וסיכון במחסן.</p>
+              <div v-if="showAdvanced" class="field-grid">
                 <label class="field">
-                  <span>משקל חלון קצר</span>
-                  <input v-model.number="formState.forecastWeightShort" type="number" min="0" max="1" step="0.01" class="input" required />
-                  <small>גבוה יותר כשיש עונתיות חזקה.</small>
-                </label>
-                <label class="field">
-                  <span>משקל חלון ארוך</span>
-                  <input v-model.number="formState.forecastWeightLong" type="number" min="0" max="1" step="0.01" class="input" required />
-                  <small>גבוה יותר כשצריך יציבות.</small>
-                </label>
-              </div>
-            </section>
-
-            <section class="config-section">
-              <div class="section-title">רמות שירות וסיכון</div>
-              <div class="section-description">מגדיר איך מחשבים מלאי ביטחון והתראות סיכון.</div>
-              <div class="field-grid">
-                <label class="field">
-                  <span>ימי סטטיסטיקה למלאי ביטחון</span>
+                  <span>
+                    ימי סטטיסטיקה למלאי ביטחון
+                    <span
+                      class="info-icon"
+                      title="מספר הימים לחישוב שונות בביקוש, כדי להעריך מלאי ביטחון."
+                      role="img"
+                      aria-label="מידע"
+                    >
+                      i
+                    </span>
+                  </span>
                   <input v-model.number="formState.safetyStockStatsDays" type="number" min="1" step="1" class="input" required />
-                  <small>כמה ימים לאחור לקחת לחישוב שונות.</small>
                 </label>
                 <label class="field">
-                  <span>Z רמת שירות</span>
+                  <span>
+                    Z רמת שירות
+                    <span
+                      class="info-icon"
+                      title="מקדם סטטיסטי לקביעת אחוז זמינות יעד (גבוה יותר = פחות חוסרים)."
+                      role="img"
+                      aria-label="מידע"
+                    >
+                      i
+                    </span>
+                  </span>
                   <input v-model.number="formState.serviceLevelZ" type="number" min="0.1" step="0.01" class="input" required />
-                  <small>משפיע על רמת זמינות רצויה.</small>
                 </label>
                 <label class="field">
-                  <span>כיסוי להזמנה מחדש (ימים)</span>
+                  <span>
+                    כיסוי להזמנה מחדש (ימים)
+                    <span
+                      class="info-icon"
+                      title="כמה ימי מלאי קדימה לכלול בהמלצת ההזמנה מחדש."
+                      role="img"
+                      aria-label="מידע"
+                    >
+                      i
+                    </span>
+                  </span>
                   <input v-model.number="formState.reorderCoverageDays" type="number" min="1" step="1" class="input" required />
-                  <small>כמה ימים קדימה לכסות בהמלצה להזמנה.</small>
                 </label>
                 <label class="field">
-                  <span>אופק סיכון (ימים)</span>
+                  <span>
+                    אופק סיכון (ימים)
+                    <span
+                      class="info-icon"
+                      title="טווח הימים שבו המערכת מזהה סיכון למחסור עתידי."
+                      role="img"
+                      aria-label="מידע"
+                    >
+                      i
+                    </span>
+                  </span>
                   <input v-model.number="formState.riskHorizonDays" type="number" min="1" step="1" class="input" required />
-                  <small>כמה ימים קדימה לזהות סיכון מחסור.</small>
                 </label>
               </div>
             </section>
@@ -126,6 +181,7 @@ const emit = defineEmits<{ (e: 'close'): void }>();
 
 const configQuery = useLogisticsConfig();
 const successMessage = ref('');
+const showAdvanced = ref(false);
 
 const formState = reactive<LogisticsConfig>({
   windowDaysShort: 7,
@@ -252,6 +308,28 @@ function onSubmit() {
   font-size: 0.95rem;
 }
 
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.forecast-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1rem;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.forecast-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
 .field-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -266,6 +344,12 @@ function onSubmit() {
   color: #1e293b;
 }
 
+.field span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
 .field small {
   color: #64748b;
   line-height: 1.4;
@@ -277,6 +361,37 @@ function onSubmit() {
   padding: 0.6rem 0.75rem;
   font-size: 1rem;
   background: #ffffff;
+}
+
+.link-button {
+  border: none;
+  background: none;
+  color: #0ea5e9;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  margin-bottom: 0.5rem;
+}
+
+.link-button:hover {
+  color: #0284c7;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  color: #f1f5f9;
+  font-size: 0.7rem;
+  font-style: italic;
+  font-weight: 700;
+  cursor: help;
+  line-height: 1;
 }
 
 .form-actions {
