@@ -244,8 +244,19 @@ const filterOptions = computed(() =>
     brands: [],
     genders: [],
     materials: [],
+    is_gold: [],
   },
 );
+
+const isGoldAllValue = computed(() => {
+  const options = filterOptions.value?.is_gold ?? [];
+  const lowered = options.map((option) => option.toLowerCase());
+  const allIndex = lowered.findIndex((option) => option === 'all');
+  if (allIndex >= 0) return options[allIndex];
+  const hebrewIndex = options.findIndex((option) => option.includes('הכל'));
+  if (hebrewIndex >= 0) return options[hebrewIndex];
+  return undefined;
+});
 
 const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize.value)));
 
@@ -336,20 +347,23 @@ const loadPresetMeta = () => {
   }
 };
 
-const buildParams = (): SalesReportParams => ({
-  budget: budget.value,
-  filters: {
-    ...activeFilters.value,
-    is_gold: '',
-  },
-  inStockOnly: inStockOnly.value,
-  sort: {
-    field: sortField.value,
-    direction: sortDirection.value,
-  },
-  page: page.value,
-  pageSize: pageSize.value,
-});
+const buildParams = (): SalesReportParams => {
+  const filtersPayload: SalesReportFilters = { ...activeFilters.value };
+  if (isGoldAllValue.value) {
+    filtersPayload.is_gold = isGoldAllValue.value;
+  }
+  return {
+    budget: budget.value,
+    filters: filtersPayload,
+    inStockOnly: inStockOnly.value,
+    sort: {
+      field: sortField.value,
+      direction: sortDirection.value,
+    },
+    page: page.value,
+    pageSize: pageSize.value,
+  };
+};
 
 const generateReport = () => {
   page.value = 1;
