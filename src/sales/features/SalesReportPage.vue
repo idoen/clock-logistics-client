@@ -7,137 +7,116 @@
       </div>
     </section>
 
-    <section class="card filter-card">
+    <section class="card controls-card">
       <div class="card-header">
-        <h3>פילטרים</h3>
+        <div>
+          <h3>הגדרות דוח</h3>
+          <p class="helper muted">בחרו פילטרים או תצורה, ואז הפיקו דוח להצגה.</p>
+        </div>
         <button class="ghost-button" type="button" @click="clearFilters">נקה פילטרים</button>
       </div>
-      <div class="filter-grid">
-        <label class="field">
-          <span>תקציב (₪)</span>
-          <input v-model.number="budget" type="number" min="0" placeholder="למשל 2500" />
-        </label>
-        <label class="field toggle-field">
-          <span>במלאי בלבד</span>
-          <input v-model="inStockOnly" type="checkbox" />
-        </label>
-        <label class="field">
-          <span>קטגוריה</span>
-          <select v-model="filters.category">
-            <option value="">הכל</option>
-            <option v-for="option in filterOptions.categories" :key="option" :value="option">{{ option }}</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>מותג</span>
-          <select v-model="filters.brand">
-            <option value="">הכל</option>
-            <option v-for="option in filterOptions.brands" :key="option" :value="option">{{ option }}</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>מגדר</span>
-          <select v-model="filters.gender">
-            <option value="">הכל</option>
-            <option v-for="option in filterOptions.genders" :key="option" :value="option">{{ option }}</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>חומר</span>
-          <select v-model="filters.material">
-            <option value="">הכל</option>
-            <option v-for="option in filterOptions.materials" :key="option" :value="option">{{ option }}</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>מיון לפי</span>
-          <select v-model="sortField">
-            <option value="score">חיזוי שבועי</option>
-            <option value="available">זמינות</option>
-            <option value="price">מחיר</option>
-            <option value="name">שם</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>כיוון מיון</span>
-          <select v-model="sortDirection">
-            <option value="desc">יורד</option>
-            <option value="asc">עולה</option>
-          </select>
-        </label>
-      </div>
-      <div v-if="activeFilterChips.length" class="chips">
-        <span v-for="chip in activeFilterChips" :key="chip" class="chip">{{ chip }}</span>
-      </div>
-      <p v-if="filtersError" class="helper error">{{ filtersError }}</p>
-    </section>
-
-    <section class="card presets-card">
-      <div class="preset-layout">
-        <div class="preset-section">
-          <div class="section-header">
-            <h3>בחירת תצורה קיימת</h3>
+      <div class="controls-layout">
+        <div class="filters-panel">
+          <h4>פילטרים</h4>
+          <div class="filter-grid">
+            <label class="field">
+              <span>תקציב (₪)</span>
+              <input v-model.number="budget" type="number" min="0" placeholder="למשל 2500" />
+            </label>
+            <label class="field toggle-field">
+              <span>במלאי בלבד</span>
+              <input v-model="inStockOnly" type="checkbox" />
+            </label>
+            <label class="field">
+              <span>קטגוריה</span>
+              <select v-model="filters.category">
+                <option value="">הכל</option>
+                <option v-for="option in filterOptions.categories" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </label>
+            <label class="field">
+              <span>מותג</span>
+              <select v-model="filters.brand">
+                <option value="">הכל</option>
+                <option v-for="option in filterOptions.brands" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </label>
+            <label class="field">
+              <span>מגדר</span>
+              <select v-model="filters.gender">
+                <option value="">הכל</option>
+                <option v-for="option in filterOptions.genders" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </label>
+            <label class="field">
+              <span>חומר</span>
+              <select v-model="filters.material">
+                <option value="">הכל</option>
+                <option v-for="option in filterOptions.materials" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </label>
+            <label class="field">
+              <span>מיון לפי</span>
+              <select v-model="sortField">
+                <option value="score">חיזוי שבועי</option>
+                <option value="available">זמינות</option>
+                <option value="price">מחיר</option>
+                <option value="name">שם</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>כיוון מיון</span>
+              <select v-model="sortDirection">
+                <option value="desc">יורד</option>
+                <option value="asc">עולה</option>
+              </select>
+            </label>
+          </div>
+          <div v-if="activeFilterChips.length" class="chips">
+            <span v-for="chip in activeFilterChips" :key="chip" class="chip">{{ chip }}</span>
+          </div>
+          <p v-if="filtersError" class="helper error">{{ filtersError }}</p>
+        </div>
+        <div class="presets-panel">
+          <h4>תצורות</h4>
+          <div class="preset-block">
+            <label class="field">
+              <span>בחירת תצורה קיימת</span>
+              <select v-model="selectedPresetId">
+                <option value="">בחר...</option>
+                <option v-for="preset in presets" :key="preset.id" :value="preset.id">{{ preset.name }}</option>
+              </select>
+            </label>
             <button class="ghost-button" type="button" :disabled="!selectedPresetId" @click="deletePreset">
               מחק תצורה
             </button>
           </div>
-          <label class="field">
-            <span>בחר תצורה</span>
-            <select v-model="selectedPresetId">
-              <option value="">בחר...</option>
-              <option v-for="preset in presets" :key="preset.id" :value="preset.id">{{ preset.name }}</option>
-            </select>
-          </label>
           <p class="helper muted">בחירה בתצורה תעדכן את הפילטרים באופן אוטומטי.</p>
-        </div>
-        <div class="preset-section">
-          <div class="section-header">
-            <h3>שמירת תצורה חדשה</h3>
+          <div class="preset-block">
+            <label class="field">
+              <span>שם תצורה חדשה</span>
+              <input v-model.trim="newPresetName" type="text" placeholder="לדוגמה: נשים זהב" />
+            </label>
             <button class="primary-button" type="button" :disabled="!canSavePreset" @click="savePreset">
               שמור תצורה
             </button>
           </div>
-          <label class="field">
-            <span>שם תצורה חדשה</span>
-            <input v-model.trim="newPresetName" type="text" placeholder="לדוגמה: נשים זהב" />
-          </label>
           <p class="helper muted">שומרים את מצב הפילטרים הנוכחי כתצורה.</p>
+          <p v-if="presetError" class="helper error">{{ presetError }}</p>
         </div>
       </div>
-      <p v-if="presetError" class="helper error">{{ presetError }}</p>
-    </section>
-
-    <section class="card actions-card">
-      <div class="actions">
+      <div class="controls-actions">
         <button class="primary-button" type="button" @click="generateReport" :disabled="loading">
           הפק דוח
         </button>
-        <div class="pagination">
-          <button type="button" class="ghost-button" @click="prevPage" :disabled="page <= 1 || !hasReport">
-            הקודם
-          </button>
-          <span>עמוד {{ page }} מתוך {{ totalPages }}</span>
-          <button
-            type="button"
-            class="ghost-button"
-            @click="nextPage"
-            :disabled="page >= totalPages || !hasReport"
-          >
-            הבא
-          </button>
-          <label class="field page-size">
-            <span>כמות בעמוד</span>
-            <select v-model.number="pageSize" @change="updatePagination">
-              <option :value="20">20</option>
-              <option :value="50">50</option>
-              <option :value="100">100</option>
-              <option :value="200">200</option>
-            </select>
-          </label>
-        </div>
-      </div>
-      <div class="summary">
-        <span>סה"כ תוצאות: {{ total }}</span>
       </div>
     </section>
 
@@ -147,9 +126,12 @@
           <h3>תוצאות הדוח</h3>
           <p class="helper muted">חיזוי שבועי מוצג ביחידות לשבוע.</p>
         </div>
-        <button class="ghost-button" type="button" @click="exportCsv" :disabled="exporting || !hasReport">
-          ייצוא CSV
-        </button>
+        <div class="table-actions">
+          <span class="summary">סה"כ תוצאות: {{ total }}</span>
+          <button class="ghost-button" type="button" @click="exportCsv" :disabled="exporting || !hasReport">
+            ייצוא CSV
+          </button>
+        </div>
       </div>
       <div v-if="error" class="error-banner">{{ error }}</div>
 
@@ -185,6 +167,31 @@
               {{ formatNumber(Math.ceil((row.score ?? 0) * 7), 0) }}
             </template>
           </DataTable>
+        </div>
+      </div>
+      <div class="table-footer">
+        <div class="pagination">
+          <button type="button" class="ghost-button" @click="prevPage" :disabled="page <= 1 || !hasReport">
+            הקודם
+          </button>
+          <span>עמוד {{ page }} מתוך {{ totalPages }}</span>
+          <button
+            type="button"
+            class="ghost-button"
+            @click="nextPage"
+            :disabled="page >= totalPages || !hasReport"
+          >
+            הבא
+          </button>
+          <label class="field page-size">
+            <span>כמות בעמוד</span>
+            <select v-model.number="pageSize" @change="updatePagination">
+              <option :value="20">20</option>
+              <option :value="50">50</option>
+              <option :value="100">100</option>
+              <option :value="200">200</option>
+            </select>
+          </label>
         </div>
       </div>
     </section>
@@ -553,37 +560,41 @@ onMounted(() => {
   font-weight: 600;
 }
 
-.preset-layout {
+.controls-layout {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-.preset-section {
+.controls-layout h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.filters-panel,
+.presets-panel {
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem;
   background: #f8fafc;
+}
+
+.preset-block {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  padding: 0.75rem 0;
 }
 
-.section-header {
+.preset-block + .preset-block {
+  border-top: 1px dashed #e2e8f0;
+}
+
+.controls-actions {
+  margin-top: 1.5rem;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.actions-card .actions {
-  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .primary-button,
@@ -632,7 +643,6 @@ onMounted(() => {
 }
 
 .summary {
-  margin-top: 1rem;
   font-weight: 600;
   color: #475569;
 }
@@ -648,8 +658,19 @@ onMounted(() => {
   margin: 0;
 }
 
+.table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
 .table-card {
   padding: 1.5rem;
+}
+
+.table-footer {
+  margin-top: 1.5rem;
 }
 
 .error-banner {
@@ -722,17 +743,6 @@ onMounted(() => {
 }
 
 @media (min-width: 900px) {
-  .actions {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .actions-card .actions {
-    flex-direction: row;
-    align-items: center;
-  }
-
   .table-header {
     flex-direction: row;
     align-items: center;
