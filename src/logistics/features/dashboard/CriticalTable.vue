@@ -12,8 +12,21 @@
       </template>
       <template #cell-forecast="{ row }">
         <div class="forecast">
-          <div>{{ formatNumber(Math.ceil((row.forecast_daily_sales ?? 0) * 7), 0) }}</div>
-          <div class="forecast-hint">ממוצע שבועי: {{ formatNumber(Math.ceil((row.avg_daily_sales ?? 0) * 7), 0) }}</div>
+          <div>
+            {{
+              Math.ceil((row.forecast_daily_sales ?? 0) * 7) < 1
+                ? '>1'
+                : formatNumber(Math.ceil((row.forecast_daily_sales ?? 0) * 7), 0)
+            }}
+          </div>
+          <div class="forecast-hint">
+            ממוצע שבועי:
+            {{
+              Math.ceil((row.avg_daily_sales ?? 0) * 7) < 1
+                ? '>1'
+                : formatNumber(Math.ceil((row.avg_daily_sales ?? 0) * 7), 0)
+            }}
+          </div>
         </div>
       </template>
       <template #cell-actions="{ row }">
