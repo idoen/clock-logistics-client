@@ -56,7 +56,11 @@ const columns: ColumnDef[] = [
     key: 'forecast_weekly_sales',
     label: 'חיזוי שבועי',
     info: 'כמה יחידות צפויות להימכר בשבוע',
-    formatter: (_, row) => formatNumber(Math.ceil((row?.forecast_daily_sales ?? 0) * 7)),
+    formatter: (_, row) => {
+      const rawWeekly = (row?.forecast_daily_sales ?? 0) * 7;
+      if (rawWeekly < 1) return '<1';
+      return formatNumber(Math.ceil(rawWeekly), 0);
+    },
     dir: 'ltr',
     sortable: true,
     sortValue: (row) => (row.forecast_daily_sales ?? 0) * 7,
