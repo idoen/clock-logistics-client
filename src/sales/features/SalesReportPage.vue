@@ -170,9 +170,9 @@
             <template #cell-available="{ row }">
               {{ formatNumber(row.available, 0) }}
             </template>
-           <template #cell-score="{ row }">
+            <template #cell-score="{ row }">
               {{
-                Math.ceil((row.score ?? 0) * 7) < 1
+                (row.score ?? 0) * 7 < 1
                   ? '>1'
                   : formatNumber(Math.ceil((row.score ?? 0) * 7), 0)
               }}

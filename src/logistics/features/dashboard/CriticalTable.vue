@@ -14,7 +14,7 @@
         <div class="forecast">
           <div>
             {{
-              Math.ceil((row.forecast_daily_sales ?? 0) * 7) < 1
+              (row.forecast_daily_sales ?? 0) * 7 < 1
                 ? '>1'
                 : formatNumber(Math.ceil((row.forecast_daily_sales ?? 0) * 7), 0)
             }}
@@ -22,7 +22,7 @@
           <div class="forecast-hint">
             ממוצע שבועי:
             {{
-              Math.ceil((row.avg_daily_sales ?? 0) * 7) < 1
+              (row.avg_daily_sales ?? 0) * 7 < 1
                 ? '>1'
                 : formatNumber(Math.ceil((row.avg_daily_sales ?? 0) * 7), 0)
             }}
