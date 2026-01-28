@@ -65,7 +65,7 @@
             </label>
             <label class="field">
               <span>מיון לפי</span>
-              <select v-model="sortField">
+              <select v-model="sortField" @change="applySort">
                 <option value="score">חיזוי שבועי</option>
                 <option value="available">זמינות</option>
                 <option value="price">מחיר</option>
@@ -74,7 +74,7 @@
             </label>
             <label class="field">
               <span>כיוון מיון</span>
-              <select v-model="sortDirection">
+              <select v-model="sortDirection" @change="applySort">
                 <option value="desc">יורד</option>
                 <option value="asc">עולה</option>
               </select>
@@ -150,7 +150,14 @@
           <p>נסו לשנות את הפילטרים או התקציב ולהפיק שוב.</p>
         </div>
         <div v-else>
-          <DataTable :columns="columns" :rows="rows" :row-key="(row) => row.product_id">
+          <DataTable
+            :columns="columns"
+            :rows="rows"
+            :row-key="(row) => row.product_id"
+            :sort-key="tableSortKey"
+            :sort-dir="sortDirection"
+            @sort="handleTableSort"
+          >
             <template #cell-image_url="{ row }">
               <div class="image-cell">
                 <img v-if="row.image_url" :src="row.image_url" :alt="row.name" />
@@ -209,6 +216,7 @@ import { useSalesReportPresets } from '../queries/useSalesReportPresets';
 import { useCreateSalesReportPreset } from '../mutations/useCreateSalesReportPreset';
 import { useDeleteSalesReportPreset } from '../mutations/useDeleteSalesReportPreset';
 import type { SalesReportFilters, SalesReportSort } from '../domain/types';
+import type { ColumnKey, SortDirection } from '../../shared/utils/tableSort';
 
 const filtersQuery = useSalesReportFilters();
 const presetsQuery = useSalesReportPresets();
@@ -315,12 +323,12 @@ const deletePresetMutation = useDeleteSalesReportPreset();
 const columns = [
   { key: 'image_url', label: 'תמונה' },
   { key: 'sku', label: 'SKU', dir: 'ltr' },
-  { key: 'name', label: 'שם', dir: 'auto' },
+  { key: 'name', label: 'שם', dir: 'auto', sortable: true },
   { key: 'category', label: 'קטגוריה', dir: 'auto' },
-  { key: 'list_price', label: 'מחיר', dir: 'ltr' },
+  { key: 'list_price', label: 'מחיר', dir: 'ltr', sortable: true },
   { key: 'currency', label: 'מטבע', dir: 'ltr' },
-  { key: 'available', label: 'זמינות', dir: 'ltr' },
-  { key: 'score', label: 'חיזוי שבועי', dir: 'ltr' },
+  { key: 'available', label: 'זמינות', dir: 'ltr', sortable: true },
+  { key: 'score', label: 'חיזוי שבועי', dir: 'ltr', sortable: true },
 ];
 
 const exporting = ref(false);
@@ -346,6 +354,38 @@ const loadPresetMeta = () => {
   } catch {
     return null;
   }
+};
+
+const tableSortKey = computed<ColumnKey>(() => {
+  const map: Record<SalesReportSort['field'], ColumnKey> = {
+    score: 'score',
+    available: 'available',
+    price: 'list_price',
+    name: 'name',
+  };
+  return map[sortField.value];
+});
+
+const applySort = () => {
+  page.value = 1;
+  if (hasReport.value) {
+    appliedParams.value = buildParams();
+  }
+};
+
+const handleTableSort = ({ key, dir }: { key: ColumnKey; dir: SortDirection }) => {
+  const mappedKey = typeof key === 'symbol' ? null : key;
+  const map: Record<string, SalesReportSort['field']> = {
+    score: 'score',
+    available: 'available',
+    name: 'name',
+    list_price: 'price',
+  };
+  const field = mappedKey ? map[String(mappedKey)] : undefined;
+  if (!field) return;
+  sortField.value = field;
+  sortDirection.value = dir;
+  applySort();
 };
 
 const buildParams = (): SalesReportParams => {
